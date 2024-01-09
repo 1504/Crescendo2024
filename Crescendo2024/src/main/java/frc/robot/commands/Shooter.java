@@ -4,36 +4,37 @@
 
 package frc.robot.commands;
 
-import frc.robot.subsystems.PIDIntake;
+import frc.robot.subsystems.PIDShooter;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class Intake extends CommandBase {
-  private final PIDIntake m_intake;
+// hi
+public class Shooter extends CommandBase {
+  private final PIDShooter m_shooter;
   private final double topSpeed; // top speed of the intake
   private final double bottomSpeed; // bottom speed of the intake
   /** Creates a new Intake. */
-  public Intake(PIDIntake intake, double topSpeed, double bottomSpeed) {
+  public Shooter(PIDShooter shooter, double topSpeed, double bottomSpeed) {
     // Use addRequirements() here to declare subsystem dependencies.
-    m_intake = intake;
+    m_shooter = shooter;
     this.topSpeed = topSpeed;
     this.bottomSpeed = bottomSpeed;
-    addRequirements(m_intake);
+    addRequirements(m_shooter);
   }
 
   @Override
   public void initialize() {
-    m_intake.setTop(topSpeed);
-    m_intake.setBottom(bottomSpeed);
+    m_shooter.setTop(topSpeed);
+    m_shooter.setBottom(bottomSpeed);
   }
 
   @Override
   public void end(boolean interrupted) {
-    m_intake.setTop(0);
-    m_intake.setBottom(0);
-    m_intake.stopIntake();
+    m_shooter.setTop(0);
+    m_shooter.setBottom(0);
+    m_shooter.stopShoot();
   }
 
   // Returns true when the command should end.
