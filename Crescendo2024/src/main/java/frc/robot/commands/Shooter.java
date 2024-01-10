@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-// hi
+
 public class Shooter extends CommandBase {
   private final PIDShooter m_shooter;
   private final double topSpeed; // top speed of the intake
@@ -35,6 +35,7 @@ public class Shooter extends CommandBase {
     m_shooter.setTop(0);
     m_shooter.setBottom(0);
     m_shooter.stopShoot();
+
   }
 
   // Returns true when the command should end.
@@ -43,3 +44,4 @@ public class Shooter extends CommandBase {
     return false;
   }
 }
+

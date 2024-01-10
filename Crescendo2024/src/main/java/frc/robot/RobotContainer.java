@@ -24,7 +24,6 @@ public class RobotContainer {
   private final Drivetrain m_drive = Drivetrain.getInstance();
   private final Joystick _joystickOne = new Joystick(IOConstants.JOYSTICK_ONE); //Controller for translation
 
-
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the trigger bindings
