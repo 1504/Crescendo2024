@@ -8,6 +8,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.LimelightConstants;
 
 public class Limelight extends SubsystemBase {
 
@@ -36,11 +37,18 @@ public class Limelight extends SubsystemBase {
     return table.getEntry(varName).getDouble(0.0);
   }
 
+  public double getD() {
+    double h_diff = LimelightConstants.AT_height-LimelightConstants.L_height;
+    double tan = Math.tan(LimelightConstants.L_angle+getVal("ty"));
+
+    return h_diff/tan;
+  }
 
 
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+
   }
 }
