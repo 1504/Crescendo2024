@@ -40,4 +40,15 @@ public final class Constants {
     public static final double BOTTOM_I = 0;
     public static final double BOTTOM_D = 0;
   }
+
+  public static class LimelightConstants {
+
+    //angles in radians
+    //heights in inches
+
+    public static final double L_height = 0;
+    public static final double AT_height = 53.88;
+    public static final double L_angle = 0;
+
+  }
 }

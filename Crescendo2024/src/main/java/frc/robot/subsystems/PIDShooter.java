@@ -57,7 +57,7 @@ public class PIDShooter extends SubsystemBase {
     _topPID.setSetpoint(speed);
   }
 
-  public void stopIntake(){
+  public void stopShoot(){
     _topShooter.stopMotor();
     _bottomShooter.stopMotor();
   }
