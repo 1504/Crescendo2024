@@ -44,7 +44,7 @@ public class GroundIntake extends SubsystemBase {
     return intake_pid;
   }
 
-  private void roll(double speed) {
+  public void roll(double speed) {
     m_motor.set(speed);
   }
 

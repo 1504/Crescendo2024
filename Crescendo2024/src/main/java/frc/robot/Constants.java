@@ -51,4 +51,9 @@ public final class Constants {
     public static final double L_angle = 0;
 
   }
+
+  public static class IntakeConstants {
+    public static final int intakePort = 0;
+    public static final double kP = 0;
+  }
 }
