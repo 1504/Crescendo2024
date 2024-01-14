@@ -5,7 +5,7 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMax.IdleMode;
+//import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.RelativeEncoder;
 
@@ -29,7 +29,7 @@ public class GroundIntake extends SubsystemBase {
   private GroundIntake() {
     intake_pid = new PIDController(IntakeConstants.kP, 0, 0);
     m_motor.setInverted(true); 
-    m_motor.setIdleMode(IdleMode.kBrake);
+    //m_motor.setIdleMode(IdleMode.kBrake);
     // TODO: ADD SOFT BREAK IN INTAKE USING INFARED SENSOR
   }
 
