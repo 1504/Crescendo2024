@@ -7,6 +7,8 @@ package frc.robot.subsystems;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.LimelightConstants;
 
@@ -14,6 +16,8 @@ public class Limelight extends SubsystemBase {
 
   private static Limelight _instance = null;
   private NetworkTable table;
+
+  ShuffleboardTab limelight = Shuffleboard.getTab("Limelight");
 
   /** 
    * Ensures only one instance of Limelight is created
