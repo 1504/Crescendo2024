@@ -25,13 +25,13 @@ public class Drivetrain extends SubsystemBase {
   private final CANSparkMax _left_motor;
   private final CANSparkMax _right_motor;
   private final RelativeEncoder _left_Encoder;
-  private GenericEntry _LEncoder;
+  //private GenericEntry _LEncoder;
 
   private boolean _turtle = false;
 
   private final DifferentialDrive _drive;
 
-  ShuffleboardTab telemetry = Shuffleboard.getTab("Telemetry");
+  //ShuffleboardTab telemetry = Shuffleboard.getTab("Telemetry");
 
   static private Drivetrain _instance = null;
 
@@ -57,7 +57,7 @@ public class Drivetrain extends SubsystemBase {
     _left_Encoder = _right_motor.getEncoder();
 
     _drive = new DifferentialDrive(_left_motor, _right_motor);
-    shuffleboardInit();
+    //shuffleboardInit();
   }
 
   // tank drive method
@@ -77,22 +77,25 @@ public class Drivetrain extends SubsystemBase {
   public void toggleTurtle() {
     _turtle = !_turtle;
   }
+  
+    
+  //public void shuffleboardInit() {
+    //  _LEncoder = telemetry.add("Left Encoder", 0)
+    //     .withPosition(0, 0)
+    //      .withSize(2, 2)
+    //      .withWidget(BuiltInWidgets.kTextView)
+    //      .getEntry();
+  //}
+  
+  
 
-  public void shuffleboardInit() {
-      _LEncoder = telemetry.add("Left Encoder", 0)
-          .withPosition(0, 0)
-          .withSize(2, 2)
-          .withWidget(BuiltInWidgets.kTextView)
-          .getEntry();
-  }
-
-  public void ShuffleboardUpdate() {
-    _LEncoder.setDouble(_left_Encoder.getPosition());
-  }
+  //public void ShuffleboardUpdate() {
+  //  _LEncoder.setDouble(_left_Encoder.getPosition());
+  //}
 
   @Override
   public void periodic() {
-    ShuffleboardUpdate();
+    //ShuffleboardUpdate();
     // This method will be called once per scheduler run
   }
 }
