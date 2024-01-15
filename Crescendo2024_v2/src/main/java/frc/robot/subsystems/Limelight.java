@@ -41,7 +41,7 @@ public class Limelight extends SubsystemBase {
     return table.getEntry(varName).getDouble(0.0);
   }
 
-  public double getD() {
+  public double getDist() {
     double h_diff = LimelightConstants.AT_height-LimelightConstants.L_height;
     double tan = Math.tan(LimelightConstants.L_angle+getVal("ty"));
 

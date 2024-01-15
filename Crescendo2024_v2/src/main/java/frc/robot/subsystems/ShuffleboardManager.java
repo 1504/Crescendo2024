@@ -28,10 +28,15 @@ public class ShuffleboardManager extends SubsystemBase {
 
   ShuffleboardTab limelight;
 
+  //telemetry
   private GenericEntry leftEncoder;
-  private GenericEntry distanceFromAT;
+  private GenericEntry rightEncoder;
   private GenericEntry xPos;
   private GenericEntry yPos;
+
+
+  //limelight
+  private GenericEntry distanceFromAT;
 
 
   /** Creates a new ShuffleboardManager. */
@@ -44,6 +49,8 @@ public class ShuffleboardManager extends SubsystemBase {
     try {
       telemetry = Shuffleboard.getTab("Telemetry");
       leftEncoder = telemetry.add("Left Encoder", 0).withPosition(0, 0).withSize(2, 2).withWidget(BuiltInWidgets.kTextView).getEntry();
+      rightEncoder = telemetry.add("Right Encoder", 0).withPosition(0,0).withSize(2, 2).withWidget(BuiltInWidgets.kTextView).getEntry();
+
 
 
       limelight = Shuffleboard.getTab( "Limelight");
@@ -56,6 +63,13 @@ public class ShuffleboardManager extends SubsystemBase {
   }
 
   public void shuffleboardUpdate() {
+    //drive
+    leftEncoder.setDouble(_drive.getLeftVelocity());
+    rightEncoder.setDouble(_drive.getRightVelocity());
+
+
+    //limelight
+    distanceFromAT.setDouble(_limelight.getDist());
 
   }
 
