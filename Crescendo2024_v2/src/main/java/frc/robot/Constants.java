@@ -14,8 +14,10 @@ package frc.robot;
  */
 public final class Constants {
   public static class DriveConstants {
-    public static final int LEFT = 11;
-    public static final int RIGHT = 12;
+    public static final int LEFT1 = 11;
+    public static final int LEFT2 = 12;
+    public static final int RIGHT1 = 13;
+    public static final int RIGHT2 = 14;
     public static final double DEADBAND = 0.3;
   }
 
