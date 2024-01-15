@@ -5,10 +5,10 @@
 package frc.robot;
 
 import frc.robot.Constants.IOConstants;
-import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.Tank;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Limelight;
+import frc.robot.subsystems.ShuffleboardManager;
 import frc.robot.subsystems.ShuffleboardManager;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -24,6 +24,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final Drivetrain m_drive = Drivetrain.getInstance();
+  public final ShuffleboardManager m_ShuffleboardManager = ShuffleboardManager.getInstance();
   private final Joystick _joystickOne = new Joystick(IOConstants.JOYSTICK_ONE); //Controller for translation
   private final Limelight m_limelight= Limelight.getInstance();
 
