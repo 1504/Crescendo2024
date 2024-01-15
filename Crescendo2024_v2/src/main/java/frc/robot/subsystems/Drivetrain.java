@@ -9,7 +9,7 @@ import java.security.cert.TrustAnchor;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.Encoder;
@@ -24,8 +24,8 @@ public class Drivetrain extends SubsystemBase {
   // tank motors
   private final CANSparkMax _left_motor;
   private final CANSparkMax _right_motor;
-  private final RelativeEncoder _left_Encoder;
-  private GenericEntry _LEncoder;
+  private final RelativeEncoder _left_encoder;
+  private final RelativeEncoder _right_encoder;
 
   private boolean _turtle = false;
 
@@ -54,10 +54,10 @@ public class Drivetrain extends SubsystemBase {
     // initializes tank motor controllers
     _right_motor = new CANSparkMax(DriveConstants.RIGHT, MotorType.kBrushless);
     _left_motor = new CANSparkMax(DriveConstants.LEFT, MotorType.kBrushless);
-    _left_Encoder = _right_motor.getEncoder();
+    _left_encoder = _left_motor.getEncoder();
+    _right_encoder = _right_motor.getEncoder();
 
     _drive = new DifferentialDrive(_left_motor, _right_motor);
-    shuffleboardInit();
   }
 
   // tank drive method
@@ -78,21 +78,14 @@ public class Drivetrain extends SubsystemBase {
     _turtle = !_turtle;
   }
 
-  public void shuffleboardInit() {
-      _LEncoder = telemetry.add("Left Encoder", 0)
-          .withPosition(0, 0)
-          .withSize(2, 2)
-          .withWidget(BuiltInWidgets.kTextView)
-          .getEntry();
+  public double getLeftVelocity() {
+    return _left_encoder.getVelocity();
   }
 
-  public void ShuffleboardUpdate() {
-    _LEncoder.setDouble(_left_Encoder.getPosition());
+  public double getRightVelocity() {
+    return _right_encoder.getVelocity();
   }
-
   @Override
   public void periodic() {
-    ShuffleboardUpdate();
-    // This method will be called once per scheduler run
   }
 }
