@@ -12,6 +12,7 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -19,25 +20,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DriveConstants;
 
 public class Drivetrain extends SubsystemBase {
-  // tank motors
-  private final CANSparkMax _left_motor;
-  private final CANSparkMax _right_motor;
-  private final RelativeEncoder _left_Encoder;
-  private GenericEntry _LEncoder;
 
-  private boolean _turtle = false;
-
-  private final DifferentialDrive _drive;
-
-  ShuffleboardTab telemetry = Shuffleboard.getTab("Telemetry");
-
-  static private Drivetrain _instance = null;
-
-    /**
-   * getInstance to provide a singleton instance of the Drivetrain subsystem
-   * 
-   * @return the instance of the Drivetrain subsystem
-   */
   static private Drivetrain _instance = null;
   public static Drivetrain getInstance() {
     if (_instance == null) {
@@ -57,19 +40,22 @@ public class Drivetrain extends SubsystemBase {
 
   private final DifferentialDrive _drive;
   private final Limelight _limelight = Limelight.getInstance();
- 
-  //ShuffleboardTab telemetry = Shuffleboard.getTab("Telemetry");
+
+  ShuffleboardTab telemetry = Shuffleboard.getTab("Telemetry");
 
 
-  /** Creates a new Drivetrain. */
+
   public Drivetrain() {
     // initializes tank motor controllers
     _right_motor = new CANSparkMax(DriveConstants.RIGHT, MotorType.kBrushless);
     _left_motor = new CANSparkMax(DriveConstants.LEFT, MotorType.kBrushless);
-    _left_Encoder = _right_motor.getEncoder();
+    _left_Encoder = _left_motor.getEncoder();
+    _right_Encoder = _right_motor.getEncoder();
 
     _drive = new DifferentialDrive(_left_motor, _right_motor);
-    shuffleboardInit();
+
+    SmartDashboard.putData("Drive", _drive); 
+
   }
 
   // tank drive method
@@ -90,21 +76,23 @@ public class Drivetrain extends SubsystemBase {
     _turtle = !_turtle;
   }
 
-  public void shuffleboardInit() {
-      _LEncoder = telemetry.add("Left Encoder", 0)
-          .withPosition(0, 0)
-          .withSize(2, 2)
-          .withWidget(BuiltInWidgets.kTextView)
-          .getEntry();
+  public void resetEncoders() {
+    _left_Encoder.setPosition(0);
+    _right_Encoder.setPosition(0);
   }
 
-  public void ShuffleboardUpdate() {
-    _LEncoder.setDouble(_left_Encoder.getPosition());
+  public double getLeftVelocity() {
+    return _left_Encoder.getVelocity();
+
+    //return _front_left_encoder.getVelocity() / BuildConstants.GEAR_RATIO * BuildConstants.WHEEL_CIRCUMFERENCE / 60 * BuildConstants.INCHES_TO_METERS;
+  }
+
+  public double getRightVelocity() {
+    return _right_Encoder.getVelocity();
   }
 
   @Override
   public void periodic() {
-    ShuffleboardUpdate();
     // This method will be called once per scheduler run
   }
 }
