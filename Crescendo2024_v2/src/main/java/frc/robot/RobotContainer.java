@@ -48,6 +48,7 @@ public class RobotContainer {
    */
   private void configureBindings() {
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
+    System.out.println("me when i drive");
     m_drive.setDefaultCommand(new Tank(() -> _joystickOne.getX(),() -> _joystickOne.getY()));
 
   }

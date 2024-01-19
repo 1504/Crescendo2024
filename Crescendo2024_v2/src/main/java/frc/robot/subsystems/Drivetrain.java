@@ -55,7 +55,7 @@ public class Drivetrain extends SubsystemBase {
     _left_motor1 = new CANSparkMax(DriveConstants.LEFT1, MotorType.kBrushless);
     _left_motor2 = new CANSparkMax(DriveConstants.LEFT2, MotorType.kBrushless);
 
-    _right_motor1.setInverted(true);
+    _right_motor1.setInverted(false);
     //_right_motor2.setInverted(true);
     _left_motor1.setInverted(false);
     //_left_motor2.setInverted(false);
@@ -77,11 +77,11 @@ public class Drivetrain extends SubsystemBase {
     if (!_turtle) {
       double ySpd = Math.abs(ySpeed) < DriveConstants.DEADBAND ? 0 : Math.pow(ySpeed, 1);
       double xSpd = Math.abs(xSpeed) < DriveConstants.DEADBAND ? 0 : Math.pow(xSpeed, 1);
-      _drive.tankDrive(xSpd, ySpd);
+      _drive.arcadeDrive(xSpd, ySpd);
     } else {
       double ySpd = Math.abs(ySpeed) < DriveConstants.DEADBAND ? 0 : ySpeed / 0.5;
       double xSpd = Math.abs(xSpeed) < DriveConstants.DEADBAND ? 0 : xSpeed / 0.5;
-      _drive.tankDrive(xSpd, ySpd);
+      _drive.arcadeDrive(xSpd, ySpd);
     }
   }
 
