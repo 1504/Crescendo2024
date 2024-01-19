@@ -6,6 +6,8 @@ package frc.robot;
 
 import frc.robot.Constants.IOConstants;
 import frc.robot.commands.Tank;
+import frc.robot.commands.Turtles;
+// import frc.robot.commands.Turtle2;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.ShuffleboardManager;
@@ -13,6 +15,7 @@ import frc.robot.subsystems.ShuffleboardManager;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 /**
@@ -50,7 +53,10 @@ public class RobotContainer {
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
     System.out.println("me when i drive");
     m_drive.setDefaultCommand(new Tank(() -> _joystickOne.getX(),() -> _joystickOne.getY()));
-
+    Trigger TurtleTrigger = new JoystickButton(_joystickOne, 3);
+    TurtleTrigger.whileTrue(new Turtles(() -> _joystickOne.getX(),() -> _joystickOne.getY(),2.0));
+    Trigger TurtleTrigger2 = new JoystickButton(_joystickOne, 2);
+    TurtleTrigger2.whileTrue(new Turtles(() -> _joystickOne.getX(),() -> _joystickOne.getY(),4.0));
   }
 
   /**

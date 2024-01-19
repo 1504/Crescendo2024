@@ -18,7 +18,7 @@ public final class Constants {
     public static final int LEFT2 = 4;
     public static final int RIGHT1 = 1;
     public static final int RIGHT2 = 3;
-    public static final double DEADBAND = 0.3;
+    public static final double DEADBAND = 0.03;
   }
 
   public final class IOConstants {
