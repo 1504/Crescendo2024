@@ -75,8 +75,8 @@ public class Drivetrain extends SubsystemBase {
   public void driveTank(double xSpeed, double ySpeed) {
     // deadband the inputs
     if (!_turtle) {
-      double ySpd = Math.abs(ySpeed) < DriveConstants.DEADBAND ? 0 : Math.pow(ySpeed, 3);
-      double xSpd = Math.abs(xSpeed) < DriveConstants.DEADBAND ? 0 : Math.pow(xSpeed, 3);
+      double ySpd = Math.abs(ySpeed) < DriveConstants.DEADBAND ? 0 : Math.pow(ySpeed, 1);
+      double xSpd = Math.abs(xSpeed) < DriveConstants.DEADBAND ? 0 : Math.pow(xSpeed, 1);
       _drive.tankDrive(xSpd, ySpd);
     } else {
       double ySpd = Math.abs(ySpeed) < DriveConstants.DEADBAND ? 0 : ySpeed / 0.5;
