@@ -12,7 +12,10 @@ import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.ShuffleboardManager;
 import frc.robot.subsystems.ShuffleboardManager;
+import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -28,10 +31,14 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final Drivetrain m_drive = Drivetrain.getInstance();
   public final ShuffleboardManager m_ShuffleboardManager = ShuffleboardManager.getInstance();
-  private final Joystick _joystickOne = new Joystick(IOConstants.JOYSTICK_ONE); //Controller for translation
+  private final Joystick _joystickOne = m_ShuffleboardManager.getJoystick(); //Controller for translation
   private final Limelight m_limelight= Limelight.getInstance();
 
   public final ShuffleboardManager m_shuffleboardManager = ShuffleboardManager.getInstance();
+  ShuffleboardTab telemetry;
+
+  private GenericEntry joyStickX;
+  private GenericEntry joyStickY;
 
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -52,7 +59,7 @@ public class RobotContainer {
   private void configureBindings() {
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
     System.out.println("me when i drive");
-    m_drive.setDefaultCommand(new Tank(() -> _joystickOne.getX(),() -> _joystickOne.getY()));
+    m_drive.setDefaultCommand(new Tank(() -> _joystickOne.getX() * (_joystickOne.getZ()+1),() -> _joystickOne.getY()* (_joystickOne.getZ()+1)));
     Trigger TurtleTrigger = new JoystickButton(_joystickOne, 3);
     TurtleTrigger.whileTrue(new Turtles(() -> _joystickOne.getX(),() -> _joystickOne.getY(),2.0));
     Trigger TurtleTrigger2 = new JoystickButton(_joystickOne, 2);

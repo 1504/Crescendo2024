@@ -12,6 +12,7 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
@@ -37,7 +38,7 @@ public class Drivetrain extends SubsystemBase {
   private final CANSparkMax _right_motor2;
   
   private final RelativeEncoder _left_Encoder;
-  private final RelativeEncoder _right_Encoder;
+  private final RelativeEncoder _right_Encoder; 
 
   private boolean _turtle = false;
 
