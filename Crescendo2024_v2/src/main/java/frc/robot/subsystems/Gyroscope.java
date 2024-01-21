@@ -42,8 +42,7 @@ public class Gyroscope extends SubsystemBase {
     }
 
     private Gyroscope() {
-        // _gyro.reset(); // call gyro reset on first object instantiation
-        _gyro.calibrate();
+        _gyro.reset();
         SmartDashboard.putData("Gyro", _gyro);
     }
 
@@ -76,7 +75,7 @@ public class Gyroscope extends SubsystemBase {
     }
 
     public Rotation2d getYawRotation() {
-        return (Constants.DriveConstants.invertGyro) ? Rotation2d.fromDegrees(360 - getYaw())
+        return (true) ? Rotation2d.fromDegrees(360 - getYaw())
                 : Rotation2d.fromDegrees(getYaw());
     }
 
