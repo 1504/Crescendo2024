@@ -13,6 +13,10 @@ import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.ShuffleboardManager;
 import frc.robot.subsystems.ShuffleboardManager;
+
+import java.io.IOException;
+import java.nio.file.Path;
+
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -46,9 +50,28 @@ public class RobotContainer {
     //SmartDashboard.putData("Auto Mode", autoChooser);
   }
 
-  public Command loadPath() {
+  public Command loadPath(String filename) {
     Trajectory trajectory;
+    try {
+      Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(filename);
+      trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
+    } catch (IOException exception) {
+      DriverStation.reportError("Nao pode abrir a trajetoria" + filename, exception.getStackTrace());
+      System.out.println("Nao pode ler o arquivo" + filename);
+      return new InstantCommand();
+    }
 
+    RamseteCommand ramseteCommand = new RamseteCommand(trajectory, driveTrainSubsystem::getPose,
+      new RamseteController(DriveTrainConstants.kRamseteB, DriveTrainConstants.kRamseteZeta),
+      new SimpleMotorFeedforward(DriveTrainConstants.ksVolts, DriveTrainConstants.kvVoltSecondsPerMeters,
+          DriveTrainConstants.kaVoltSecondsSquaredPerMeter),
+      DriveTrainConstants.kDriveKinematics, driveTrainSubsystem::getWheelSpeeds,
+      new PIDController(DriveTrainConstants.kpDriveVel, 0, 0),
+      new PIDController(DriveTrainConstants.kpDriveVel, 0, 0), driveTrainSubsystem::tankDriveVolts,
+      driveTrainSubsystem);
+
+      return new SequentialCommandGroup(
+        new InstantCommand(() -> driveTrainSubsystem.resetOdometry(trajectory.getInitialPose())), ramseteCommand);
   }
 
   /**
