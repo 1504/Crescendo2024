@@ -66,6 +66,7 @@ public final class Constants {
     public static final boolean USE_VISION = false;
     public static final double AUTO_MAX_SPEED_METERS_PER_SECOND = 1;
     public static final double AUTO_MAX_ACCEL_METERS_PER_SECOND_SQUARED = 3.0;
+    public static final double AUTO_MAX_ROTAT_RADIANS_PER_SECOND= 3.1415/4;
     
   }
 }
