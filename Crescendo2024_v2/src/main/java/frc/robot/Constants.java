@@ -56,4 +56,13 @@ public final class Constants {
     public static final int intakePort = 0;
     public static final double kP = 0;
   }
+
+  public static class AutoConstants {
+    public static final String [] PATHS = {"BLUE1", "BLUE2", "BLUE3", "RED1", "RED2", "RED3"};
+
+    public static final boolean USE_VISION = false;
+    public static final double AUTO_MAX_SPEED_METERS_PER_SECOND = 1;
+    public static final double AUTO_MAX_ACCEL_METERS_PER_SECOND_SQUARED = 3.0;
+    
+  }
 }

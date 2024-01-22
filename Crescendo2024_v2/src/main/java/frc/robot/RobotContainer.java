@@ -4,13 +4,26 @@
 
 package frc.robot;
 
+import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.IOConstants;
 import frc.robot.commands.Tank;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.ShuffleboardManager;
-import frc.robot.subsystems.ShuffleboardManager;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.commands.PathPlannerAuto;
+import com.pathplanner.lib.path.PathConstraints;
+import com.pathplanner.lib.path.PathPlannerTrajectory;
+
+import edu.wpi.first.math.proto.Trajectory;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -27,14 +40,22 @@ public class RobotContainer {
   public final ShuffleboardManager m_ShuffleboardManager = ShuffleboardManager.getInstance();
   private final Joystick _joystickOne = new Joystick(IOConstants.JOYSTICK_ONE); //Controller for translation
   private final Limelight m_limelight= Limelight.getInstance();
-
-  public final ShuffleboardManager m_shuffleboardManager = ShuffleboardManager.getInstance();
-
-
+  private final SendableChooser<Command> autoChooser = new SendableChooser<>();
+  
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the trigger bindings
     configureBindings();
+
+    autoChooser.addOption("BLUE1", loadPath());
+
+    Shuffleboard.getTab("Auto").add(autoChooser);
+    //SmartDashboard.putData("Auto Mode", autoChooser);
+  }
+
+  public Command loadPath() {
+    Trajectory trajectory;
+
   }
 
   /**
@@ -47,8 +68,12 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
+    
     m_drive.setDefaultCommand(new Tank(() -> _joystickOne.getX(),() -> _joystickOne.getY()));
+
+    //Auton
+    SmartDashboard.putData("BLUE1", new PathPlannerAuto("BLUE1"));
+
 
   }
 
@@ -59,6 +84,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
-    return null;
+    return autoChooser.getSelected();
   }
 }
