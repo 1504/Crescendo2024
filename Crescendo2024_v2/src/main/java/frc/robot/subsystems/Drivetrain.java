@@ -13,6 +13,7 @@ import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
@@ -32,10 +33,13 @@ public class Drivetrain extends SubsystemBase {
   }
 
   // tank motors
-  private final CANSparkMax _left_motor;
-  private final CANSparkMax _right_motor;
+  private final CANSparkMax _left_motor1;
+  private final CANSparkMax _left_motor2;
+  private final CANSparkMax _right_motor1;
+  private final CANSparkMax _right_motor2;
+  
   private final RelativeEncoder _left_Encoder;
-  private final RelativeEncoder _right_Encoder;
+  private final RelativeEncoder _right_Encoder; 
 
   private boolean _turtle = false;
 
@@ -50,28 +54,38 @@ public class Drivetrain extends SubsystemBase {
 
   public Drivetrain() {
     // initializes tank motor controllers
-    _right_motor = new CANSparkMax(DriveConstants.RIGHT, MotorType.kBrushless);
-    _left_motor = new CANSparkMax(DriveConstants.LEFT, MotorType.kBrushless);
-    _left_Encoder = _left_motor.getEncoder();
-    _right_Encoder = _right_motor.getEncoder();
+    _right_motor1 = new CANSparkMax(DriveConstants.RIGHT1, MotorType.kBrushless);
+    _right_motor2 = new CANSparkMax(DriveConstants.RIGHT2, MotorType.kBrushless);
+    _left_motor1 = new CANSparkMax(DriveConstants.LEFT1, MotorType.kBrushless);
+    _left_motor2 = new CANSparkMax(DriveConstants.LEFT2, MotorType.kBrushless);
 
-    _drive = new DifferentialDrive(_left_motor, _right_motor);
+    _right_motor1.setInverted(false);
+    //_right_motor2.setInverted(true);
+    _left_motor1.setInverted(false);
+    //_left_motor2.setInverted(false);
+
+    _right_motor2.follow(_right_motor1);
+    _left_motor2.follow(_left_motor1);
+
+    _left_Encoder = _left_motor1.getEncoder();
+    _right_Encoder = _right_motor1.getEncoder();
+
+    _drive = new DifferentialDrive(_left_motor1,_right_motor1);
 
     SmartDashboard.putData("Drive", _drive); 
-
   }
 
   // tank drive method
   public void driveTank(double xSpeed, double ySpeed) {
     // deadband the inputs
     if (!_turtle) {
-      double ySpd = Math.abs(ySpeed) < DriveConstants.DEADBAND ? 0 : Math.pow(ySpeed, 3);
-      double xSpd = Math.abs(xSpeed) < DriveConstants.DEADBAND ? 0 : Math.pow(xSpeed, 3);
-      _drive.tankDrive(xSpd, ySpd);
+      double ySpd = Math.abs(ySpeed) < DriveConstants.DEADBAND ? 0 : Math.pow(ySpeed, 1);
+      double xSpd = Math.abs(xSpeed) < DriveConstants.DEADBAND ? 0 : Math.pow(xSpeed, 1);
+      _drive.arcadeDrive(xSpd, ySpd);
     } else {
       double ySpd = Math.abs(ySpeed) < DriveConstants.DEADBAND ? 0 : ySpeed / 0.5;
       double xSpd = Math.abs(xSpeed) < DriveConstants.DEADBAND ? 0 : xSpeed / 0.5;
-      _drive.tankDrive(xSpd, ySpd);
+      _drive.arcadeDrive(xSpd, ySpd);
     }
   }
 

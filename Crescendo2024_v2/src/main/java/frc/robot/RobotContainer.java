@@ -7,25 +7,16 @@ package frc.robot;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.IOConstants;
 import frc.robot.commands.Tank;
+import frc.robot.commands.Turtles;
+// import frc.robot.commands.Turtle2;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.ShuffleboardManager;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import com.pathplanner.lib.auto.AutoBuilder;
-import com.pathplanner.lib.commands.PathPlannerAuto;
-import com.pathplanner.lib.path.PathConstraints;
-import com.pathplanner.lib.path.PathPlannerTrajectory;
-
-import edu.wpi.first.math.proto.Trajectory;
+import frc.robot.subsystems.ShuffleboardManager;
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 /**
@@ -38,10 +29,12 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final Drivetrain m_drive = Drivetrain.getInstance();
   public final ShuffleboardManager m_ShuffleboardManager = ShuffleboardManager.getInstance();
-  private final Joystick _joystickOne = new Joystick(IOConstants.JOYSTICK_ONE); //Controller for translation
+  private final Joystick _joystickOne = m_ShuffleboardManager.getJoystick(); //Controller for translation
   private final Limelight m_limelight= Limelight.getInstance();
-  private final SendableChooser<Command> autoChooser = new SendableChooser<>();
-  
+
+  public final ShuffleboardManager m_shuffleboardManager = ShuffleboardManager.getInstance();
+
+
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the trigger bindings
@@ -68,12 +61,8 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    
+    // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
     m_drive.setDefaultCommand(new Tank(() -> _joystickOne.getX(),() -> _joystickOne.getY()));
-
-    //Auton
-    SmartDashboard.putData("BLUE1", new PathPlannerAuto("BLUE1"));
-
 
   }
 
