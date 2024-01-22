@@ -16,9 +16,29 @@ import frc.robot.subsystems.ShuffleboardManager;
 
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
 
+import com.pathplanner.lib.commands.PathPlannerAuto;
+import com.pathplanner.lib.path.PathConstraints;
+import com.pathplanner.lib.path.PathPlannerPath;
+import com.pathplanner.lib.path.PathPlannerTrajectory;
+
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.RamseteController;
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
+import edu.wpi.first.math.trajectory.Trajectory;
+import edu.wpi.first.math.trajectory.TrajectoryUtil;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.RamseteCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -38,41 +58,36 @@ public class RobotContainer {
 
   public final ShuffleboardManager m_shuffleboardManager = ShuffleboardManager.getInstance();
 
+  private final SendableChooser<CommandBase> m_autoChooser = new SendableChooser<>();
+  private final List<PathPlannerTrajectory> m_testPaths = new ArrayList<>();
+  {
+    for (String path : AutoConstants.PATHS) {
+      List<PathPlannerPath> pathes = PathPlannerAuto.getPathGroupFromAutoFile(path);
+
+      List<PathPlannerTrajectory> trajects;
+
+      for(int i=0; i < pathes.size(); i++ ) {
+        //trajects.add( new PathPlannerTrajectory( pathes[i]), new  );
+      } 
+      //new PathPlannerTrajectory
+
+      //new PathConstraints(AutoConstants.AUTO_MAX_SPEED_METERS_PER_SECOND, AutoConstants.AUTO_MAX_ACCEL_METERS_PER_SECOND_SQUARED)));
+    }
+  }
+
+  
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the trigger bindings
     configureBindings();
 
-    autoChooser.addOption("BLUE1", loadPath());
+    //m_autoChooser.addOption("BLUE1", loadPath("src/main/deploy/autos/BLUE1.auto"));
 
-    Shuffleboard.getTab("Auto").add(autoChooser);
+    Shuffleboard.getTab("Auto").add(m_autoChooser);
     //SmartDashboard.putData("Auto Mode", autoChooser);
   }
 
-  public Command loadPath(String filename) {
-    Trajectory trajectory;
-    try {
-      Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(filename);
-      trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
-    } catch (IOException exception) {
-      DriverStation.reportError("Nao pode abrir a trajetoria" + filename, exception.getStackTrace());
-      System.out.println("Nao pode ler o arquivo" + filename);
-      return new InstantCommand();
-    }
-
-    RamseteCommand ramseteCommand = new RamseteCommand(trajectory, driveTrainSubsystem::getPose,
-      new RamseteController(DriveTrainConstants.kRamseteB, DriveTrainConstants.kRamseteZeta),
-      new SimpleMotorFeedforward(DriveTrainConstants.ksVolts, DriveTrainConstants.kvVoltSecondsPerMeters,
-          DriveTrainConstants.kaVoltSecondsSquaredPerMeter),
-      DriveTrainConstants.kDriveKinematics, driveTrainSubsystem::getWheelSpeeds,
-      new PIDController(DriveTrainConstants.kpDriveVel, 0, 0),
-      new PIDController(DriveTrainConstants.kpDriveVel, 0, 0), driveTrainSubsystem::tankDriveVolts,
-      driveTrainSubsystem);
-
-      return new SequentialCommandGroup(
-        new InstantCommand(() -> driveTrainSubsystem.resetOdometry(trajectory.getInitialPose())), ramseteCommand);
-  }
 
   /**
    * Use this method to define your trigger->command mappings. Triggers can be created via the
@@ -96,6 +111,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
-    return autoChooser.getSelected();
+    return m_autoChooser.getSelected();
   }
 }

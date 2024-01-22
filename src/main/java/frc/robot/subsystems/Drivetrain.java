@@ -4,9 +4,6 @@
 
 package frc.robot.subsystems;
 
-import java.security.GeneralSecurityException;
-import java.security.cert.TrustAnchor;
-
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkLowLevel.MotorType;
@@ -14,7 +11,6 @@ import com.revrobotics.CANSparkLowLevel.MotorType;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
-import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -73,6 +69,15 @@ public class Drivetrain extends SubsystemBase {
     _drive = new DifferentialDrive(_left_motor1,_right_motor1);
 
     SmartDashboard.putData("Drive", _drive); 
+
+    Pose2d m_pose;
+    if( false) {
+      //m_pose = limelight.getPose();
+      m_pose = new Pose2d();
+    }
+    else {
+      m_pose = new Pose2d();
+    }
   }
 
   // tank drive method
@@ -107,6 +112,10 @@ public class Drivetrain extends SubsystemBase {
   public double getRightVelocity() {
     return _right_Encoder.getVelocity();
   }
+
+  //public Pose2d getPose() {
+    //return _odometry.getPoseMeters();
+  //}
 
   @Override
   public void periodic() {
