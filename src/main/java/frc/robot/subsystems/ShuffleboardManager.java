@@ -27,9 +27,11 @@ public class ShuffleboardManager extends SubsystemBase {
   private final Drivetrain _drive = Drivetrain.getInstance();
   private final Limelight _limelight = Limelight.getInstance();
   private final Joystick _joystickOne = new Joystick(IOConstants.JOYSTICK_ONE);
+  private final Gyroscope _gyroOne = Gyroscope.getInstance();
   
   ShuffleboardTab telemetry;
   ShuffleboardTab limelight;
+  ShuffleboardTab _Gyroscope;
 
   //telemetry
   private GenericEntry leftEncoder;
@@ -38,6 +40,12 @@ public class ShuffleboardManager extends SubsystemBase {
   private GenericEntry yPos;
   private GenericEntry joystickX;
   private GenericEntry joystickY;
+  private GenericEntry GyroPitch;
+  private GenericEntry GyroRoll;
+  private GenericEntry GyroYaw;
+  private GenericEntry GyroDX;
+  private GenericEntry GyroDY;
+  private GenericEntry GyroDZ;
 
   //limelight
   private GenericEntry distanceFromAT;
@@ -51,14 +59,21 @@ public class ShuffleboardManager extends SubsystemBase {
   public void shuffleboardInit(){
     try {
       telemetry = Shuffleboard.getTab("Telemetry");
+      _Gyroscope = Shuffleboard.getTab("Gyroscope");
       leftEncoder = telemetry.add("Left Encoder", 0).withPosition(0, 0).withSize(2, 2).withWidget(BuiltInWidgets.kTextView).getEntry();
       rightEncoder = telemetry.add("Right Encoder", 2).withPosition(2, 0).withSize(2, 2).withWidget(BuiltInWidgets.kTextView).getEntry();
       
       limelight = Shuffleboard.getTab( "Limelight");
       distanceFromAT = limelight.add("Distance from AT", 0).withPosition(0, 0).withSize(2, 2).withWidget(BuiltInWidgets.kTextView).getEntry();
 
-      joystickX = telemetry.add("Joystick X",0).withPosition(0,2).withSize(2,1).withWidget(BuiltInWidgets.kTextView).getEntry();
-      joystickY = telemetry.add("Joystick Y",0).withPosition(2,2).withSize(2,1).withWidget(BuiltInWidgets.kTextView).getEntry();  
+      joystickX = telemetry.add("Joystick X",0).withPosition(0,0).withSize(2,1).withWidget(BuiltInWidgets.kTextView).getEntry();
+      joystickY = telemetry.add("Joystick Y",0).withPosition(0,2).withSize(2,1).withWidget(BuiltInWidgets.kTextView).getEntry();
+      GyroPitch = _Gyroscope.add("Gyro Pitch",0).withPosition(0,0).withSize(2,1).withWidget(BuiltInWidgets.kTextView).getEntry();
+      GyroRoll = _Gyroscope.add("Gyro Roll",0).withPosition(2,0).withSize(2,1).withWidget(BuiltInWidgets.kTextView).getEntry();
+      GyroYaw = _Gyroscope.add("Gyro Yaw",0).withPosition(0,1).withSize(2,1).withWidget(BuiltInWidgets.kTextView).getEntry();
+      GyroDX = _Gyroscope.add("Gyro Displacement X",0).withPosition(2,1).withSize(2,1).withWidget(BuiltInWidgets.kTextView).getEntry();  
+      GyroDY = _Gyroscope.add("Gyro Displacement Y",0).withPosition(0,2).withSize(2,1).withWidget(BuiltInWidgets.kTextView).getEntry();
+      GyroDZ = _Gyroscope.add("Gyro Displacement Z",0).withPosition(2,2).withSize(2,1).withWidget(BuiltInWidgets.kTextView).getEntry();
     }
     catch (Exception e) {
       System.out.println("ShuffleboardManager error: " + e);
@@ -77,6 +92,12 @@ public class ShuffleboardManager extends SubsystemBase {
 
     joystickX.setDouble(_joystickOne.getX());
     joystickY.setDouble(_joystickOne.getY());
+    GyroPitch.setDouble(_gyroOne.getPitch());
+    GyroRoll.setDouble(_gyroOne.getRoll());
+    GyroYaw.setDouble(_gyroOne.getYaw());
+    GyroDX.setDouble(_gyroOne.getDisplacementX());
+    GyroDY.setDouble(_gyroOne.getDisplacementY());
+    GyroDZ.setDouble(_gyroOne.getDisplacementZ());
 
   }
 
