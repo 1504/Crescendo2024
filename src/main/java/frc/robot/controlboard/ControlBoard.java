@@ -22,4 +22,15 @@ public class ControlBoard {
     private ControlBoard() {
     }
 
+    public double getX() {
+        return _joystickOne.getX();
+    }
+
+    public double getY() {
+        return _joystickOne.getY();
+    }
+
+    public Joystick getJoystick() {
+        return _joystickOne;
+    }
 }
