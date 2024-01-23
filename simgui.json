@@ -2,7 +2,8 @@
   "NTProvider": {
     "types": {
       "/FMSInfo": "FMSInfo",
-      "/SmartDashboard/Drive": "DifferentialDrive"
+      "/SmartDashboard/Drive": "DifferentialDrive",
+      "/SmartDashboard/Gyro": "Gyro"
     }
   },
   "NetworkTables Info": {
