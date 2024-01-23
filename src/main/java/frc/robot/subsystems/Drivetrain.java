@@ -134,7 +134,7 @@ public class Drivetrain extends SubsystemBase {
   public DifferentialDriveWheelPositions getCurrentState() {
     return new DifferentialDriveWheelPositions(
       _left_Encoder.getVelocity() / BuildConstants.GR * BuildConstants.WHEEL_CIRCUMFERENCE,
-      _right_Encoder.getVelocity() / BuildConstants.GR * BuildConstants.WHEEL_CIRCUMFERENCE,
+      _right_Encoder.getVelocity() / BuildConstants.GR * BuildConstants.WHEEL_CIRCUMFERENCE
     );
   }
 
