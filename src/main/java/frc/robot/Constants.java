@@ -43,6 +43,14 @@ public final class Constants {
     public static final double BOTTOM_I = 0;
     public static final double BOTTOM_D = 0;
   }
+  public static final class BuildConstants {
+    public static final double WHEEL_TO_CENTER_SIDE_INCHES = 0; //NEED TO MEASURE
+    public static final double WHEEL_TO_CENTER_FRONT_INCHES = 0; //NEED TO MEAUSRE
+    public static final double INCHES_TO_METERS = 0;
+    public static final double GR = 0;
+    public static final double WHEEL_CIRCUMFERENCE = 0 * Math.PI;
+    public static final double INCHES_PER_REVOLUTION = WHEEL_CIRCUMFERENCE / GR;
+  }
 
   public static class LimelightConstants {
 
