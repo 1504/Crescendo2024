@@ -8,6 +8,7 @@ import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.commands.Tank;
 import frc.robot.commands.Turtles;
+import frc.robot.controlboard.ControlBoard;
 // import frc.robot.commands.Turtle2;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Limelight;
@@ -16,6 +17,7 @@ import frc.robot.subsystems.ShuffleboardManager;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.ResourceBundle.Control;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.commands.PathPlannerAuto;
@@ -46,7 +48,8 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final Drivetrain m_drive = Drivetrain.getInstance();
   public final ShuffleboardManager m_ShuffleboardManager = ShuffleboardManager.getInstance();
-  private final Joystick _joystickOne = m_ShuffleboardManager.getJoystick(); //Controller for translation
+  private final ControlBoard m_ControlBoard = ControlBoard.getInstance();
+  private final Joystick _joystickOne = m_ControlBoard.getJoystick();
   private final Limelight m_limelight= Limelight.getInstance();
 
   public final ShuffleboardManager m_shuffleboardManager = ShuffleboardManager.getInstance();
@@ -88,7 +91,7 @@ public class RobotContainer {
 
     for (int i = 0; i < m_testPaths.size(); i++) {
       if (i == 0) {
-        m_autoChooser.setDefaultOption(AutoConstants.PATHS[i], autoBuilder(m_testPaths.get(i)));
+        m_autoChooser.setDefaultOption(AutoConstants.PATHS[i], autoBuilder.fullAuto(m_testPaths.get(i)));
       } else {
         m_autoChooser.addOption(AutoConstants.PATHS[i], autoBuilder.fullAuto(m_testPaths.get(i)));
       }
@@ -99,7 +102,7 @@ public class RobotContainer {
         .withSize(3, 1);
   }
 
-  """
+ /* """
   public RamseteCommand getCommandFromTraj(PathPlannerTrajectory traj) {
     RamseteCommand ramseteCommand =
         new RamseteCommand(
@@ -119,7 +122,7 @@ public class RobotContainer {
             m_drive);
     
   }
-  """;
+  """; */
 
 
 
@@ -134,8 +137,7 @@ public class RobotContainer {
    */
   private void configureBindings() {
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
-    m_drive.setDefaultCommand(new Tank(() -> _joystickOne.getX(),() -> _joystickOne.getY()));
-
+    m_drive.setDefaultCommand(new Tank(() -> m_ControlBoard.getX(),() -> m_ControlBoard.getY()));
   }
 
   private void initAuton() {

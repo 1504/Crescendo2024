@@ -26,7 +26,6 @@ public class ShuffleboardManager extends SubsystemBase {
 
   private final Drivetrain _drive = Drivetrain.getInstance();
   private final Limelight _limelight = Limelight.getInstance();
-  private final Joystick _joystickOne = new Joystick(IOConstants.JOYSTICK_ONE);
   private final Gyroscope _gyroOne = Gyroscope.getInstance();
   
   ShuffleboardTab telemetry;

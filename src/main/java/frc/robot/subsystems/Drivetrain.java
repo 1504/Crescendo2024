@@ -10,7 +10,6 @@ import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -36,8 +35,6 @@ public class Drivetrain extends SubsystemBase {
   
   private final RelativeEncoder _left_Encoder;
   private final RelativeEncoder _right_Encoder; 
-
-  private boolean _turtle = false;
 
   private final DifferentialDrive _drive;
   private final Limelight _limelight = Limelight.getInstance();
@@ -83,19 +80,9 @@ public class Drivetrain extends SubsystemBase {
   // tank drive method
   public void driveTank(double xSpeed, double ySpeed) {
     // deadband the inputs
-    if (!_turtle) {
       double ySpd = Math.abs(ySpeed) < DriveConstants.DEADBAND ? 0 : Math.pow(ySpeed, 1);
       double xSpd = Math.abs(xSpeed) < DriveConstants.DEADBAND ? 0 : Math.pow(xSpeed, 1);
       _drive.arcadeDrive(xSpd, ySpd);
-    } else {
-      double ySpd = Math.abs(ySpeed) < DriveConstants.DEADBAND ? 0 : ySpeed / 0.5;
-      double xSpd = Math.abs(xSpeed) < DriveConstants.DEADBAND ? 0 : xSpeed / 0.5;
-      _drive.arcadeDrive(xSpd, ySpd);
-    }
-  }
-
-  public void toggleTurtle() {
-    _turtle = !_turtle;
   }
 
   public void resetEncoders() {
