@@ -5,6 +5,7 @@
 package frc.robot;
 
 import frc.robot.Constants.AutoConstants;
+import frc.robot.Constants.BuildConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.commands.Tank;
 import frc.robot.commands.Turtles;
@@ -18,6 +19,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.ResourceBundle.Control;
+import java.util.function.BiConsumer;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.commands.PathPlannerAuto;
@@ -29,6 +31,8 @@ import edu.wpi.first.math.controller.RamseteController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.math.trajectory.TrajectoryConfig;
+import edu.wpi.first.math.trajectory.constraint.DifferentialDriveVoltageConstraint;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -102,27 +106,46 @@ public class RobotContainer {
         .withSize(3, 1);
   }
 
- /* """
+
   public RamseteCommand getCommandFromTraj(PathPlannerTrajectory traj) {
+    var autoVoltageConstraint =
+        new DifferentialDriveVoltageConstraint(
+            new SimpleMotorFeedforward(
+                DriveConstants.ksVolts,
+                DriveConstants.kvVoltSecondsPerMeter,
+                DriveConstants.kaVoltSecondsSquaredPerMeter),
+            BuildConstants._KINEMATICS,
+            10);
+
+    TrajectoryConfig config =
+        new TrajectoryConfig(
+                AutoConstants.AUTO_MAX_SPEED_METERS_PER_SECOND,
+                AutoConstants.AUTO_MAX_ACCEL_METERS_PER_SECOND_SQUARED)
+            // Add kinematics to ensure max speed is actually obeyed
+            .setKinematics(BuildConstants._KINEMATICS)
+            // Apply the voltage constraint
+            .addConstraint(autoVoltageConstraint);
+
+
+          /*** 
     RamseteCommand ramseteCommand =
         new RamseteCommand(
             traj,
-            //m_drive.getPose(),
+            m_drive::getPose,
             new RamseteController(AutoConstants.kRamseteB, AutoConstants.kRamseteZeta),
             new SimpleMotorFeedforward(
                 DriveConstants.ksVolts,
                 DriveConstants.kvVoltSecondsPerMeter,
                 DriveConstants.kaVoltSecondsSquaredPerMeter),
-            DriveConstants.kDriveKinematics,
+            BuildConstants._KINEMATICS,
             m_drive::getWheelSpeeds,
             new PIDController(DriveConstants.kPDriveVel, 0, 0),
             new PIDController(DriveConstants.kPDriveVel, 0, 0),
-            // RamseteCommand passes volts to the callback
             m_drive::tankDriveVolts,
             m_drive);
-    
   }
-  """; */
+  */
+
 
 
 

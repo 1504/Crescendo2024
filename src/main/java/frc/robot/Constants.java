@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
+
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
  * constants. This class should not be used for any other purpose. All constants should be declared
@@ -20,7 +22,12 @@ public final class Constants {
     public static final int RIGHT2 = 3;
     public static final double DEADBAND = 0.03;
 
+    //voltage constraints
+    public static final double ksVolts = 0;
+    public static final double kvVoltSecondsPerMeter = 0;
+    public static final double kaVoltSecondsSquaredPerMeter = 0;
   }
+
 
   public final class IOConstants {
     public static final int JOYSTICK_ONE = 0;
@@ -43,6 +50,7 @@ public final class Constants {
     public static final double BOTTOM_I = 0;
     public static final double BOTTOM_D = 0;
   }
+
   public static final class BuildConstants {
     public static final double WHEEL_TO_CENTER_SIDE_INCHES = 0; //NEED TO MEASURE
     public static final double WHEEL_TO_CENTER_FRONT_INCHES = 0; //NEED TO MEAUSRE
@@ -50,6 +58,12 @@ public final class Constants {
     public static final double GR = 0;
     public static final double WHEEL_CIRCUMFERENCE = 0 * Math.PI;
     public static final double INCHES_PER_REVOLUTION = WHEEL_CIRCUMFERENCE / GR;
+
+    ///track width of the robot. This represents the distance between the two sets of wheels on a differential drive.
+    //TODO: our robot does not have track width 0
+
+    public static final DifferentialDriveKinematics _KINEMATICS = new DifferentialDriveKinematics(0);
+
   }
 
   public static class LimelightConstants {
@@ -75,6 +89,10 @@ public final class Constants {
     public static final double AUTO_MAX_SPEED_METERS_PER_SECOND = 1;
     public static final double AUTO_MAX_ACCEL_METERS_PER_SECOND_SQUARED = 3.0;
     public static final double AUTO_MAX_ROTAT_RADIANS_PER_SECOND= 3.1415/4;
+
+    public static final double kRamseteB = 2.0;
+    public static final double kRamseteZeta = 0.7;
+
     
   }
 }

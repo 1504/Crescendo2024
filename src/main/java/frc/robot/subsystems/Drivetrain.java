@@ -6,6 +6,9 @@ package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
+
+import java.util.function.Supplier;
+
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -130,7 +133,16 @@ public class Drivetrain extends SubsystemBase {
   public double getRightVelocity() {
     return _right_Encoder.getVelocity();
   }
-
+  
+  /**
+   * Returns the current wheel speeds of the robot.
+   *
+   * @return The current wheel speeds.
+   */
+  public DifferentialDriveWheelSpeeds getWheelSpeeds() {
+    return new DifferentialDriveWheelSpeeds(_left_Encoder.getVelocity(), _right_Encoder.getVelocity());
+  }
+  
   public DifferentialDriveWheelPositions getCurrentState() {
     return new DifferentialDriveWheelPositions(
       _left_Encoder.getVelocity() / BuildConstants.GR * BuildConstants.WHEEL_CIRCUMFERENCE,
@@ -138,11 +150,21 @@ public class Drivetrain extends SubsystemBase {
     );
   }
 
+  public void tankDriveVolts(double leftVolts, double rightVolts) {
+    _left_motor1.setVoltage(leftVolts);
+    _right_motor1.setVoltage(rightVolts);
+    _drive.feed();
+  }
+
   public Pose2d updateOdometry() {
     return m_odometry.update(m_gyro.getRotation2d(), getCurrentState());
   }
   public void resetOdometry(Pose2d pose) {
     m_odometry.resetPosition(m_gyro.getRotation2d(), getCurrentState(), pose);
+  }
+
+  public Pose2d getPose() {
+    return m_odometry.getPoseMeters();
   }
 
   @Override
