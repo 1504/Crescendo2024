@@ -7,15 +7,22 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkLowLevel.MotorType;
-
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.networktables.GenericEntry;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-import edu.wpi.first.wpilibj.interfaces.Gyro;
+//import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DriveConstants;
+import frc.robot.Constants.BuildConstants;
+import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
+import edu.wpi.first.math.kinematics.DifferentialDriveWheelPositions;
+import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 
 public class Drivetrain extends SubsystemBase {
 
@@ -34,8 +41,19 @@ public class Drivetrain extends SubsystemBase {
   private final CANSparkMax _right_motor1;
   private final CANSparkMax _right_motor2;
   
+  //encoders
   private final RelativeEncoder _left_Encoder;
   private final RelativeEncoder _right_Encoder; 
+
+  //odometry stuff
+  private final DifferentialDriveOdometry m_odometry;
+  private final Gyroscope m_gyro = Gyroscope.getInstance();
+
+  private Pose2d _robot_position;
+
+  ShuffleboardTab o_tab = Shuffleboard.getTab("Odometry");
+  GenericEntry position;
+  //odometry stuff ends
 
   private boolean _turtle = false;
 
@@ -69,6 +87,18 @@ public class Drivetrain extends SubsystemBase {
     _drive = new DifferentialDrive(_left_motor1,_right_motor1);
 
     SmartDashboard.putData("Drive", _drive); 
+
+    //odometry stuff starts
+    m_odometry = new DifferentialDriveOdometry(m_gyro.getRotation2d(),
+  _left_Encoder.getPosition(), _right_Encoder.getPosition(),
+  new Pose2d(0, 0, new Rotation2d()));
+
+    m_gyro.reset();
+
+    position = o_tab.add("Position", _robot_position)
+    .withPosition(0, 0)
+    .getEntry();
+    //odometry stuff ends
 
     Pose2d m_pose;
     if( false) {
@@ -113,12 +143,23 @@ public class Drivetrain extends SubsystemBase {
     return _right_Encoder.getVelocity();
   }
 
-  //public Pose2d getPose() {
-    //return _odometry.getPoseMeters();
-  //}
+  public DifferentialDriveWheelPositions getCurrentState() {
+    return new DifferentialDriveWheelPositions(
+      _left_Encoder.getVelocity() / BuildConstants.GR * BuildConstants.WHEEL_CIRCUMFERENCE,
+      _right_Encoder.getVelocity() / BuildConstants.GR * BuildConstants.WHEEL_CIRCUMFERENCE,
+    );
+  }
+
+  public Pose2d updateOdometry() {
+    return m_odometry.update(m_gyro.getRotation2d(), getCurrentState());
+  }
+  public void resetOdometry(Pose2d pose) {
+    m_odometry.resetPosition(m_gyro.getRotation2d(), getCurrentState(), pose);
+  }
 
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
+    _robot_position = updateOdometry();
+    position.setValue(_robot_position);
   }
 }
