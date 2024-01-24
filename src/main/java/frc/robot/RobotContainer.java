@@ -94,7 +94,7 @@ public class RobotContainer {
       if (i == 0) {
         m_autoChooser.setDefaultOption(AutoConstants.PATHS[i], getCommandFromPath(m_testPaths.get(i)));
       } else {
-        //m_autoChooser.addOption(AutoConstants.PATHS[i], autoBuilder.fullAuto(m_testPaths.get(i)));
+        m_autoChooser.addOption(AutoConstants.PATHS[i], getCommandFromPath(m_testPaths.get(i)));
       }
     }
 
@@ -102,7 +102,7 @@ public class RobotContainer {
         .withPosition(0, 1)
         .withSize(3, 1);
   }
-
+ 
    public SequentialCommandGroup getCommandFromPath(List<PathPlannerPath> paths) {    
     FollowPathRamsete r = new FollowPathRamsete(
               paths.get(0),
@@ -117,7 +117,7 @@ public class RobotContainer {
     SequentialCommandGroup commands = new SequentialCommandGroup(r);
       
     for(int i = 1; i < paths.size(); i++) {
-      r.andThen(
+      commands.addCommands(
           new FollowPathRamsete(
               paths.get(i),
               m_drive::getPose,
@@ -160,5 +160,6 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
     return m_autoChooser.getSelected();
+    //return null;
   }
 }

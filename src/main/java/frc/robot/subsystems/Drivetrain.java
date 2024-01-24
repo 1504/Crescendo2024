@@ -55,8 +55,8 @@ public class Drivetrain extends SubsystemBase {
 
   private Pose2d _robot_position;
 
-  ShuffleboardTab o_tab = Shuffleboard.getTab("Odometry");
-  GenericEntry position;
+
+
   //odometry stuff ends
 
 
@@ -98,9 +98,6 @@ public class Drivetrain extends SubsystemBase {
 
     m_gyro.reset();
 
-    position = o_tab.add("Position", _robot_position)
-    .withPosition(0, 0)
-    .getEntry();
     //odometry stuff ends
 
     Pose2d m_pose;
@@ -186,6 +183,5 @@ public class Drivetrain extends SubsystemBase {
   @Override
   public void periodic() {
     _robot_position = updateOdometry();
-    position.setValue(_robot_position);
   }
 }
