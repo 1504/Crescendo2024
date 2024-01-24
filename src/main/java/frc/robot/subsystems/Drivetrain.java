@@ -7,6 +7,7 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 
+import java.util.function.BiConsumer;
 import java.util.function.Supplier;
 
 import com.revrobotics.CANSparkLowLevel.MotorType;
@@ -21,6 +22,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.BuildConstants;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelPositions;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
@@ -139,10 +141,7 @@ public class Drivetrain extends SubsystemBase {
    *
    * @return The current wheel speeds.
    */
-  public DifferentialDriveWheelSpeeds getWheelSpeeds() {
-    return new DifferentialDriveWheelSpeeds(_left_Encoder.getVelocity(), _right_Encoder.getVelocity());
-  }
-  
+
   public DifferentialDriveWheelPositions getCurrentState() {
     return new DifferentialDriveWheelPositions(
       _left_Encoder.getVelocity() / BuildConstants.GR * BuildConstants.WHEEL_CIRCUMFERENCE,
@@ -150,11 +149,28 @@ public class Drivetrain extends SubsystemBase {
     );
   }
 
-  public void tankDriveVolts(double leftVolts, double rightVolts) {
-    _left_motor1.setVoltage(leftVolts);
-    _right_motor1.setVoltage(rightVolts);
-    _drive.feed();
+  public BiConsumer<Double, Double> tankDriveVolts() {
+    return (leftVolts, rightVolts) -> {
+        _left_motor1.setVoltage(leftVolts);
+        _right_motor1.setVoltage(rightVolts);
+        _drive.feed();
+    };
+}
+
+  public ChassisSpeeds getSpeeds() {
+    return new ChassisSpeeds(_left_Encoder.getVelocity(), _right_Encoder.getVelocity(), m_gyro.getRotation2d().getRadians());
   }
+
+  public void consumerSpeeds(ChassisSpeeds speeds) {
+    // Your consumer logic here
+    // For example, you can print the ChassisSpeeds
+    System.out.println(speeds);
+}
+
+  public Boolean flipPath() {
+    return false;
+  }
+
 
   public Pose2d updateOdometry() {
     return m_odometry.update(m_gyro.getRotation2d(), getCurrentState());

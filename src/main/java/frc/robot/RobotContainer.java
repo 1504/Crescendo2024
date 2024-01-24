@@ -22,15 +22,20 @@ import java.util.ResourceBundle.Control;
 import java.util.function.BiConsumer;
 
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.commands.FollowPathRamsete;
 import com.pathplanner.lib.commands.PathPlannerAuto;
+import com.pathplanner.lib.controllers.PPRamseteController;
+import com.pathplanner.lib.controllers.PathFollowingController;
 import com.pathplanner.lib.path.PathPlannerPath;
 import com.pathplanner.lib.path.PathPlannerTrajectory;
+import com.pathplanner.lib.util.ReplanningConfig;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.RamseteController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.constraint.DifferentialDriveVoltageConstraint;
 import edu.wpi.first.wpilibj.Joystick;
@@ -38,6 +43,7 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -63,25 +69,16 @@ public class RobotContainer {
 
   private final AutoBuilder autoBuilder;
 
-  List<PathPlannerTrajectory> trajects;
-  private final List<List<PathPlannerTrajectory>> m_testPaths = new ArrayList<>();
+  private final List<List<PathPlannerPath>> m_testPaths = new ArrayList<>();
   {
     for (String path : AutoConstants.PATHS) {
       List<PathPlannerPath> pathes = PathPlannerAuto.getPathGroupFromAutoFile(path);
       ChassisSpeeds max_speeds = new ChassisSpeeds(AutoConstants.AUTO_MAX_SPEED_METERS_PER_SECOND, AutoConstants.AUTO_MAX_SPEED_METERS_PER_SECOND, AutoConstants.AUTO_MAX_ROTAT_RADIANS_PER_SECOND);
-      PathPlannerTrajectory traj;
+
       Rotation2d starting_rotation = new Rotation2d(0);
-
-      for(int i=0; i < pathes.size(); i++ ) {
-        traj = new PathPlannerTrajectory(pathes.get(i), max_speeds,starting_rotation );
-        trajects.add(traj);
-      } 
-
-      m_testPaths.add(trajects);
-      trajects.clear();
+      m_testPaths.add(pathes);
     }
   }
-  
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -95,9 +92,9 @@ public class RobotContainer {
 
     for (int i = 0; i < m_testPaths.size(); i++) {
       if (i == 0) {
-        m_autoChooser.setDefaultOption(AutoConstants.PATHS[i], autoBuilder.fullAuto(m_testPaths.get(i)));
+        m_autoChooser.setDefaultOption(AutoConstants.PATHS[i], getCommandFromPath(m_testPaths.get(i)));
       } else {
-        m_autoChooser.addOption(AutoConstants.PATHS[i], autoBuilder.fullAuto(m_testPaths.get(i)));
+        //m_autoChooser.addOption(AutoConstants.PATHS[i], autoBuilder.fullAuto(m_testPaths.get(i)));
       }
     }
 
@@ -106,47 +103,35 @@ public class RobotContainer {
         .withSize(3, 1);
   }
 
+   public SequentialCommandGroup getCommandFromPath(List<PathPlannerPath> paths) {    
+    FollowPathRamsete r = new FollowPathRamsete(
+              paths.get(0),
+              m_drive::getPose,
+              m_drive::getSpeeds,
+              m_drive::consumerSpeeds,
+              new ReplanningConfig(),
+              m_drive::flipPath,
+              m_drive
+    );
 
-  public RamseteCommand getCommandFromTraj(PathPlannerTrajectory traj) {
-    var autoVoltageConstraint =
-        new DifferentialDriveVoltageConstraint(
-            new SimpleMotorFeedforward(
-                DriveConstants.ksVolts,
-                DriveConstants.kvVoltSecondsPerMeter,
-                DriveConstants.kaVoltSecondsSquaredPerMeter),
-            BuildConstants._KINEMATICS,
-            10);
+    SequentialCommandGroup commands = new SequentialCommandGroup(r);
+      
+    for(int i = 1; i < paths.size(); i++) {
+      r.andThen(
+          new FollowPathRamsete(
+              paths.get(i),
+              m_drive::getPose,
+              m_drive::getSpeeds,
+              m_drive::consumerSpeeds,
+              new ReplanningConfig(),
+              m_drive::flipPath,
+              m_drive
+          )
+      );
+    }
 
-    TrajectoryConfig config =
-        new TrajectoryConfig(
-                AutoConstants.AUTO_MAX_SPEED_METERS_PER_SECOND,
-                AutoConstants.AUTO_MAX_ACCEL_METERS_PER_SECOND_SQUARED)
-            // Add kinematics to ensure max speed is actually obeyed
-            .setKinematics(BuildConstants._KINEMATICS)
-            // Apply the voltage constraint
-            .addConstraint(autoVoltageConstraint);
-
-
-          /*** 
-    RamseteCommand ramseteCommand =
-        new RamseteCommand(
-            traj,
-            m_drive::getPose,
-            new RamseteController(AutoConstants.kRamseteB, AutoConstants.kRamseteZeta),
-            new SimpleMotorFeedforward(
-                DriveConstants.ksVolts,
-                DriveConstants.kvVoltSecondsPerMeter,
-                DriveConstants.kaVoltSecondsSquaredPerMeter),
-            BuildConstants._KINEMATICS,
-            m_drive::getWheelSpeeds,
-            new PIDController(DriveConstants.kPDriveVel, 0, 0),
-            new PIDController(DriveConstants.kPDriveVel, 0, 0),
-            m_drive::tankDriveVolts,
-            m_drive);
+    return commands;
   }
-  */
-
-
 
 
   /**
