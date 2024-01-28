@@ -5,8 +5,6 @@
 package frc.robot;
 
 import frc.robot.Constants.AutoConstants;
-import frc.robot.Constants.BuildConstants;
-import frc.robot.Constants.DriveConstants;
 import frc.robot.commands.Tank;
 import frc.robot.commands.Turtles;
 import frc.robot.controlboard.ControlBoard;
@@ -18,26 +16,15 @@ import frc.robot.subsystems.ShuffleboardManager;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.ResourceBundle.Control;
-import java.util.function.BiConsumer;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.commands.FollowPathRamsete;
 import com.pathplanner.lib.commands.PathPlannerAuto;
-import com.pathplanner.lib.controllers.PPRamseteController;
-import com.pathplanner.lib.controllers.PathFollowingController;
 import com.pathplanner.lib.path.PathPlannerPath;
-import com.pathplanner.lib.path.PathPlannerTrajectory;
 import com.pathplanner.lib.util.ReplanningConfig;
 
-import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.controller.RamseteController;
-import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
-import edu.wpi.first.math.trajectory.Trajectory;
-import edu.wpi.first.math.trajectory.TrajectoryConfig;
-import edu.wpi.first.math.trajectory.constraint.DifferentialDriveVoltageConstraint;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -45,7 +32,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 /**
@@ -94,7 +80,7 @@ public class RobotContainer {
       if (i == 0) {
         m_autoChooser.setDefaultOption(AutoConstants.PATHS[i], getCommandFromPath(m_testPaths.get(i)));
       } else {
-        //m_autoChooser.addOption(AutoConstants.PATHS[i], autoBuilder.fullAuto(m_testPaths.get(i)));
+        m_autoChooser.addOption(AutoConstants.PATHS[i], getCommandFromPath(m_testPaths.get(i)));
       }
     }
 
@@ -102,7 +88,7 @@ public class RobotContainer {
         .withPosition(0, 1)
         .withSize(3, 1);
   }
-
+ 
    public SequentialCommandGroup getCommandFromPath(List<PathPlannerPath> paths) {    
     FollowPathRamsete r = new FollowPathRamsete(
               paths.get(0),
@@ -117,7 +103,7 @@ public class RobotContainer {
     SequentialCommandGroup commands = new SequentialCommandGroup(r);
       
     for(int i = 1; i < paths.size(); i++) {
-      r.andThen(
+      commands.addCommands(
           new FollowPathRamsete(
               paths.get(i),
               m_drive::getPose,
@@ -160,5 +146,6 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
     return m_autoChooser.getSelected();
+    //return null;
   }
 }
