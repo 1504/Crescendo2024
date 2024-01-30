@@ -52,11 +52,13 @@ public final class Constants {
   }
 
   public static final class BuildConstants {
-    public static final double WHEEL_TO_CENTER_SIDE_INCHES = 0; //NEED TO MEASURE
-    public static final double WHEEL_TO_CENTER_FRONT_INCHES = 0; //NEED TO MEAUSRE
-    public static final double INCHES_TO_METERS = 0;
-    public static final double GR = 0;
-    public static final double WHEEL_CIRCUMFERENCE = 0 * Math.PI;
+
+    public static final double INCHES_TO_METERS = 0.0254;
+    public static final double WHEEL_TO_CENTER_SIDE_INCHES = 0.26 / INCHES_TO_METERS; //NEED TO MEASURE
+    public static final double WHEEL_TO_CENTER_FRONT_INCHES = 0.3175 / INCHES_TO_METERS;
+  
+    public static final double GR = 10;
+    public static final double WHEEL_CIRCUMFERENCE = 6 * Math.PI;
     public static final double INCHES_PER_REVOLUTION = WHEEL_CIRCUMFERENCE / GR;
 
     ///track width of the robot. This represents the distance between the two sets of wheels on a differential drive.
