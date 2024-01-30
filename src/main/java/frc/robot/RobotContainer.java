@@ -71,12 +71,11 @@ public class RobotContainer {
     // Configure the trigger bindings
     configureBindings();
 
-    
     Shuffleboard.getTab("Auto").add(m_autoChooser);
     
     autoBuilder = new AutoBuilder();
 
-    for (int i = 0; i < m_testPaths.size(); i++) {
+    for (int i = 0; i <m_testPaths.size(); i++) {
       if (i == 0) {
         m_autoChooser.setDefaultOption(AutoConstants.PATHS[i], getCommandFromPath(m_testPaths.get(i)));
       } else {
@@ -89,7 +88,9 @@ public class RobotContainer {
         .withSize(3, 1);
   }
  
-   public SequentialCommandGroup getCommandFromPath(List<PathPlannerPath> paths) {    
+   public SequentialCommandGroup getCommandFromPath(List<PathPlannerPath> paths) {
+    System.out.println(paths.size());
+    System.out.println(paths);
     FollowPathRamsete r = new FollowPathRamsete(
               paths.get(0),
               m_drive::getPose,
@@ -102,7 +103,7 @@ public class RobotContainer {
 
     SequentialCommandGroup commands = new SequentialCommandGroup(r);
       
-    for(int i = 1; i < paths.size(); i++) {
+    for(int i = 0; i < paths.size(); i++) {
       commands.addCommands(
           new FollowPathRamsete(
               paths.get(i),
