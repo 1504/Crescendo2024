@@ -91,9 +91,9 @@ public class RobotContainer {
   
     for (int i = 0; i <m_testPaths.size(); i++) {
       if (i == 0) {
-        m_autoChooser.setDefaultOption(AutoConstants.PATHS[i], m_autoBuilder.buildAuto(AutoConstants.PATHS[i]));
+        m_autoChooser.setDefaultOption(AutoConstants.PATHS[i], AutoBuilder.buildAuto(AutoConstants.PATHS[i]));
       } else {
-        m_autoChooser.addOption(AutoConstants.PATHS[i], m_autoBuilder.buildAuto(AutoConstants.PATHS[i]));
+        m_autoChooser.addOption(AutoConstants.PATHS[i], AutoBuilder.buildAuto(AutoConstants.PATHS[i]));
       }
     }
   }
@@ -155,6 +155,8 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
+    System.err.println(" ----------------------------------------");
+    System.err.println(m_autoChooser.getSelected());
     return m_autoChooser.getSelected();
     //return null;
   }
