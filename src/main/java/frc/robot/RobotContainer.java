@@ -26,6 +26,7 @@ import com.pathplanner.lib.util.ReplanningConfig;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -53,12 +54,13 @@ public class RobotContainer {
   public static final HashMap<String, Command> m_eventMap = new HashMap<>();
   private final SendableChooser<Command> m_autoChooser = new SendableChooser<>();
 
-  private final AutoBuilder autoBuilder;
+  private final AutoBuilder m_autoBuilder;
 
   private final List<List<PathPlannerPath>> m_testPaths = new ArrayList<>();
   {
     for (String path : AutoConstants.PATHS) {
       List<PathPlannerPath> pathes = PathPlannerAuto.getPathGroupFromAutoFile(path);
+      System.out.println(pathes);
       ChassisSpeeds max_speeds = new ChassisSpeeds(AutoConstants.AUTO_MAX_SPEED_METERS_PER_SECOND, AutoConstants.AUTO_MAX_SPEED_METERS_PER_SECOND, AutoConstants.AUTO_MAX_ROTAT_RADIANS_PER_SECOND);
 
       Rotation2d starting_rotation = new Rotation2d(0);
@@ -71,21 +73,36 @@ public class RobotContainer {
     // Configure the trigger bindings
     configureBindings();
 
-    Shuffleboard.getTab("Auto").add(m_autoChooser);
-    
-    autoBuilder = new AutoBuilder();
+    m_autoBuilder = new AutoBuilder();
 
+    AutoBuilder.configureRamsete(
+      m_drive::getPose, 
+      m_drive::resetOdometry, 
+      m_drive::getSpeeds, 
+      m_drive::consumerSpeeds, 
+      new ReplanningConfig(), 
+      m_drive::flipPath, 
+      m_drive);
+
+    Shuffleboard.getTab("Pregame").add("Auton Path", m_autoChooser)
+      .withPosition(0, 1)
+      .withSize(3, 1)
+      .withWidget(BuiltInWidgets.kComboBoxChooser);
+  
+
+    System.err.println(m_testPaths.size());
     for (int i = 0; i <m_testPaths.size(); i++) {
       if (i == 0) {
         m_autoChooser.setDefaultOption(AutoConstants.PATHS[i], getCommandFromPath(m_testPaths.get(i)));
+        System.err.println("ADDEDEDDEDEDEDED ONNNNEEEEEEEEEEEEEEE");
       } else {
         m_autoChooser.addOption(AutoConstants.PATHS[i], getCommandFromPath(m_testPaths.get(i)));
       }
     }
+    System.err.println("HEREEREREREERE");
+    System.err.println(m_autoChooser.toString());
 
-    Shuffleboard.getTab("Pregame").add("Auton Path", m_autoChooser)
-        .withPosition(0, 1)
-        .withSize(3, 1);
+  
   }
  
    public SequentialCommandGroup getCommandFromPath(List<PathPlannerPath> paths) {

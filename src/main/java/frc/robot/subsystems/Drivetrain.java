@@ -54,8 +54,6 @@ public class Drivetrain extends SubsystemBase {
 
   private Pose2d _robot_position;
 
-
-
   //odometry stuff ends
 
 
@@ -178,7 +176,7 @@ public class Drivetrain extends SubsystemBase {
   public Pose2d getPose() {
     return m_odometry.getPoseMeters();
   }
-
+  
   @Override
   public void periodic() {
     _robot_position = updateOdometry();
