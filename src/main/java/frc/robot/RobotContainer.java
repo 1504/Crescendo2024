@@ -89,25 +89,17 @@ public class RobotContainer {
       .withSize(3, 1)
       .withWidget(BuiltInWidgets.kComboBoxChooser);
   
-
-    System.err.println(m_testPaths.size());
     for (int i = 0; i <m_testPaths.size(); i++) {
       if (i == 0) {
-        m_autoChooser.setDefaultOption(AutoConstants.PATHS[i], getCommandFromPath(m_testPaths.get(i)));
-        System.err.println("ADDEDEDDEDEDEDED ONNNNEEEEEEEEEEEEEEE");
+        m_autoChooser.setDefaultOption(AutoConstants.PATHS[i], m_autoBuilder.buildAuto(AutoConstants.PATHS[i]));
       } else {
-        m_autoChooser.addOption(AutoConstants.PATHS[i], getCommandFromPath(m_testPaths.get(i)));
+        m_autoChooser.addOption(AutoConstants.PATHS[i], m_autoBuilder.buildAuto(AutoConstants.PATHS[i]));
       }
     }
-    System.err.println("HEREEREREREERE");
-    System.err.println(m_autoChooser.toString());
-
-  
   }
  
    public SequentialCommandGroup getCommandFromPath(List<PathPlannerPath> paths) {
-    System.out.println(paths.size());
-    System.out.println(paths);
+
     FollowPathRamsete r = new FollowPathRamsete(
               paths.get(0),
               m_drive::getPose,

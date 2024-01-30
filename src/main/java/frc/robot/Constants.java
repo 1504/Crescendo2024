@@ -23,9 +23,9 @@ public final class Constants {
     public static final double DEADBAND = 0.03;
 
     //voltage constraints
-    public static final double ksVolts = 0;
-    public static final double kvVoltSecondsPerMeter = 0;
-    public static final double kaVoltSecondsSquaredPerMeter = 0;
+    public static final double ksVolts = 1;
+    public static final double kvVoltSecondsPerMeter = 1;
+    public static final double kaVoltSecondsSquaredPerMeter = 1;
   }
 
 
