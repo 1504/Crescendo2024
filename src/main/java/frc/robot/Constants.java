@@ -16,10 +16,10 @@ import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
  */
 public final class Constants {
   public static class DriveConstants {
-    public static final int LEFT1 = 2;
+    public static final int LEFT1 = 3;
     public static final int LEFT2 = 4;
     public static final int RIGHT1 = 1;
-    public static final int RIGHT2 = 3;
+    public static final int RIGHT2 = 1;
     public static final double DEADBAND = 0.03;
 
     //voltage constraints
