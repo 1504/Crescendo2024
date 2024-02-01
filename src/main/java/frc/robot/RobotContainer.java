@@ -29,6 +29,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -52,81 +53,17 @@ public class RobotContainer {
   public final ShuffleboardManager m_shuffleboardManager = ShuffleboardManager.getInstance();
 
   public static final HashMap<String, Command> m_eventMap = new HashMap<>();
-  private final SendableChooser<Command> m_autoChooser = new SendableChooser<>();
+  private final SendableChooser<Command> m_autoChooser;
 
-  private final AutoBuilder m_autoBuilder;
-
-  private final List<List<PathPlannerPath>> m_testPaths = new ArrayList<>();
-  {
-    for (String path : AutoConstants.PATHS) {
-      List<PathPlannerPath> pathes = PathPlannerAuto.getPathGroupFromAutoFile(path);
-      System.out.println(pathes);
-      ChassisSpeeds max_speeds = new ChassisSpeeds(AutoConstants.AUTO_MAX_SPEED_METERS_PER_SECOND, AutoConstants.AUTO_MAX_SPEED_METERS_PER_SECOND, AutoConstants.AUTO_MAX_ROTAT_RADIANS_PER_SECOND);
-
-      Rotation2d starting_rotation = new Rotation2d(0);
-      m_testPaths.add(pathes);
-    }
-  }
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the trigger bindings
     configureBindings();
 
-    m_autoBuilder = new AutoBuilder();
-
-    AutoBuilder.configureRamsete(
-      m_drive::getPose, 
-      m_drive::resetOdometry, 
-      m_drive::getSpeeds, 
-      m_drive::consumerSpeeds, 
-      new ReplanningConfig(), 
-      m_drive::flipPath, 
-      m_drive);
-
-    Shuffleboard.getTab("Pregame").add("Auton Path", m_autoChooser)
-      .withPosition(0, 1)
-      .withSize(3, 1)
-      .withWidget(BuiltInWidgets.kComboBoxChooser);
-  
-    for (int i = 0; i <m_testPaths.size(); i++) {
-      if (i == 0) {
-        m_autoChooser.setDefaultOption(AutoConstants.PATHS[i], AutoBuilder.buildAuto(AutoConstants.PATHS[i]));
-      } else {
-        m_autoChooser.addOption(AutoConstants.PATHS[i], AutoBuilder.buildAuto(AutoConstants.PATHS[i]));
-      }
-    }
-  }
- 
-   public SequentialCommandGroup getCommandFromPath(List<PathPlannerPath> paths) {
-
-    FollowPathRamsete r = new FollowPathRamsete(
-              paths.get(0),
-              m_drive::getPose,
-              m_drive::getSpeeds,
-              m_drive::consumerSpeeds,
-              new ReplanningConfig(),
-              m_drive::flipPath,
-              m_drive
-    );
-
-    SequentialCommandGroup commands = new SequentialCommandGroup(r);
-      
-    for(int i = 0; i < paths.size(); i++) {
-      commands.addCommands(
-          new FollowPathRamsete(
-              paths.get(i),
-              m_drive::getPose,
-              m_drive::getSpeeds,
-              m_drive::consumerSpeeds,
-              new ReplanningConfig(),
-              m_drive::flipPath,
-              m_drive
-          )
-      );
-    }
-
-    return commands;
+    m_autoChooser = AutoBuilder.buildAutoChooser("b1_auto");
+    SmartDashboard.putData("Auto Chooser", m_autoChooser);
+    m_autoChooser.addOption("b1", new PathPlannerAuto("b1_auto"));
   }
 
 
@@ -141,7 +78,7 @@ public class RobotContainer {
    */
   private void configureBindings() {
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
-    m_drive.setDefaultCommand(new Tank(() -> m_ControlBoard.getX(),() -> m_ControlBoard.getY()));
+    m_drive.setDefaultCommand(new Tank(m_ControlBoard::getX, m_ControlBoard::getY));
   }
 
   private void initAuton() {

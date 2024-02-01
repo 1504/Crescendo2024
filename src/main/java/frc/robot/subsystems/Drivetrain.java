@@ -10,11 +10,14 @@ import com.revrobotics.RelativeEncoder;
 import java.util.function.BiConsumer;
 import java.util.function.Supplier;
 
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.util.ReplanningConfig;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
@@ -52,8 +55,6 @@ public class Drivetrain extends SubsystemBase {
   private final DifferentialDriveOdometry m_odometry;
   private final Gyroscope m_gyro = Gyroscope.getInstance();
 
-  private Pose2d _robot_position;
-
   //odometry stuff ends
 
 
@@ -64,7 +65,7 @@ public class Drivetrain extends SubsystemBase {
 
   ShuffleboardTab telemetry = Shuffleboard.getTab("Telemetry");
 
-
+  private final AutoBuilder m_autoBuilder;
 
   public Drivetrain() {
     // initializes tank motor controllers
@@ -105,6 +106,26 @@ public class Drivetrain extends SubsystemBase {
     else {
       m_pose = new Pose2d();
     }
+      m_autoBuilder = new AutoBuilder();
+
+  /*AutoBuilder.configureRamsete(
+    this::getPose, 
+    this::resetOdometry, 
+    this::getSpeeds, 
+    this::consumerSpeeds, 
+    new ReplanningConfig(), 
+    this::flipPath, 
+    this);
+*/
+ AutoBuilder.configureRamsete(
+            this::getPose, // Robot pose supplier
+            this::resetOdometry, // Method to reset odometry (will be called if your auto has a starting pose)
+            this::getSpeeds, // Current ChassisSpeeds supplier
+            this::consumerSpeeds, // Method that will drive the robot given ChassisSpeeds
+            new ReplanningConfig(), // Default path replanning config. See the API for the options here
+            this::flipPath,
+            this // Reference to this subsystem to set requirements
+    );
   }
 
   // tank drive method
@@ -179,6 +200,6 @@ public class Drivetrain extends SubsystemBase {
   
   @Override
   public void periodic() {
-    _robot_position = updateOdometry();
+    m_pose = updateOdometry();
   }
 }
