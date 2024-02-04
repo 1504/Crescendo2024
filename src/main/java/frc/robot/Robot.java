@@ -64,37 +64,38 @@ public class Robot extends TimedRobot {
   @Override
   public void disabledPeriodic() {}
 
+  
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
-  @Override
-  public void autonomousInit() {
-    //test function 2
-    m_autoSelected = m_chooser.getSelected();
-    System.out.println("Auto selected: " + m_autoSelected);
-    //end test function 2
+  // @Override
+  // public void autonomousInit() {
+  //   //test function 2
+  //   m_autoSelected = m_chooser.getSelected();
+  //   System.out.println("Auto selected: " + m_autoSelected);
+  //   //end test function 2
 
-    m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+  //   m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
-    // schedule the autonomous command (example)
-    if (m_autonomousCommand != null) {
-      m_autonomousCommand.schedule();
-    }
-  }
+  //   // schedule the autonomous command (example)
+  //   if (m_autonomousCommand != null) {
+  //     m_autonomousCommand.schedule();
+  //   }
+  // }
 
   /** This function is called periodically during autonomous. */
-  @Override
-  public void autonomousPeriodic() {
-    //test function 3
-    switch (m_autoSelected) {
-      case kDefaultAuto:
-        if (/* condition */) {
-          _drive.tankDrive(1, 1);
-        } else {
-          _drive.stopMotor();
-        }
-        break;
-    }
-    //end test function 3
-  }
+  // @Override
+  // public void autonomousPeriodic() {
+  //   //test function 3
+  //   switch (m_autoSelected) {
+  //     case kDefaultAuto:
+  //       if (/* condition */) {
+  //         _drive.tankDrive(1, 1);
+  //       } else {
+  //         _drive.stopMotor();
+  //       }
+  //       break;
+  //   }
+  //   //end test function 3
+  // }
 
   @Override
   public void teleopInit() {
