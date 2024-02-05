@@ -7,12 +7,16 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 
+import java.io.PipedInputStream;
 import java.util.function.BiConsumer;
 import java.util.function.Supplier;
 
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.util.PIDConstants;
 import com.pathplanner.lib.util.ReplanningConfig;
 import com.revrobotics.CANSparkLowLevel.MotorType;
+
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.networktables.GenericEntry;
@@ -52,6 +56,10 @@ public class Drivetrain extends SubsystemBase {
   private final RelativeEncoder _left_Encoder;
   private final RelativeEncoder _right_Encoder; 
 
+  //pid controllers
+  private final PIDController _left_pid;
+  private final PIDController _right_pid;
+  private final PIDController _theta_pid;
 
   //odometry stuff
   private final DifferentialDriveOdometry m_odometry;
@@ -91,6 +99,11 @@ public class Drivetrain extends SubsystemBase {
 
     _drive = new DifferentialDrive(_left_motor1,_right_motor1);
 
+    _left_pid = new PIDController(0.01, 0, 0);
+    _right_pid = new PIDController(0.01, 0, 0);
+    _theta_pid = new PIDController(0.01, 0, 0);
+
+
     SmartDashboard.putData("Drive", _drive); 
 
     //odometry stuff starts
@@ -125,7 +138,7 @@ public class Drivetrain extends SubsystemBase {
             this::getPose, // Robot pose supplier
             this::resetOdometry, // Method to reset odometry (will be called if your auto has a starting pose)
             this::getSpeeds, // Current ChassisSpeeds supplier
-            this::consumerSpeeds, // Method that will drive the robot given ChassisSpeeds
+            this::setSpeeds2, // Method that will drive the robot given ChassisSpeeds
             new ReplanningConfig(), // Default path replanning config. See the API for the options here
             this::flipPath,
             this // Reference to this subsystem to set requirements
@@ -154,6 +167,19 @@ public class Drivetrain extends SubsystemBase {
   public double getRightVelocity() {
     return _right_Encoder.getVelocity();
   }
+
+  
+  public PIDController getLeftPid() {
+    return _left_pid;
+  }
+
+  public PIDController getRightPID() {
+    return _right_pid;
+  }
+
+  public PIDController getAnglePID() {
+    return _theta_pid;
+  }
   
   /**
    * Returns the current wheel speeds of the robot.
@@ -168,31 +194,34 @@ public class Drivetrain extends SubsystemBase {
     );
   }
 
-  public BiConsumer<Double, Double> tankDriveVolts() {
-    return (leftVolts, rightVolts) -> {
-        _left_motor1.setVoltage(leftVolts);
-        _right_motor1.setVoltage(rightVolts);
-        _drive.feed();
-    };
-}
-
   public ChassisSpeeds getSpeeds() {
-    return new ChassisSpeeds(_left_Encoder.getVelocity(), _right_Encoder.getVelocity(), m_gyro.getRotation2d().getRadians());
-  }
+    double leftVelocity = _left_pid.calculate(_left_Encoder.getVelocity());
+    double rightVelocity = _right_pid.calculate(_right_Encoder.getVelocity());
+    double headingVelocity = _theta_pid.calculate(m_gyro.getRotation2d().getRadians());
 
-  public void consumerSpeeds(ChassisSpeeds speeds) {
+    return new ChassisSpeeds(leftVelocity, rightVelocity, headingVelocity);
+}
+  
+  public void setSpeeds1(ChassisSpeeds speeds) {
     DifferentialDriveWheelSpeeds wheelSpeeds = kinematics.toWheelSpeeds(speeds);
     // Left velocity
     double leftVelocity = wheelSpeeds.leftMetersPerSecond;
 
     // Right velocity
     double rightVelocity = wheelSpeeds.rightMetersPerSecond;
-    // Your consumer logic here
+
+    //double leftVelocity = _left_pid.calculate(speeds.leftMetersPerSecond);
+    //double rightVelocity = _right_pid.calculate(speeds.rightMetersPerSecond);
 
     setWheelSpeeds(leftVelocity, rightVelocity);
-    // For example, you can print the ChassisSpeeds
+}
 
-    System.out.println(speeds);
+public void setSpeeds2(ChassisSpeeds speeds) {
+  _left_pid.setSetpoint(speeds.vxMetersPerSecond);
+  _right_pid.setSetpoint(speeds.vyMetersPerSecond);
+  
+  _left_motor1.setVoltage(_left_pid.calculate(getLeftVelocity()));
+  _right_motor1.setVoltage(_right_pid.calculate(getRightVelocity()));
 }
 
   private void setWheelSpeeds(double left, double right) {
