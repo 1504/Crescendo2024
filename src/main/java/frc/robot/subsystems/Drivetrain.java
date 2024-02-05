@@ -7,10 +7,6 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 
-import java.io.PipedInputStream;
-import java.util.function.BiConsumer;
-import java.util.function.Supplier;
-
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.util.PIDConstants;
 import com.pathplanner.lib.util.ReplanningConfig;
@@ -153,16 +149,15 @@ public class Drivetrain extends SubsystemBase {
   }
 
   public double getLeftVelocity() {
-    return _left_Encoder.getVelocity();
+    return _left_Encoder.getVelocity()/BuildConstants.GR * BuildConstants.WHEEL_CIRCUMFERENCE / 60 * BuildConstants.INCHES_TO_METERS;
 
     //return _front_left_encoder.getVelocity() / BuildConstants.GEAR_RATIO * BuildConstants.WHEEL_CIRCUMFERENCE / 60 * BuildConstants.INCHES_TO_METERS;
   }
 
   public double getRightVelocity() {
-    return _right_Encoder.getVelocity();
+    return _right_Encoder.getVelocity()/BuildConstants.GR * BuildConstants.WHEEL_CIRCUMFERENCE/60 * BuildConstants.INCHES_TO_METERS;
   }
 
-  
   public PIDController getLeftPid() {
     return _left_pid;
   }
@@ -189,8 +184,8 @@ public class Drivetrain extends SubsystemBase {
   }
 
   public ChassisSpeeds getSpeeds() {
-    double leftVelocity = _left_Encoder.getVelocity();
-    double rightVelocity = _right_Encoder.getVelocity();
+    double leftVelocity = getLeftVelocity();
+    double rightVelocity = getRightVelocity();
     double headingVelocity = m_gyro.getRotation2d().getRadians();
 
     System.err.println(leftVelocity + "       " + rightVelocity + "      " + headingVelocity);
@@ -222,7 +217,6 @@ public void setWheelSpeeds(double right, double left) {
   public Boolean flipPath() {
     return false;
   }
-
 
   public Pose2d updateOdometry() {
     return m_odometry.update(m_gyro.getRotation2d(), getCurrentState());
