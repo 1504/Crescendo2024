@@ -64,6 +64,7 @@ public class Drivetrain extends SubsystemBase {
 
   ShuffleboardTab telemetry = Shuffleboard.getTab("Telemetry");
 
+  private ChassisSpeeds m_speeds;
 
 
   public Drivetrain() {
@@ -94,6 +95,8 @@ public class Drivetrain extends SubsystemBase {
   new Pose2d(0, 0, new Rotation2d()));
 
     m_gyro.reset();
+
+    m_speeds = new ChassisSpeeds();
 
     //odometry stuff ends
 
@@ -155,10 +158,8 @@ public class Drivetrain extends SubsystemBase {
     return new ChassisSpeeds(_left_Encoder.getVelocity(), _right_Encoder.getVelocity(), m_gyro.getRotation2d().getRadians());
   }
 
-  public void consumerSpeeds(ChassisSpeeds speeds) {
-    // Your consumer logic here
-    // For example, you can print the ChassisSpeeds
-    System.out.println(speeds);
+  public void setSpeeds(ChassisSpeeds speeds) {
+    m_speeds = speeds;
 }
 
   public Boolean flipPath() {

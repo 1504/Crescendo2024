@@ -60,10 +60,6 @@ public class RobotContainer {
   {
     for (String path : AutoConstants.PATHS) {
       List<PathPlannerPath> pathes = PathPlannerAuto.getPathGroupFromAutoFile(path);
-      System.out.println(pathes);
-      ChassisSpeeds max_speeds = new ChassisSpeeds(AutoConstants.AUTO_MAX_SPEED_METERS_PER_SECOND, AutoConstants.AUTO_MAX_SPEED_METERS_PER_SECOND, AutoConstants.AUTO_MAX_ROTAT_RADIANS_PER_SECOND);
-
-      Rotation2d starting_rotation = new Rotation2d(0);
       m_testPaths.add(pathes);
     }
   }
@@ -79,7 +75,7 @@ public class RobotContainer {
       m_drive::getPose, 
       m_drive::resetOdometry, 
       m_drive::getSpeeds, 
-      m_drive::consumerSpeeds, 
+      m_drive::setSpeeds, 
       new ReplanningConfig(), 
       m_drive::flipPath, 
       m_drive);
@@ -104,7 +100,7 @@ public class RobotContainer {
               paths.get(0),
               m_drive::getPose,
               m_drive::getSpeeds,
-              m_drive::consumerSpeeds,
+              m_drive::setSpeeds,
               new ReplanningConfig(),
               m_drive::flipPath,
               m_drive
@@ -118,7 +114,7 @@ public class RobotContainer {
               paths.get(i),
               m_drive::getPose,
               m_drive::getSpeeds,
-              m_drive::consumerSpeeds,
+              m_drive::setSpeeds,
               new ReplanningConfig(),
               m_drive::flipPath,
               m_drive
@@ -128,7 +124,6 @@ public class RobotContainer {
 
     return commands;
   }
-
 
   /**
    * Use this method to define your trigger->command mappings. Triggers can be created via the

@@ -85,7 +85,7 @@ public final class Constants {
   }
 
   public static class AutoConstants {
-    public static final String [] PATHS = {"b1_auto","b2_auto", "b3_auto", "r1_auto", "r2_auto", "r3_auto"};
+    public static final String [] PATHS = {"b1_auto"};
 
     public static final boolean USE_VISION = false;
     public static final double AUTO_MAX_SPEED_METERS_PER_SECOND = 1;
