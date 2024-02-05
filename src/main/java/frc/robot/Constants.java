@@ -52,12 +52,12 @@ public final class Constants {
   }
 
   public static class PIDConstants {
-    public static final double left_PID_kp = 0.01;
+    public static final double left_PID_kp = 0.1;
 
 
-    public static final double right_PID_kp = 0.01;
+    public static final double right_PID_kp = 0.1;
 
-    public static final double theta_PID_kp = 0.01;
+    public static final double theta_PID_kp = 0.1;
 
   }
 
