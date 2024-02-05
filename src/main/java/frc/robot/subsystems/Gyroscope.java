@@ -5,6 +5,7 @@ import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
@@ -17,7 +18,7 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
  * The constructor is private to prevent other classes from instantiating it.
  */
 public class Gyroscope extends SubsystemBase {
-    private static final AHRS _gyro = new AHRS(SerialPort.Port.kMXP);
+    private static final AHRS _gyro = new AHRS(SPI.Port.kMXP);
     private static Gyroscope _instance = null;
     ShuffleboardTab telemetry = Shuffleboard.getTab("Telemetry");
 

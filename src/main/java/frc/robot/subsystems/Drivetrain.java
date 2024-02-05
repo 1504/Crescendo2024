@@ -26,8 +26,10 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.BuildConstants;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelPositions;
+import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 
 public class Drivetrain extends SubsystemBase {
 
@@ -56,6 +58,8 @@ public class Drivetrain extends SubsystemBase {
   private final Gyroscope m_gyro = Gyroscope.getInstance();
 
   //odometry stuff ends
+  DifferentialDriveKinematics kinematics =
+  new DifferentialDriveKinematics(1);
 
 
   private final DifferentialDrive _drive;
@@ -177,10 +181,24 @@ public class Drivetrain extends SubsystemBase {
   }
 
   public void consumerSpeeds(ChassisSpeeds speeds) {
+    DifferentialDriveWheelSpeeds wheelSpeeds = kinematics.toWheelSpeeds(speeds);
+    // Left velocity
+    double leftVelocity = wheelSpeeds.leftMetersPerSecond;
+
+    // Right velocity
+    double rightVelocity = wheelSpeeds.rightMetersPerSecond;
     // Your consumer logic here
+
+    setWheelSpeeds(leftVelocity, rightVelocity);
     // For example, you can print the ChassisSpeeds
+
     System.out.println(speeds);
 }
+
+  private void setWheelSpeeds(double left, double right) {
+    _right_motor1.setVoltage(right);
+    _left_motor1.setVoltage(left);
+  }
 
   public Boolean flipPath() {
     return false;
