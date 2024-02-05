@@ -6,10 +6,10 @@ package frc.robot.commands;
 
 import java.util.function.DoubleSupplier;
 
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Drivetrain;
 
-public class Tank extends CommandBase {
+public class Tank extends Command {
   
   protected final DoubleSupplier _ySpeed;
   protected final DoubleSupplier _xSpeed;

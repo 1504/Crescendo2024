@@ -196,8 +196,8 @@ public class Drivetrain extends SubsystemBase {
 }
 
   private void setWheelSpeeds(double left, double right) {
-    _right_motor1.setVoltage(right);
-    _left_motor1.setVoltage(left);
+    _right_motor1.setVoltage(right/2);
+    _left_motor1.setVoltage(left/2);
   }
 
   public Boolean flipPath() {
