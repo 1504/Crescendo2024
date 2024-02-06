@@ -86,7 +86,7 @@ public class Drivetrain extends SubsystemBase {
     _left_motor1 = new CANSparkMax(DriveConstants.LEFT1, MotorType.kBrushless);
     _left_motor2 = new CANSparkMax(DriveConstants.LEFT2, MotorType.kBrushless);
 
-    _right_motor1.setInverted(false);
+    _right_motor1.setInverted(true);
     //_right_motor2.setInverted(true);
     _left_motor1.setInverted(false);
     //_left_motor2.setInverted(false);
@@ -153,13 +153,12 @@ public class Drivetrain extends SubsystemBase {
   }
 
   public double getLeftVelocity() {
-    return _left_Encoder.getVelocity();
-
-    //return _front_left_encoder.getVelocity() / BuildConstants.GEAR_RATIO * BuildConstants.WHEEL_CIRCUMFERENCE / 60 * BuildConstants.INCHES_TO_METERS;
+    return _left_Encoder.getVelocity()/BuildConstants.GR*BuildConstants.WHEEL_CIRCUMFERENCE/60 *BuildConstants.INCHES_TO_METERS;
   }
 
   public double getRightVelocity() {
-    return _right_Encoder.getVelocity();
+    return _right_Encoder.getVelocity()/BuildConstants.GR*BuildConstants.WHEEL_CIRCUMFERENCE/60 *BuildConstants.INCHES_TO_METERS;
+
   }
 
   
@@ -189,8 +188,8 @@ public class Drivetrain extends SubsystemBase {
   }
 
   public ChassisSpeeds getSpeeds() {
-    double leftVelocity = _left_Encoder.getVelocity();
-    double rightVelocity = _right_Encoder.getVelocity();
+    double leftVelocity = getLeftVelocity();
+    double rightVelocity = getRightVelocity();
     double headingVelocity = m_gyro.getRotation2d().getRadians();
 
     System.err.println(leftVelocity + "       " + rightVelocity + "      " + headingVelocity);
