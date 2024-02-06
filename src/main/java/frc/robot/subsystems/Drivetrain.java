@@ -99,8 +99,10 @@ public class Drivetrain extends SubsystemBase {
 
     _drive = new DifferentialDrive(_left_motor1,_right_motor1);
 
-    _left_pid = new PIDController(0.01, 0, 0);
-    _right_pid = new PIDController(0.01, 0, 0);
+    double p = 1.8074;
+
+    _left_pid = new PIDController(p, 0, 0);
+    _right_pid = new PIDController(p, 0, 0);
     _theta_pid = new PIDController(0.01, 0, 0);
 
 
@@ -125,20 +127,12 @@ public class Drivetrain extends SubsystemBase {
     }
       m_autoBuilder = new AutoBuilder();
 
-  /*AutoBuilder.configureRamsete(
-    this::getPose, 
-    this::resetOdometry, 
-    this::getSpeeds, 
-    this::consumerSpeeds, 
-    new ReplanningConfig(), 
-    this::flipPath, 
-    this);
-*/
- AutoBuilder.configureRamsete(
+ 
+  AutoBuilder.configureRamsete(
             this::getPose, // Robot pose supplier
             this::resetOdometry, // Method to reset odometry (will be called if your auto has a starting pose)
             this::getSpeeds, // Current ChassisSpeeds supplier
-            this::setSpeeds2, // Method that will drive the robot given ChassisSpeeds
+            this::setSpeeds, // Method that will drive the robot given ChassisSpeeds
             new ReplanningConfig(), // Default path replanning config. See the API for the options here
             this::flipPath,
             this // Reference to this subsystem to set requirements
@@ -159,13 +153,12 @@ public class Drivetrain extends SubsystemBase {
   }
 
   public double getLeftVelocity() {
-    return _left_Encoder.getVelocity();
-
-    //return _front_left_encoder.getVelocity() / BuildConstants.GEAR_RATIO * BuildConstants.WHEEL_CIRCUMFERENCE / 60 * BuildConstants.INCHES_TO_METERS;
+    return _left_Encoder.getVelocity()/BuildConstants.GR*BuildConstants.WHEEL_CIRCUMFERENCE/60 *BuildConstants.INCHES_TO_METERS;
   }
 
   public double getRightVelocity() {
-    return _right_Encoder.getVelocity();
+    return _right_Encoder.getVelocity()/BuildConstants.GR*BuildConstants.WHEEL_CIRCUMFERENCE/60 *BuildConstants.INCHES_TO_METERS;
+
   }
 
   
@@ -189,20 +182,21 @@ public class Drivetrain extends SubsystemBase {
 
   public DifferentialDriveWheelPositions getCurrentState() {
     return new DifferentialDriveWheelPositions(
-      _left_Encoder.getVelocity() / BuildConstants.GR * BuildConstants.WHEEL_CIRCUMFERENCE,
-      _right_Encoder.getVelocity() / BuildConstants.GR * BuildConstants.WHEEL_CIRCUMFERENCE
+      getLeftVelocity(),
+      getRightVelocity()
     );
   }
 
   public ChassisSpeeds getSpeeds() {
-    double leftVelocity = _left_pid.calculate(_left_Encoder.getVelocity());
-    double rightVelocity = _right_pid.calculate(_right_Encoder.getVelocity());
-    double headingVelocity = _theta_pid.calculate(m_gyro.getRotation2d().getRadians());
+    double leftVelocity = getLeftVelocity();
+    double rightVelocity = getRightVelocity();
+    double headingVelocity = m_gyro.getRotation2d().getRadians();
 
+    System.err.println(leftVelocity + "       " + rightVelocity + "      " + headingVelocity);
     return new ChassisSpeeds(leftVelocity, rightVelocity, headingVelocity);
 }
   
-  public void setSpeeds1(ChassisSpeeds speeds) {
+  public void setSpeeds(ChassisSpeeds speeds) {
     DifferentialDriveWheelSpeeds wheelSpeeds = kinematics.toWheelSpeeds(speeds);
     // Left velocity
     double leftVelocity = wheelSpeeds.leftMetersPerSecond;
@@ -216,18 +210,13 @@ public class Drivetrain extends SubsystemBase {
     setWheelSpeeds(leftVelocity, rightVelocity);
 }
 
-public void setSpeeds2(ChassisSpeeds speeds) {
-  _left_pid.setSetpoint(speeds.vxMetersPerSecond);
-  _right_pid.setSetpoint(speeds.vyMetersPerSecond);
+public void setWheelSpeeds(double right, double left) {
+  _left_pid.setSetpoint(left);
+  _right_pid.setSetpoint(right);
   
   _left_motor1.setVoltage(_left_pid.calculate(getLeftVelocity()));
   _right_motor1.setVoltage(_right_pid.calculate(getRightVelocity()));
 }
-
-  private void setWheelSpeeds(double left, double right) {
-    _right_motor1.setVoltage(right/2);
-    _left_motor1.setVoltage(left/2);
-  }
 
   public Boolean flipPath() {
     return false;

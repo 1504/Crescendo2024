@@ -16,10 +16,10 @@ import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
  */
 public final class Constants {
   public static class DriveConstants {
-    public static final int LEFT1 = 3;
+    public static final int LEFT1 = 2;
     public static final int LEFT2 = 4;
     public static final int RIGHT1 = 1;
-    public static final int RIGHT2 = 2;
+    public static final int RIGHT2 = 3;
     public static final double DEADBAND = 0.03;
 
     //voltage constraints
@@ -52,12 +52,12 @@ public final class Constants {
   }
 
   public static class PIDConstants {
-    public static final double left_PID_kp = 0.01;
+    public static final double left_PID_kp = 0.1;
 
 
-    public static final double right_PID_kp = 0.01;
+    public static final double right_PID_kp = 0.1;
 
-    public static final double theta_PID_kp = 0.01;
+    public static final double theta_PID_kp = 0.1;
 
   }
 
@@ -70,9 +70,6 @@ public final class Constants {
     public static final double GR = 10;
     public static final double WHEEL_CIRCUMFERENCE = 6 * Math.PI;
     public static final double INCHES_PER_REVOLUTION = WHEEL_CIRCUMFERENCE / GR;
-
-    ///track width of the robot. This represents the distance between the two sets of wheels on a differential drive.
-    //TODO: our robot does not have track width 0
 
     public static final DifferentialDriveKinematics _KINEMATICS = new DifferentialDriveKinematics(0);
 
