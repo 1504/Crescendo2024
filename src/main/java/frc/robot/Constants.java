@@ -71,9 +71,6 @@ public final class Constants {
     public static final double WHEEL_CIRCUMFERENCE = 6 * Math.PI;
     public static final double INCHES_PER_REVOLUTION = WHEEL_CIRCUMFERENCE / GR;
 
-    ///track width of the robot. This represents the distance between the two sets of wheels on a differential drive.
-    //TODO: our robot does not have track width 0
-
     public static final DifferentialDriveKinematics _KINEMATICS = new DifferentialDriveKinematics(0);
 
   }
