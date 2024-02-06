@@ -4,7 +4,6 @@
 
 package frc.robot;
 
-import frc.robot.Constants.AutoConstants;
 import frc.robot.commands.Tank;
 import frc.robot.commands.Turtles;
 import frc.robot.controlboard.ControlBoard;
@@ -13,26 +12,16 @@ import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.ShuffleboardManager;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 import com.pathplanner.lib.auto.AutoBuilder;
-import com.pathplanner.lib.commands.FollowPathRamsete;
-import com.pathplanner.lib.commands.PathPlannerAuto;
-import com.pathplanner.lib.path.PathPlannerPath;
-import com.pathplanner.lib.util.ReplanningConfig;
 
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.RamseteCommand;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
