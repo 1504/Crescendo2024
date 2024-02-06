@@ -23,11 +23,11 @@ public class ControlBoard {
     }
 
     public double getX() {
-        return _joystickOne.getX();
+        return -_joystickOne.getX();
     }
 
     public double getY() {
-        return _joystickOne.getY();
+        return -_joystickOne.getY();
     }
 
     public Joystick getJoystick() {

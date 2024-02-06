@@ -61,9 +61,9 @@ public class ShuffleboardManager extends SubsystemBase {
       telemetry = Shuffleboard.getTab("Telemetry");
       _Gyroscope = Shuffleboard.getTab("Gyroscope");
       leftEncoder = telemetry.add("Left Encoder", 0).withPosition(0, 0).withSize(2, 2)
-          .withWidget(BuiltInWidgets.kTextView).getEntry();
+          .withWidget(BuiltInWidgets.kGraph).getEntry();
       rightEncoder = telemetry.add("Right Encoder", 2).withPosition(2, 0).withSize(2, 2)
-          .withWidget(BuiltInWidgets.kTextView).getEntry();
+          .withWidget(BuiltInWidgets.kGraph).getEntry();
 
       limelight = Shuffleboard.getTab("Limelight");
       distanceFromAT = limelight.add("Distance from AT", 0).withPosition(0, 0).withSize(2, 2)

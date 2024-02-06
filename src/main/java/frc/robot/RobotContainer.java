@@ -66,7 +66,7 @@ public class RobotContainer {
    */
   private void configureBindings() {
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
-    m_drive.setDefaultCommand(new Tank(m_ControlBoard::getX, m_ControlBoard::getY));
+    m_drive.setDefaultCommand(new Tank(m_ControlBoard::getY, m_ControlBoard::getX));
   }
 
   private void initAuton() {
