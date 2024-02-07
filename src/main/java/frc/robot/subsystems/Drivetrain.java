@@ -86,9 +86,9 @@ public class Drivetrain extends SubsystemBase {
     _left_motor1 = new CANSparkMax(DriveConstants.LEFT1, MotorType.kBrushless);
     _left_motor2 = new CANSparkMax(DriveConstants.LEFT2, MotorType.kBrushless);
 
-    _right_motor1.setInverted(true);
+    _right_motor1.setInverted(false);
     //_right_motor2.setInverted(true);
-    _left_motor1.setInverted(false);
+    _left_motor1.setInverted(true);
     //_left_motor2.setInverted(false);
 
     _right_motor2.follow(_right_motor1);
