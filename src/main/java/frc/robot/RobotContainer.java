@@ -4,7 +4,6 @@
 
 package frc.robot;
 
-import frc.robot.Constants.AutoConstants;
 import frc.robot.commands.Tank;
 import frc.robot.commands.Turtles;
 import frc.robot.controlboard.ControlBoard;
@@ -13,25 +12,16 @@ import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.ShuffleboardManager;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 import com.pathplanner.lib.auto.AutoBuilder;
-import com.pathplanner.lib.commands.FollowPathRamsete;
-import com.pathplanner.lib.commands.PathPlannerAuto;
-import com.pathplanner.lib.path.PathPlannerPath;
-import com.pathplanner.lib.util.ReplanningConfig;
 
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.RamseteCommand;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
@@ -52,77 +42,17 @@ public class RobotContainer {
   public final ShuffleboardManager m_shuffleboardManager = ShuffleboardManager.getInstance();
 
   public static final HashMap<String, Command> m_eventMap = new HashMap<>();
-  private final SendableChooser<Command> m_autoChooser = new SendableChooser<>();
-
-  private final AutoBuilder m_autoBuilder;
-
-  private final List<List<PathPlannerPath>> m_testPaths = new ArrayList<>();
-  {
-    for (String path : AutoConstants.PATHS) {
-      List<PathPlannerPath> pathes = PathPlannerAuto.getPathGroupFromAutoFile(path);
-      m_testPaths.add(pathes);
-    }
-  }
+  private final SendableChooser<Command> m_autoChooser;
+  
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the trigger bindings
     configureBindings();
-
-    m_autoBuilder = new AutoBuilder();
-
-    AutoBuilder.configureRamsete(
-      m_drive::getPose, 
-      m_drive::resetOdometry, 
-      m_drive::getSpeeds, 
-      m_drive::setSpeeds, 
-      new ReplanningConfig(), 
-      m_drive::flipPath, 
-      m_drive);
-
-    Shuffleboard.getTab("Pregame").add("Auton Path", m_autoChooser)
-      .withPosition(0, 1)
-      .withSize(3, 1)
-      .withWidget(BuiltInWidgets.kComboBoxChooser);
   
-    for (int i = 0; i <m_testPaths.size(); i++) {
-      if (i == 0) {
-        m_autoChooser.setDefaultOption(AutoConstants.PATHS[i], AutoBuilder.buildAuto(AutoConstants.PATHS[i]));
-      } else {
-        m_autoChooser.addOption(AutoConstants.PATHS[i], AutoBuilder.buildAuto(AutoConstants.PATHS[i]));
-      }
-    }
-  }
- 
-   public SequentialCommandGroup getCommandFromPath(List<PathPlannerPath> paths) {
+    m_autoChooser = AutoBuilder.buildAutoChooser("b1_auto");
+    SmartDashboard.putData("Auto Chooser", m_autoChooser);
 
-    FollowPathRamsete r = new FollowPathRamsete(
-              paths.get(0),
-              m_drive::getPose,
-              m_drive::getSpeeds,
-              m_drive::setSpeeds,
-              new ReplanningConfig(),
-              m_drive::flipPath,
-              m_drive
-    );
-
-    SequentialCommandGroup commands = new SequentialCommandGroup(r);
-      
-    for(int i = 0; i < paths.size(); i++) {
-      commands.addCommands(
-          new FollowPathRamsete(
-              paths.get(i),
-              m_drive::getPose,
-              m_drive::getSpeeds,
-              m_drive::setSpeeds,
-              new ReplanningConfig(),
-              m_drive::flipPath,
-              m_drive
-          )
-      );
-    }
-
-    return commands;
   }
 
   /**
@@ -136,7 +66,7 @@ public class RobotContainer {
    */
   private void configureBindings() {
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
-    m_drive.setDefaultCommand(new Tank(() -> m_ControlBoard.getX(),() -> m_ControlBoard.getY()));
+    m_drive.setDefaultCommand(new Tank(m_ControlBoard::getForward, m_ControlBoard::getRot));
   }
 
   private void initAuton() {
