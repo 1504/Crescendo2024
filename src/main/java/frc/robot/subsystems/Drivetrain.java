@@ -116,8 +116,6 @@ public class Drivetrain extends SubsystemBase {
 
     m_gyro.reset();
 
-    m_speeds = new ChassisSpeeds();
-
     //odometry stuff ends
 
     Pose2d m_pose;
