@@ -69,9 +69,9 @@ public class ShuffleboardManager extends SubsystemBase {
       distanceFromAT = limelight.add("Distance from AT", 0).withPosition(0, 0).withSize(2, 2)
           .withWidget(BuiltInWidgets.kTextView).getEntry();
 
-      joystickX = telemetry.add("Joystick X", 0).withPosition(0, 0).withSize(2, 1).withWidget(BuiltInWidgets.kTextView)
+      joystickX = telemetry.add("Joystick X", 0).withPosition(0, 2).withSize(2, 1).withWidget(BuiltInWidgets.kTextView)
           .getEntry();
-      joystickY = telemetry.add("Joystick Y", 0).withPosition(0, 2).withSize(2, 1).withWidget(BuiltInWidgets.kTextView)
+      joystickY = telemetry.add("Joystick Y", 0).withPosition(2, 2).withSize(2, 1).withWidget(BuiltInWidgets.kTextView)
           .getEntry();
       GyroPitch = _Gyroscope.add("Gyro Pitch", 0).withPosition(0, 0).withSize(2, 1).withWidget(BuiltInWidgets.kTextView)
           .getEntry();
