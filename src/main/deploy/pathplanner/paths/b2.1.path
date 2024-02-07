@@ -16,16 +16,16 @@
     },
     {
       "anchor": {
-        "x": 1.5,
-        "y": 5.5
+        "x": 1.4184870036406745,
+        "y": 5.520181751474614
       },
       "prevControl": {
-        "x": 2.143384341123606,
-        "y": 5.5
+        "x": 2.061871344764281,
+        "y": 5.520181751474614
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "bspeaker"
     }
   ],
   "rotationTargets": [],

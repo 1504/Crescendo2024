@@ -3,57 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.5,
-        "y": 5.5
+        "x": 1.4204348112399934,
+        "y": 5.52
       },
       "prevControl": null,
       "nextControl": {
-        "x": 0.906322532396081,
-        "y": 5.5
+        "x": 2.0530042865885494,
+        "y": 5.52
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "bspeaker"
     },
     {
       "anchor": {
-        "x": 1.0153030033158459,
-        "y": 6.222705114444611
+        "x": 2.9082272646026777,
+        "y": 5.52
       },
       "prevControl": {
-        "x": 0.8515874866313295,
-        "y": 5.882680579792153
-      },
-      "nextControl": {
-        "x": 1.1418995079916539,
-        "y": 6.485636316463599
-      },
-      "isLocked": false,
-      "linkedName": null
-    },
-    {
-      "anchor": {
-        "x": 2.0085986553875768,
-        "y": 6.35903981178779
-      },
-      "prevControl": {
-        "x": 1.6878395702138018,
-        "y": 6.746623706372768
-      },
-      "nextControl": {
-        "x": 2.242315279404455,
-        "y": 6.0766322244340625
-      },
-      "isLocked": false,
-      "linkedName": null
-    },
-    {
-      "anchor": {
-        "x": 2.8850359954508695,
-        "y": 5.5
-      },
-      "prevControl": {
-        "x": 1.8850359954508695,
-        "y": 5.5
+        "x": 2.03029391642212,
+        "y": 5.52
       },
       "nextControl": null,
       "isLocked": false,
@@ -74,10 +42,10 @@
     "rotation": 180.0,
     "rotateFast": false
   },
-  "reversed": false,
+  "reversed": true,
   "folder": null,
   "previewStartingState": {
-    "rotation": 177.27972201040583,
+    "rotation": -0.7779221420535064,
     "velocity": 0
   },
   "useDefaultConstraints": false

@@ -22,6 +22,12 @@
           "data": {
             "waitTime": 5.0
           }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "b_back_from_speaker"
+          }
         }
       ]
     }
