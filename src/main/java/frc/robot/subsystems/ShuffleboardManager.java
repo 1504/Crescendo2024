@@ -96,8 +96,8 @@ public class ShuffleboardManager extends SubsystemBase {
 
     distanceFromAT.setDouble(_limelight.getDist());
 
-    joystickX.setDouble(_controlboard.getX());
-    joystickY.setDouble(_controlboard.getY());
+    joystickX.setDouble(_controlboard.getRot());
+    joystickY.setDouble(_controlboard.getForward());
     GyroPitch.setDouble(_gyroOne.getPitch());
     GyroRoll.setDouble(_gyroOne.getRoll());
     GyroYaw.setDouble(_gyroOne.getYaw());

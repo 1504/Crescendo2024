@@ -10,10 +10,10 @@ import java.util.function.DoubleSupplier;
 public class Turtles extends Tank {
   double div;
   public void execute() {
-    m_drivetrain.driveTank((_xSpeed.getAsDouble()/div), (_ySpeed.getAsDouble()/div));
+    m_drivetrain.driveTank((_forwardSpeed.getAsDouble()/div), (_rotSpeed.getAsDouble()/div));
   }
-  public Turtles(DoubleSupplier xSpeed, DoubleSupplier ySpeed, double speedDivisor) {
-    super(xSpeed, ySpeed);
+  public Turtles(DoubleSupplier f, DoubleSupplier r, double speedDivisor) {
+    super(f, r);
     div = speedDivisor;
   }
 }

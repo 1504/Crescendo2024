@@ -11,15 +11,15 @@ import frc.robot.subsystems.Drivetrain;
 
 public class Tank extends Command {
   
-  protected final DoubleSupplier _ySpeed;
-  protected final DoubleSupplier _xSpeed;
+  protected final DoubleSupplier _rotSpeed;
+  protected final DoubleSupplier _forwardSpeed;
   protected final Drivetrain m_drivetrain = Drivetrain.getInstance();
 
   /** Creates a new Tank. */
-  public Tank(DoubleSupplier xSpeed, DoubleSupplier ySpeed) {
+  public Tank(DoubleSupplier f, DoubleSupplier r) {
 
-    _ySpeed = ySpeed;
-    _xSpeed = xSpeed;
+    _rotSpeed = r;
+    _forwardSpeed = f;
     addRequirements(m_drivetrain);
   }
 
@@ -30,7 +30,7 @@ public class Tank extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_drivetrain.driveTank(_xSpeed.getAsDouble(), _ySpeed.getAsDouble());
+    m_drivetrain.driveTank(_forwardSpeed.getAsDouble(), _rotSpeed.getAsDouble());
   }
 
   // Called once the command ends or is interrupted.

@@ -140,11 +140,11 @@ public class Drivetrain extends SubsystemBase {
   }
 
   // tank drive method
-  public void driveTank(double xSpeed, double ySpeed) {
+  public void driveTank(double forwardSpeed, double rotSpeed) {
     // deadband the inputs
-      double ySpd = Math.abs(ySpeed) < DriveConstants.DEADBAND ? 0 : Math.pow(ySpeed, 1);
-      double xSpd = Math.abs(xSpeed) < DriveConstants.DEADBAND ? 0 : Math.pow(xSpeed, 1);
-      _drive.arcadeDrive(xSpd, ySpd);
+      double rSpd = Math.abs(rotSpeed) < DriveConstants.DEADBAND ? 0 : Math.pow(rotSpeed, 1);
+      double fSpd = Math.abs(forwardSpeed) < DriveConstants.DEADBAND ? 0 : Math.pow(forwardSpeed, 1);
+      _drive.arcadeDrive(fSpd, rSpd);
   }
 
   public void resetEncoders() {
