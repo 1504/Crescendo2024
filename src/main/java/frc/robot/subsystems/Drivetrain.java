@@ -79,6 +79,7 @@ public class Drivetrain extends SubsystemBase {
 
   private final AutoBuilder m_autoBuilder;
 
+
   public Drivetrain() {
     // initializes tank motor controllers
     _right_motor1 = new CANSparkMax(DriveConstants.RIGHT1, MotorType.kBrushless);
@@ -114,6 +115,8 @@ public class Drivetrain extends SubsystemBase {
   new Pose2d(0, 0, new Rotation2d()));
 
     m_gyro.reset();
+
+    m_speeds = new ChassisSpeeds();
 
     //odometry stuff ends
 

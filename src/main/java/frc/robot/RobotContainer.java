@@ -43,17 +43,17 @@ public class RobotContainer {
 
   public static final HashMap<String, Command> m_eventMap = new HashMap<>();
   private final SendableChooser<Command> m_autoChooser;
-
+  
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the trigger bindings
     configureBindings();
-
+  
     m_autoChooser = AutoBuilder.buildAutoChooser("b1_auto");
     SmartDashboard.putData("Auto Chooser", m_autoChooser);
-  }
 
+  }
 
   /**
    * Use this method to define your trigger->command mappings. Triggers can be created via the
