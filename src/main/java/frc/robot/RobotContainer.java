@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import frc.robot.commands.FlipFront;
 import frc.robot.commands.Tank;
 import frc.robot.commands.Turtles;
 import frc.robot.controlboard.ControlBoard;
@@ -70,7 +71,6 @@ public class RobotContainer {
   private void configureBindings() { 
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
     m_drive.setDefaultCommand(new Tank(m_ControlBoard::getForward, m_ControlBoard::getRot));
-    new JoystickButton(_joystickOne, 2).onTrue(m_drive.invertMotors());
   }
 
   private void initAuton() {
