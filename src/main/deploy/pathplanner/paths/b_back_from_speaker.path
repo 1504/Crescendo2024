@@ -3,24 +3,24 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.4311358761606414,
+        "x": 1.7,
         "y": 5.52
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.063705351509194,
+        "x": 2.33,
         "y": 5.52
       },
-      "isLocked": true,
-      "linkedName": "bspeaker"
+      "isLocked": false,
+      "linkedName": "bspeaker_v3"
     },
     {
       "anchor": {
-        "x": 2.9082272646026777,
+        "x": 3.0,
         "y": 5.52
       },
       "prevControl": {
-        "x": 2.03029391642212,
+        "x": 2.722145068236751,
         "y": 5.52
       },
       "nextControl": null,
@@ -42,7 +42,7 @@
     "rotation": 180.0,
     "rotateFast": false
   },
-  "reversed": true,
+  "reversed": false,
   "folder": null,
   "previewStartingState": {
     "rotation": -0.7779221420535064,

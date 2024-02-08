@@ -15,6 +15,7 @@ import frc.robot.subsystems.ShuffleboardManager;
 import java.util.HashMap;
 
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
@@ -23,6 +24,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 /**
@@ -53,6 +55,7 @@ public class RobotContainer {
     m_autoChooser = AutoBuilder.buildAutoChooser("b1_auto");
     SmartDashboard.putData("Auto Chooser", m_autoChooser);
 
+    //NamedCommands.registerCommand("invertMotors", m_drive.invertMotors());
   }
 
   /**
@@ -64,9 +67,10 @@ public class RobotContainer {
    * PS4} controllers or {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight
    * joysticks}.
    */
-  private void configureBindings() {
+  private void configureBindings() { 
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
     m_drive.setDefaultCommand(new Tank(m_ControlBoard::getForward, m_ControlBoard::getRot));
+    new JoystickButton(_joystickOne, 2).onTrue(m_drive.invertMotors());
   }
 
   private void initAuton() {

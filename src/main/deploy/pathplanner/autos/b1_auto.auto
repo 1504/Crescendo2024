@@ -18,6 +18,12 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "FlipFront"
+          }
+        },
+        {
           "type": "wait",
           "data": {
             "waitTime": 5.0
@@ -27,6 +33,12 @@
           "type": "path",
           "data": {
             "pathName": "b_back_from_speaker"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "unFlip"
           }
         }
       ]

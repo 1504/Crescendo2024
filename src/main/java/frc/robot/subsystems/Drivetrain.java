@@ -26,6 +26,8 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.BuildConstants;
@@ -70,7 +72,7 @@ public class Drivetrain extends SubsystemBase {
   new DifferentialDriveKinematics(1);
 
 
-  private final DifferentialDrive _drive;
+  private DifferentialDrive _drive;
   private final Limelight _limelight = Limelight.getInstance();
 
   private Pose2d m_pose;
@@ -78,6 +80,8 @@ public class Drivetrain extends SubsystemBase {
   ShuffleboardTab telemetry = Shuffleboard.getTab("Telemetry");
 
   private final AutoBuilder m_autoBuilder;
+
+  private boolean inverted = false;
 
 
   public Drivetrain() {
@@ -160,6 +164,16 @@ public class Drivetrain extends SubsystemBase {
   public double getRightVelocity() {
     return _right_Encoder.getVelocity()/BuildConstants.GR*BuildConstants.WHEEL_CIRCUMFERENCE/60 *BuildConstants.INCHES_TO_METERS;
 
+  }
+
+  public Command invertMotors() {
+    //_right_motor1.setInverted(!inverted);
+    //_left_motor1.setInverted(!inverted); 
+    //_right_motor2.setInverted(!inverted);
+    //_right_motor2.setInverted(!inverted);
+    _drive = new DifferentialDrive(_right_motor1, _left_motor1);
+    inverted = !inverted;
+    return new PrintCommand("invert");
   }
 
   
