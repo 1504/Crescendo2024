@@ -61,6 +61,8 @@ public class Drivetrain extends SubsystemBase {
   private final PIDController _right_pid;
   private final PIDController _theta_pid;
 
+  private boolean flipped = false;
+
   //odometry stuff
   private final DifferentialDriveOdometry m_odometry;
   private final Gyroscope m_gyro = Gyroscope.getInstance();
@@ -70,7 +72,7 @@ public class Drivetrain extends SubsystemBase {
   new DifferentialDriveKinematics(1);
 
 
-  private final DifferentialDrive _drive;
+  private DifferentialDrive _drive;
   private final Limelight _limelight = Limelight.getInstance();
 
   private Pose2d m_pose;
@@ -146,6 +148,25 @@ public class Drivetrain extends SubsystemBase {
       double rSpd = Math.abs(rotSpeed) < DriveConstants.DEADBAND ? 0 : Math.pow(rotSpeed, 1);
       double fSpd = Math.abs(forwardSpeed) < DriveConstants.DEADBAND ? 0 : Math.pow(forwardSpeed, 1);
       _drive.arcadeDrive(fSpd, rSpd);
+  }
+
+  public void switchFront() {
+    if (!flipped) {
+      _left_motor1.setInverted(false);
+      _right_motor1.setInverted(true);
+      _drive = new DifferentialDrive(_right_motor1, _left_motor1);
+    }
+    else {
+      _left_motor1.setInverted(true);
+      _right_motor1.setInverted(false);
+      _drive = new DifferentialDrive(_left_motor1, _right_motor1);
+    }
+    flipped = !flipped;
+    System.out.println("flipped");
+  }
+
+  public boolean getFlipped() {
+    return flipped;
   }
 
   public void resetEncoders() {

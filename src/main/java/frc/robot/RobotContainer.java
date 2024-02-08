@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import frc.robot.commands.FlipFront;
 import frc.robot.commands.Tank;
 import frc.robot.commands.Turtles;
 import frc.robot.controlboard.ControlBoard;
@@ -23,6 +24,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 /**
@@ -67,6 +69,7 @@ public class RobotContainer {
   private void configureBindings() {
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
     m_drive.setDefaultCommand(new Tank(m_ControlBoard::getForward, m_ControlBoard::getRot));
+    new JoystickButton(_joystickOne, 2).onTrue(new FlipFront());
   }
 
   private void initAuton() {
