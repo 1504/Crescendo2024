@@ -56,7 +56,8 @@ public class RobotContainer {
     m_autoChooser = AutoBuilder.buildAutoChooser("b1_auto");
     SmartDashboard.putData("Auto Chooser", m_autoChooser);
 
-    //NamedCommands.registerCommand("invertMotors", m_drive.invertMotors());
+    NamedCommands.registerCommand("FlipFront", new FlipFront());
+    NamedCommands.registerCommand("unFlip", new FlipFront());
   }
 
   /**
@@ -71,6 +72,8 @@ public class RobotContainer {
   private void configureBindings() { 
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
     m_drive.setDefaultCommand(new Tank(m_ControlBoard::getForward, m_ControlBoard::getRot));
+
+    new JoystickButton(_joystickOne,2).onTrue(new FlipFront());
   }
 
   private void initAuton() {
