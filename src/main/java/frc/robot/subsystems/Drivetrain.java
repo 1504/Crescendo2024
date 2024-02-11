@@ -82,10 +82,6 @@ public class Drivetrain extends SubsystemBase {
   ShuffleboardTab telemetry = Shuffleboard.getTab("Telemetry");
 
   private final AutoBuilder m_autoBuilder;
-
-  private boolean inverted = false;
-
-
   public Drivetrain() {
     // initializes tank motor controllers
     _right_motor1 = new CANSparkMax(DriveConstants.RIGHT1, MotorType.kBrushless);
@@ -93,9 +89,9 @@ public class Drivetrain extends SubsystemBase {
     _left_motor1 = new CANSparkMax(DriveConstants.LEFT1, MotorType.kBrushless);
     _left_motor2 = new CANSparkMax(DriveConstants.LEFT2, MotorType.kBrushless);
 
-    _right_motor1.setInverted(false);
+    _right_motor1.setInverted(true);
     //_right_motor2.setInverted(true);
-    _left_motor1.setInverted(true);
+    _left_motor1.setInverted(false);
     //_left_motor2.setInverted(false);
 
     _right_motor2.follow(_right_motor1);
@@ -147,11 +143,11 @@ public class Drivetrain extends SubsystemBase {
   }
 
   // tank drive method
-  public void driveTank(double forwardSpeed, double rotSpeed) {
+  public void driveTank(double xSpeed, double ySpeed) {
     // deadband the inputs
-      double rSpd = Math.abs(rotSpeed) < DriveConstants.DEADBAND ? 0 : Math.pow(rotSpeed, 1);
-      double fSpd = Math.abs(forwardSpeed) < DriveConstants.DEADBAND ? 0 : Math.pow(forwardSpeed, 1);
-      _drive.arcadeDrive(fSpd, rSpd);
+      double ySpd = Math.abs(ySpeed) < DriveConstants.DEADBAND ? 0 : Math.pow(ySpeed, 1);
+      double xSpd = Math.abs(xSpeed) < DriveConstants.DEADBAND ? 0 : Math.pow(xSpeed, 1);
+      _drive.arcadeDrive(xSpd, ySpd);
   }
 
   public void switchFront() {
@@ -192,7 +188,6 @@ public class Drivetrain extends SubsystemBase {
 
   public double getRightVelocity() {
     return _right_Encoder.getVelocity()/BuildConstants.GR*BuildConstants.WHEEL_CIRCUMFERENCE/60 *BuildConstants.INCHES_TO_METERS;
-
   }
 
   public Command invertMotors() {
@@ -230,6 +225,10 @@ public class Drivetrain extends SubsystemBase {
       getRightVelocity()
     );
   }
+  
+  public double getDistanceTraveled() {
+    return _left_Encoder.getPosition();
+  }
 
   public ChassisSpeeds getSpeeds() {
     double leftVelocity = getLeftVelocity();
@@ -266,10 +265,10 @@ public void setWheelSpeeds(double right, double left) {
     return false;
   }
 
-
   public Pose2d updateOdometry() {
     return m_odometry.update(m_gyro.getRotation2d(), getCurrentState());
   }
+
   public void resetOdometry(Pose2d pose) {
     m_odometry.resetPosition(m_gyro.getRotation2d(), getCurrentState(), pose);
   }
