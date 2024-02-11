@@ -26,14 +26,15 @@ public class moveBackwards extends Command {
   @Override
   public void initialize() {
     m_drivetrain.resetEncoders();
-    while( m_drivetrain.getDistanceTraveled() <dist) {
-      m_drivetrain.driveTank(AutoConstants.AUTO_MAX_SPEED_METERS_PER_SECOND, AutoConstants.AUTO_MAX_ROTAT_RADIANS_PER_SECOND);
-    }
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {}
+  public void execute() {
+    if( -m_drivetrain.getDistanceTraveled() <dist) {
+      m_drivetrain.driveTank(-AutoConstants.AUTO_MAX_SPEED_METERS_PER_SECOND*0.4, 0);
+    }
+  }
 
   // Called once the command ends or is interrupted.
   @Override

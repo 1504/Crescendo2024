@@ -52,8 +52,6 @@ public class RobotContainer {
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
 
-    NamedCommands.registerCommand("FlipFront", new FlipFront());
-    
     // Configure the trigger bindings
     configureBindings();
   
@@ -90,7 +88,8 @@ public class RobotContainer {
     // An example command will be run in autonomous
     System.err.println(" ----------------------------------------");
     System.err.println(m_autoChooser.getSelected());
-    return m_autoChooser.getSelected();
+    return m_autoChooser.getSelected().andThen(new moveBackwards(2));
+    //return new moveBackwards(3);
     //return null;
   }
 }

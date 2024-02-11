@@ -29,7 +29,10 @@ public class ControlBoard {
     }
 
     public double getForward() {
-        return -_joystickOne.getY();
+        if(Math.abs(_joystickOne.getY()) > 0.1) {
+            return -_joystickOne.getY();
+        }
+        return 0;
     }
 
     public Joystick getJoystick() {

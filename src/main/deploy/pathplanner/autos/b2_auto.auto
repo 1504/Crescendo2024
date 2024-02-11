@@ -16,12 +16,6 @@
           "data": {
             "pathName": "b2.1"
           }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "b_back_from_speaker"
-          }
         }
       ]
     }
