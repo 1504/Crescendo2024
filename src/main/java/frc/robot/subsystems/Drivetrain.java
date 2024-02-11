@@ -166,7 +166,7 @@ public class Drivetrain extends SubsystemBase {
       _drive = new DifferentialDrive(_left_motor1, _right_motor1);
     }
     flipped = !flipped;
-    System.out.println("flipped");
+    System.out.println("flipped: " + flipped);
   }
 
   public boolean getFlipped() {
@@ -176,6 +176,14 @@ public class Drivetrain extends SubsystemBase {
   public void resetEncoders() {
     _left_Encoder.setPosition(0);
     _right_Encoder.setPosition(0);
+  }
+
+  public RelativeEncoder getLeftEncoder() {
+    return _left_Encoder;
+  }
+
+  public RelativeEncoder getRightEncoder() {
+    return _right_Encoder;
   }
 
   public double getLeftVelocity() {

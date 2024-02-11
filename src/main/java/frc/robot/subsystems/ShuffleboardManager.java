@@ -33,6 +33,7 @@ public class ShuffleboardManager extends SubsystemBase {
   ShuffleboardTab telemetry;
   ShuffleboardTab limelight;
   ShuffleboardTab _Gyroscope;
+  ShuffleboardTab PIDTuning;
 
   // telemetry
   private GenericEntry leftEncoder;
@@ -47,6 +48,8 @@ public class ShuffleboardManager extends SubsystemBase {
   private GenericEntry GyroDX;
   private GenericEntry GyroDY;
   private GenericEntry GyroDZ;
+  private GenericEntry LeftPosition;
+  private GenericEntry RightPosition;
 
   // limelight
   private GenericEntry distanceFromAT;
@@ -60,31 +63,28 @@ public class ShuffleboardManager extends SubsystemBase {
     try {
       telemetry = Shuffleboard.getTab("Telemetry");
       _Gyroscope = Shuffleboard.getTab("Gyroscope");
-      leftEncoder = telemetry.add("Left Encoder", 0).withPosition(0, 0).withSize(2, 2)
-          .withWidget(BuiltInWidgets.kGraph).getEntry();
-      rightEncoder = telemetry.add("Right Encoder", 2).withPosition(2, 0).withSize(2, 2)
-          .withWidget(BuiltInWidgets.kGraph).getEntry();
+      PIDTuning = Shuffleboard.getTab("PID Tuning");
+
+      leftEncoder = telemetry.add("Left Encoder", 0).withPosition(0, 0).withSize(2, 2).withWidget(BuiltInWidgets.kGraph).getEntry();
+      rightEncoder = telemetry.add("Right Encoder", 2).withPosition(2, 0).withSize(2, 2).withWidget(BuiltInWidgets.kGraph).getEntry();
 
       limelight = Shuffleboard.getTab("Limelight");
-      distanceFromAT = limelight.add("Distance from AT", 0).withPosition(0, 0).withSize(2, 2)
-          .withWidget(BuiltInWidgets.kTextView).getEntry();
+      distanceFromAT = limelight.add("Distance from AT", 0).withPosition(0, 0).withSize(2, 2).withWidget(BuiltInWidgets.kTextView).getEntry();
 
-      joystickX = telemetry.add("Joystick X", 0).withPosition(0, 2).withSize(2, 1).withWidget(BuiltInWidgets.kTextView)
-          .getEntry();
-      joystickY = telemetry.add("Joystick Y", 0).withPosition(2, 2).withSize(2, 1).withWidget(BuiltInWidgets.kTextView)
-          .getEntry();
-      GyroPitch = _Gyroscope.add("Gyro Pitch", 0).withPosition(0, 0).withSize(2, 1).withWidget(BuiltInWidgets.kTextView)
-          .getEntry();
-      GyroRoll = _Gyroscope.add("Gyro Roll", 0).withPosition(2, 0).withSize(2, 1).withWidget(BuiltInWidgets.kTextView)
-          .getEntry();
-      GyroYaw = _Gyroscope.add("Gyro Yaw", 0).withPosition(0, 1).withSize(2, 1).withWidget(BuiltInWidgets.kTextView)
-          .getEntry();
-      GyroDX = _Gyroscope.add("Gyro Displacement X", 0).withPosition(2, 1).withSize(2, 1)
-          .withWidget(BuiltInWidgets.kTextView).getEntry();
-      GyroDY = _Gyroscope.add("Gyro Displacement Y", 0).withPosition(0, 2).withSize(2, 1)
-          .withWidget(BuiltInWidgets.kTextView).getEntry();
-      GyroDZ = _Gyroscope.add("Gyro Displacement Z", 0).withPosition(2, 2).withSize(2, 1)
-          .withWidget(BuiltInWidgets.kTextView).getEntry();
+      joystickX = telemetry.add("Joystick X", 0).withPosition(0, 2).withSize(2, 1).withWidget(BuiltInWidgets.kTextView).getEntry();
+      joystickY = telemetry.add("Joystick Y", 0).withPosition(2, 2).withSize(2, 1).withWidget(BuiltInWidgets.kTextView).getEntry();
+
+      GyroPitch = _Gyroscope.add("Gyro Pitch", 0).withPosition(0, 0).withSize(2, 1).withWidget(BuiltInWidgets.kTextView).getEntry();
+      GyroRoll = _Gyroscope.add("Gyro Roll", 0).withPosition(2, 0).withSize(2, 1).withWidget(BuiltInWidgets.kTextView).getEntry();
+      GyroYaw = _Gyroscope.add("Gyro Yaw", 0).withPosition(0, 1).withSize(2, 1).withWidget(BuiltInWidgets.kTextView).getEntry();
+      GyroDX = _Gyroscope.add("Gyro Displacement X", 0).withPosition(2, 1).withSize(2, 1).withWidget(BuiltInWidgets.kTextView).getEntry();
+      GyroDY = _Gyroscope.add("Gyro Displacement Y", 0).withPosition(0, 2).withSize(2, 1).withWidget(BuiltInWidgets.kTextView).getEntry();
+      GyroDZ = _Gyroscope.add("Gyro Displacement Z", 0).withPosition(2, 2).withSize(2, 1).withWidget(BuiltInWidgets.kTextView).getEntry();
+
+      LeftPosition = PIDTuning.add("Left Encoder Position", 0).withPosition(0, 0).withSize(2, 2).getEntry();
+      RightPosition = PIDTuning.add("Right Encoder Position", 0).withPosition(2, 0).withSize(2,2).getEntry();
+      PIDTuning.add("Left PID",_drive.getLeftPid()).withPosition(0, 2).withSize(2,2);
+      PIDTuning.add("Right PID", _drive.getRightPID()).withPosition(2, 2).withSize(2,2);
     } catch (Exception e) {
       System.out.println("ShuffleboardManager error: " + e);
     }
@@ -104,6 +104,9 @@ public class ShuffleboardManager extends SubsystemBase {
     GyroDX.setDouble(_gyroOne.getDisplacementX());
     GyroDY.setDouble(_gyroOne.getDisplacementY());
     GyroDZ.setDouble(_gyroOne.getDisplacementZ());
+
+    LeftPosition.setDouble(_drive.getLeftEncoder().getPosition());
+    RightPosition.setDouble(_drive.getRightEncoder().getPosition());
   }
 
   @Override

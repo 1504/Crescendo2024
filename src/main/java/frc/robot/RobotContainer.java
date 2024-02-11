@@ -58,6 +58,10 @@ public class RobotContainer {
   
     m_autoChooser = AutoBuilder.buildAutoChooser("b1_auto");
     SmartDashboard.putData("Auto Chooser", m_autoChooser);
+
+    NamedCommands.registerCommand("FlipFront", new FlipFront());
+    NamedCommands.registerCommand("unFlip", new FlipFront());
+
   }
 
   /**
