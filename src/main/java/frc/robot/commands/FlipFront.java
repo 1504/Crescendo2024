@@ -18,6 +18,7 @@ public class FlipFront extends Command {
   @Override
   public void initialize() {
     m_drivetrain.switchFront();
+    System.err.println("done");
   }
 
   // Called every time the scheduler runs while the command is scheduled.

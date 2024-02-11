@@ -50,14 +50,14 @@ public class RobotContainer {
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
+
+    NamedCommands.registerCommand("FlipFront", new FlipFront());
+    
     // Configure the trigger bindings
     configureBindings();
   
     m_autoChooser = AutoBuilder.buildAutoChooser("b1_auto");
     SmartDashboard.putData("Auto Chooser", m_autoChooser);
-
-    NamedCommands.registerCommand("FlipFront", new FlipFront());
-    NamedCommands.registerCommand("unFlip", new FlipFront());
   }
 
   /**
