@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.IOConstants;
 import frc.robot.controlboard.ControlBoard;
+import frc.robot.commands.*;
 
 public class ShuffleboardManager extends SubsystemBase {
 
@@ -50,6 +51,8 @@ public class ShuffleboardManager extends SubsystemBase {
   private GenericEntry GyroDZ;
   private GenericEntry LeftPosition;
   private GenericEntry RightPosition;
+  private GenericEntry distTraveled;
+
 
   // limelight
   private GenericEntry distanceFromAT;
@@ -85,6 +88,11 @@ public class ShuffleboardManager extends SubsystemBase {
       RightPosition = PIDTuning.add("Right Encoder Position", 0).withPosition(2, 0).withSize(2,2).getEntry();
       PIDTuning.add("Left PID",_drive.getLeftPid()).withPosition(0, 2).withSize(2,2);
       PIDTuning.add("Right PID", _drive.getRightPID()).withPosition(2, 2).withSize(2,2);
+      PIDTuning.add("Run Command", new moveBackwards()).withPosition(4, 2).withSize(2, 1);
+      distTraveled = PIDTuning.add("Distance Traveled", 0).withPosition(4, 3).withSize(2, 1).withWidget(BuiltInWidgets.kTextView).getEntry();
+      // hit button to run command
+      // keep track of dist traveled when button is pressed
+
     } catch (Exception e) {
       System.out.println("ShuffleboardManager error: " + e);
     }
@@ -107,6 +115,9 @@ public class ShuffleboardManager extends SubsystemBase {
 
     LeftPosition.setDouble(_drive.getLeftEncoder().getPosition());
     RightPosition.setDouble(_drive.getRightEncoder().getPosition());
+
+    distTraveled.setDouble(_drive.getDistTraveled());
+
   }
 
   @Override
