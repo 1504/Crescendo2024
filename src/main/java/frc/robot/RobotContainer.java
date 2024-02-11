@@ -6,6 +6,7 @@ package frc.robot;
 
 import frc.robot.commands.Tank;
 import frc.robot.commands.Turtles;
+import frc.robot.commands.moveBackwards;
 import frc.robot.controlboard.ControlBoard;
 // import frc.robot.commands.Turtle2;
 import frc.robot.subsystems.Drivetrain;
@@ -23,6 +24,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 /**
@@ -52,7 +54,6 @@ public class RobotContainer {
   
     m_autoChooser = AutoBuilder.buildAutoChooser("b1_auto");
     SmartDashboard.putData("Auto Chooser", m_autoChooser);
-
   }
 
   /**
@@ -67,6 +68,8 @@ public class RobotContainer {
   private void configureBindings() {
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
     m_drive.setDefaultCommand(new Tank(m_ControlBoard::getForward, m_ControlBoard::getRot));
+
+    new JoystickButton(_joystickOne, 2).onTrue(new moveBackwards(3));
   }
 
   private void initAuton() {
