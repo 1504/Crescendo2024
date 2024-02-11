@@ -9,13 +9,26 @@ import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.subsystems.Drivetrain;
+// pid
+import edu.wpi.first.math.controller.PIDController;
 
 public class moveBackwards extends Command {
 
   protected final Drivetrain m_drivetrain = Drivetrain.getInstance();
   protected final double dist;
+  protected double error;
+
+
+  // pid constants
+  double kP = 0.1;
+  double kI = 0.0;
+  double kD = 0.0;
 
   // create PID controller
+  private final PIDController m_pidController = new PIDController(kP, kI, kD);
+
+
+
 
   /** Creates a new moveBackwards. */
   public moveBackwards(double d) {
@@ -36,6 +49,9 @@ public class moveBackwards extends Command {
     // error = error of distance
     // curr - target
     // set wheel speed to pid
+    error = dist - m_drivetrain.getDistanceTraveled();
+    m_pidController.setSetpoint(error);
+    m_drivetrain.driveTank(m_pidController.calculate(m_drivetrain.getDistanceTraveled()), m_pidController.calculate(m_drivetrain.getDistanceTraveled()));
     if( -m_drivetrain.getDistanceTraveled() <dist) {
       m_drivetrain.driveTank(-AutoConstants.AUTO_MAX_SPEED_METERS_PER_SECOND*0.4, 0);
     }
