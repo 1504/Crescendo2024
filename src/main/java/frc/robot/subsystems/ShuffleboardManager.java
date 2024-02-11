@@ -88,7 +88,7 @@ public class ShuffleboardManager extends SubsystemBase {
       RightPosition = PIDTuning.add("Right Encoder Position", 0).withPosition(2, 0).withSize(2,2).getEntry();
       PIDTuning.add("Left PID",_drive.getLeftPid()).withPosition(0, 2).withSize(2,2);
       PIDTuning.add("Right PID", _drive.getRightPID()).withPosition(2, 2).withSize(2,2);
-      PIDTuning.add("Run Command", new moveBackwards()).withPosition(4, 2).withSize(2, 1);
+      PIDTuning.add("Run Command", new moveBackwards(2)).withPosition(4, 2).withSize(2, 1);
       distTraveled = PIDTuning.add("Distance Traveled", 0).withPosition(4, 3).withSize(2, 1).withWidget(BuiltInWidgets.kTextView).getEntry();
       // hit button to run command
       // keep track of dist traveled when button is pressed
@@ -116,7 +116,7 @@ public class ShuffleboardManager extends SubsystemBase {
     LeftPosition.setDouble(_drive.getLeftEncoder().getPosition());
     RightPosition.setDouble(_drive.getRightEncoder().getPosition());
 
-    distTraveled.setDouble(_drive.getDistTraveled());
+    distTraveled.setDouble(_drive.getDistanceTraveled());
 
   }
 

@@ -190,7 +190,7 @@ public class Drivetrain extends SubsystemBase {
     return _right_Encoder.getVelocity()/BuildConstants.GR*BuildConstants.WHEEL_CIRCUMFERENCE/60 *BuildConstants.INCHES_TO_METERS;
   }
 
-  public Command invertMotors() {
+  /*public Command invertMotors() {
     //_right_motor1.setInverted(!inverted);
     //_left_motor1.setInverted(!inverted); 
     //_right_motor2.setInverted(!inverted);
@@ -198,7 +198,7 @@ public class Drivetrain extends SubsystemBase {
     _drive = new DifferentialDrive(_right_motor1, _left_motor1);
     inverted = !inverted;
     return new PrintCommand("invert");
-  }
+  }*/
 
   
   public PIDController getLeftPid() {
