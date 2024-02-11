@@ -15,6 +15,8 @@ public class moveBackwards extends Command {
   protected final Drivetrain m_drivetrain = Drivetrain.getInstance();
   protected final double dist;
 
+  // create PID controller
+
   /** Creates a new moveBackwards. */
   public moveBackwards(double d) {
     // Use addRequirements() here to declare subsystem dep
@@ -31,6 +33,9 @@ public class moveBackwards extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    // error = error of distance
+    // curr - target
+    // set wheel speed to pid
     if( -m_drivetrain.getDistanceTraveled() <dist) {
       m_drivetrain.driveTank(-AutoConstants.AUTO_MAX_SPEED_METERS_PER_SECOND*0.4, 0);
     }
