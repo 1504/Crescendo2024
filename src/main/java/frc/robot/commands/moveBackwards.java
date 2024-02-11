@@ -18,9 +18,8 @@ public class moveBackwards extends Command {
   protected final double dist;
   protected double error;
 
-
   // pid constants
-  double kP = 0.1;
+  double kP = 0.2;
   double kI = 0.0;
   double kD = 0.0;
 
@@ -41,6 +40,7 @@ public class moveBackwards extends Command {
   @Override
   public void initialize() {
     m_drivetrain.resetEncoders();
+    m_pidController.setSetpoint(error);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -50,11 +50,13 @@ public class moveBackwards extends Command {
     // curr - target
     // set wheel speed to pid
     error = dist - m_drivetrain.getDistanceTraveled();
-    m_pidController.setSetpoint(error);
-    m_drivetrain.driveTank(m_pidController.calculate(m_drivetrain.getDistanceTraveled()), m_pidController.calculate(m_drivetrain.getDistanceTraveled()));
+    
+    m_drivetrain.driveTank(m_pidController.calculate(m_drivetrain.getDistanceTraveled()), 0);
+    /*
     if( -m_drivetrain.getDistanceTraveled() <dist) {
       m_drivetrain.driveTank(-AutoConstants.AUTO_MAX_SPEED_METERS_PER_SECOND*0.4, 0);
     }
+    */
   }
 
   // Called once the command ends or is interrupted.
@@ -66,6 +68,6 @@ public class moveBackwards extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return Math.abs(m_drivetrain.getDistanceTraveled())>dist;
   }
 }
