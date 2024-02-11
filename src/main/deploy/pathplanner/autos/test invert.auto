@@ -12,6 +12,12 @@
     "data": {
       "commands": [
         {
+          "type": "named",
+          "data": {
+            "name": "FlipFront"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "forward_path"

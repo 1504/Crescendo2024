@@ -26,6 +26,8 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.BuildConstants;
@@ -61,6 +63,8 @@ public class Drivetrain extends SubsystemBase {
   private final PIDController _right_pid;
   private final PIDController _theta_pid;
 
+  private boolean flipped = false;
+
   //odometry stuff
   private final DifferentialDriveOdometry m_odometry;
   private final Gyroscope m_gyro = Gyroscope.getInstance();
@@ -70,7 +74,7 @@ public class Drivetrain extends SubsystemBase {
   new DifferentialDriveKinematics(1);
 
 
-  private final DifferentialDrive _drive;
+  private DifferentialDrive _drive;
   private final Limelight _limelight = Limelight.getInstance();
 
   private Pose2d m_pose;
@@ -78,7 +82,6 @@ public class Drivetrain extends SubsystemBase {
   ShuffleboardTab telemetry = Shuffleboard.getTab("Telemetry");
 
   private final AutoBuilder m_autoBuilder;
-
   public Drivetrain() {
     // initializes tank motor controllers
     _right_motor1 = new CANSparkMax(DriveConstants.RIGHT1, MotorType.kBrushless);
@@ -147,9 +150,36 @@ public class Drivetrain extends SubsystemBase {
       _drive.arcadeDrive(xSpd, ySpd);
   }
 
+  public void switchFront() {
+    if (!flipped) {
+      _left_motor1.setInverted(false);
+      _right_motor1.setInverted(true);
+      _drive = new DifferentialDrive(_right_motor1, _left_motor1);
+    }
+    else {
+      _left_motor1.setInverted(true);
+      _right_motor1.setInverted(false);
+      _drive = new DifferentialDrive(_left_motor1, _right_motor1);
+    }
+    flipped = !flipped;
+    System.out.println("flipped: " + flipped);
+  }
+
+  public boolean getFlipped() {
+    return flipped;
+  }
+
   public void resetEncoders() {
     _left_Encoder.setPosition(0);
     _right_Encoder.setPosition(0);
+  }
+
+  public RelativeEncoder getLeftEncoder() {
+    return _left_Encoder;
+  }
+
+  public RelativeEncoder getRightEncoder() {
+    return _right_Encoder;
   }
 
   public double getLeftVelocity() {
@@ -160,6 +190,17 @@ public class Drivetrain extends SubsystemBase {
     return _right_Encoder.getVelocity()/BuildConstants.GR*BuildConstants.WHEEL_CIRCUMFERENCE/60 *BuildConstants.INCHES_TO_METERS;
   }
 
+  public Command invertMotors() {
+    //_right_motor1.setInverted(!inverted);
+    //_left_motor1.setInverted(!inverted); 
+    //_right_motor2.setInverted(!inverted);
+    //_right_motor2.setInverted(!inverted);
+    _drive = new DifferentialDrive(_right_motor1, _left_motor1);
+    inverted = !inverted;
+    return new PrintCommand("invert");
+  }
+
+  
   public PIDController getLeftPid() {
     return _left_pid;
   }
