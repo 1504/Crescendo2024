@@ -32,6 +32,7 @@ public final class Constants {
   public final class IOConstants {
     public static final int JOYSTICK_ONE = 0;
     public static final int JOYSTICK_TWO = 1;
+    public static final int XBOX_CONTROLLER = 2;
   }
 
   public static class OperatorConstants {
