@@ -50,13 +50,17 @@ public class moveBackwards extends Command {
     // curr - target
     // set wheel speed to pid
     error = dist - m_drivetrain.getDistanceTraveled();
+
+    //System.err.println(m_pidController.calculate(m_drivetrain.getDistanceTraveled()));
     
-    m_drivetrain.driveTank(m_pidController.calculate(m_drivetrain.getDistanceTraveled()), 0);
-    /*
+    //m_drivetrain.driveTank(m_pidController.calculate(m_drivetrain.getDistanceTraveled()), 0);
+    
+    
     if( -m_drivetrain.getDistanceTraveled() <dist) {
       m_drivetrain.driveTank(-AutoConstants.AUTO_MAX_SPEED_METERS_PER_SECOND*0.4, 0);
     }
-    */
+    
+    
   }
 
   // Called once the command ends or is interrupted.

@@ -88,8 +88,8 @@ public class RobotContainer {
     // An example command will be run in autonomous
     System.err.println(" ----------------------------------------");
     System.err.println(m_autoChooser.getSelected());
-    return m_autoChooser.getSelected().andThen(new moveBackwards(2));
-    //return new moveBackwards(3);
+    //return m_autoChooser.getSelected().andThen(new moveBackwards(2));
+    return new moveBackwards(3);
     //return null;
   }
 }
