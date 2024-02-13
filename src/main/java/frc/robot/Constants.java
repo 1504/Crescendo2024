@@ -73,7 +73,7 @@ public final class Constants {
     public static final double WHEEL_CIRCUMFERENCE = 4 * Math.PI;
     public static final double INCHES_PER_REVOLUTION = WHEEL_CIRCUMFERENCE / GR;
 
-    public static final DifferentialDriveKinematics _KINEMATICS = new DifferentialDriveKinematics(0);
+    //public static final DifferentialDriveKinematics _KINEMATICS = new DifferentialDriveKinematics(0);
 
   }
 

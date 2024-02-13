@@ -51,6 +51,8 @@ public class ShuffleboardManager extends SubsystemBase {
   private GenericEntry GyroDZ;
   private GenericEntry LeftPosition;
   private GenericEntry RightPosition;
+  private GenericEntry leftVelocity;
+  private GenericEntry rightVelocity;
   private GenericEntry distTraveled;
 
 
@@ -86,10 +88,12 @@ public class ShuffleboardManager extends SubsystemBase {
 
       LeftPosition = PIDTuning.add("Left Encoder Position", 0).withPosition(0, 0).withSize(2, 2).getEntry();
       RightPosition = PIDTuning.add("Right Encoder Position", 0).withPosition(2, 0).withSize(2,2).getEntry();
-      PIDTuning.add("Left PID",_drive.getLeftPid()).withPosition(0, 2).withSize(2,2);
-      PIDTuning.add("Right PID", _drive.getRightPID()).withPosition(2, 2).withSize(2,2);
-      PIDTuning.add("Run Command", new moveBackwards(2)).withPosition(4, 2).withSize(2, 1);
-      distTraveled = PIDTuning.add("Distance Traveled", 0).withPosition(4, 3).withSize(2, 1).withWidget(BuiltInWidgets.kTextView).getEntry();
+      leftVelocity = PIDTuning.add("Left wheel velocity",0).withPosition(4, 0).withSize(3,3).withWidget(BuiltInWidgets.kGraph).getEntry();
+      rightVelocity = PIDTuning.add("Right wheel velocity",0).withPosition(7, 0).withSize(3,3).withWidget(BuiltInWidgets.kGraph).getEntry();
+      PIDTuning.add("Left PID",_drive.getLeftPid()).withPosition(0, 2).withSize(2,1);
+      PIDTuning.add("Right PID", _drive.getRightPID()).withPosition(2, 2).withSize(2,1);
+      PIDTuning.add("Run Command", new moveBackwards(2)).withPosition(0, 4).withSize(2, 1);
+      distTraveled = PIDTuning.add("Distance Traveled", 0).withPosition(2, 4).withSize(2, 1).withWidget(BuiltInWidgets.kTextView).getEntry();
 
 
     } catch (Exception e) {
@@ -117,7 +121,8 @@ public class ShuffleboardManager extends SubsystemBase {
 
     distTraveled.setDouble(_drive.getDistanceTraveled());
 
-
+    leftVelocity.setDouble(_drive.getLeftVelocity());
+    rightVelocity.setDouble(_drive.getRightVelocity());
 
   }
 

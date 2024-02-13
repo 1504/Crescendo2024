@@ -31,6 +31,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DriveConstants;
+import frc.robot.Constants;
 import frc.robot.Constants.BuildConstants;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
@@ -72,7 +73,7 @@ public class Drivetrain extends SubsystemBase {
 
   //odometry stuff ends
   DifferentialDriveKinematics kinematics =
-  new DifferentialDriveKinematics(1);
+  new DifferentialDriveKinematics(24*Constants.BuildConstants.INCHES_TO_METERS);
 
 
   private DifferentialDrive _drive;
@@ -111,11 +112,13 @@ public class Drivetrain extends SubsystemBase {
 
     _drive = new DifferentialDrive(_left_motor1,_right_motor1);
 
-    double p = 1.8074;
+    double p = 2.4;
+    double i = 0;
+    double d = 0;
 
-    _left_pid = new PIDController(p, 0, 0);
-    _right_pid = new PIDController(p, 0, 0);
-    _theta_pid = new PIDController(0.01, 0, 0);
+    _left_pid = new PIDController(p, i, d);
+    _right_pid = new PIDController(p, i, d);
+    _theta_pid = new PIDController(0.01, 0, d);
 
 
     SmartDashboard.putData("Drive", _drive); 
@@ -244,12 +247,21 @@ public class Drivetrain extends SubsystemBase {
     return _left_Encoder.getPosition()/BuildConstants.GR*BuildConstants.WHEEL_CIRCUMFERENCE *BuildConstants.INCHES_TO_METERS;
   }
 
+  public void driveRobotRelative(ChassisSpeeds robotRelativeSpeeds) {
+    ChassisSpeeds targetSpeeds = ChassisSpeeds.discretize(robotRelativeSpeeds, 0.02);
+    DifferentialDriveWheelSpeeds wheelSpeeds = kinematics.toWheelSpeeds(targetSpeeds);
+    double leftVelocity = wheelSpeeds.leftMetersPerSecond;
+    double rightVelocity = wheelSpeeds.rightMetersPerSecond;
+    setWheelSpeeds(leftVelocity, rightVelocity);
+  }
+
   public ChassisSpeeds getSpeeds() {
     double leftVelocity = getLeftVelocity();
     double rightVelocity = getRightVelocity();
     double headingVelocity = m_gyro.getRotation2d().getRadians();
 
     System.err.println(leftVelocity + "       " + rightVelocity + "      " + headingVelocity);
+
     return new ChassisSpeeds(leftVelocity, rightVelocity, headingVelocity);
 }
   
@@ -257,13 +269,11 @@ public class Drivetrain extends SubsystemBase {
     DifferentialDriveWheelSpeeds wheelSpeeds = kinematics.toWheelSpeeds(speeds);
     // Left velocity
     double leftVelocity = wheelSpeeds.leftMetersPerSecond;
-
     // Right velocity
     double rightVelocity = wheelSpeeds.rightMetersPerSecond;
 
     //double leftVelocity = _left_pid.calculate(speeds.leftMetersPerSecond);
     //double rightVelocity = _right_pid.calculate(speeds.rightMetersPerSecond);
-
     setWheelSpeeds(leftVelocity, rightVelocity);
 }
 
