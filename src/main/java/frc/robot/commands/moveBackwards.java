@@ -4,8 +4,6 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.math.trajectory.TrajectoryConfig;
-import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.subsystems.Drivetrain;
@@ -25,9 +23,6 @@ public class moveBackwards extends Command {
 
   // create PID controller
   private final PIDController m_pidController = new PIDController(kP, kI, kD);
-
-
-
 
   /** Creates a new moveBackwards. */
   public moveBackwards(double d) {

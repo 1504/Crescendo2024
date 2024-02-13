@@ -7,10 +7,6 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 
-import java.io.PipedInputStream;
-import java.util.function.BiConsumer;
-import java.util.function.Supplier;
-
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.util.PIDConstants;
 import com.pathplanner.lib.util.ReplanningConfig;
@@ -19,15 +15,10 @@ import com.revrobotics.CANSparkLowLevel.MotorType;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.networktables.GenericEntry;
-import edu.wpi.first.networktables.NetworkTableEntry;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.BuildConstants;
@@ -121,16 +112,15 @@ public class Drivetrain extends SubsystemBase {
     //odometry stuff ends
 
     Pose2d m_pose;
-    if( false) {
-      //m_pose = limelight.getPose();
-      m_pose = new Pose2d();
+    if( _limelight.hasTarget()) {
+      m_pose = _limelight.getFieldPose();
+      //m_pose = new Pose2d();
     }
     else {
       m_pose = new Pose2d();
     }
       m_autoBuilder = new AutoBuilder();
 
- 
   AutoBuilder.configureRamsete(
             this::getPose, // Robot pose supplier
             this::resetOdometry, // Method to reset odometry (will be called if your auto has a starting pose)
@@ -190,15 +180,13 @@ public class Drivetrain extends SubsystemBase {
     return _right_Encoder.getVelocity()/BuildConstants.GR*BuildConstants.WHEEL_CIRCUMFERENCE/60 *BuildConstants.INCHES_TO_METERS;
   }
 
-  /*public Command invertMotors() {
-    //_right_motor1.setInverted(!inverted);
-    //_left_motor1.setInverted(!inverted); 
-    //_right_motor2.setInverted(!inverted);
-    //_right_motor2.setInverted(!inverted);
-    _drive = new DifferentialDrive(_right_motor1, _left_motor1);
-    inverted = !inverted;
-    return new PrintCommand("invert");
-  }*/
+  public double getLeftPos() {
+    return _left_Encoder.getPosition()/BuildConstants.GR *BuildConstants.WHEEL_CIRCUMFERENCE*BuildConstants.INCHES_TO_METERS;
+  }
+  
+  public double getRightPos() {
+    return _right_Encoder.getPosition()/BuildConstants.GR*BuildConstants.WHEEL_CIRCUMFERENCE*BuildConstants.INCHES_TO_METERS;
+  }
 
   
   public PIDController getLeftPid() {
@@ -241,10 +229,8 @@ public class Drivetrain extends SubsystemBase {
   
   public void setSpeeds(ChassisSpeeds speeds) {
     DifferentialDriveWheelSpeeds wheelSpeeds = kinematics.toWheelSpeeds(speeds);
-    // Left velocity
-    double leftVelocity = wheelSpeeds.leftMetersPerSecond;
 
-    // Right velocity
+    double leftVelocity = wheelSpeeds.leftMetersPerSecond;
     double rightVelocity = wheelSpeeds.rightMetersPerSecond;
 
     //double leftVelocity = _left_pid.calculate(speeds.leftMetersPerSecond);

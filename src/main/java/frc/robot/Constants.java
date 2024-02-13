@@ -86,6 +86,10 @@ public final class Constants {
     public static final double AT_height = 53.88;
     public static final double L_angle = 0;
 
+    public static final double KpAim = -0.1f;
+    public static final double KpDistance = -0.1f;
+    public static double min_aim_command = 0.05f;
+
   }
 
   public static class IntakeConstants {

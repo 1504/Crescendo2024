@@ -8,6 +8,7 @@ import frc.robot.commands.FlipFront;
 import frc.robot.commands.Tank;
 import frc.robot.commands.Turtles;
 import frc.robot.commands.moveBackwards;
+import frc.robot.commands.rePosition;
 import frc.robot.controlboard.ControlBoard;
 // import frc.robot.commands.Turtle2;
 import frc.robot.subsystems.Drivetrain;
@@ -17,11 +18,8 @@ import frc.robot.subsystems.ShuffleboardManager;
 import java.util.HashMap;
 
 import com.pathplanner.lib.auto.AutoBuilder;
-import com.pathplanner.lib.auto.NamedCommands;
 
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -72,7 +70,8 @@ public class RobotContainer {
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
     m_drive.setDefaultCommand(new Tank(m_ControlBoard::getForward, m_ControlBoard::getRot));
 
-    new JoystickButton(_joystickOne, 2).onTrue(new moveBackwards(3));
+    new JoystickButton(_joystickOne, 3).onTrue(new rePosition());
+    
   }
 
   private void initAuton() {
