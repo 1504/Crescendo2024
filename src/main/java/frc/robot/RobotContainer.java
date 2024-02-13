@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import frc.robot.commands.AutoDrive;
 import frc.robot.commands.FlipFront;
 import frc.robot.commands.Tank;
 import frc.robot.commands.Turtles;
@@ -20,6 +21,7 @@ import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -41,6 +43,7 @@ public class RobotContainer {
   public final ShuffleboardManager m_ShuffleboardManager = ShuffleboardManager.getInstance();
   private final ControlBoard m_ControlBoard = ControlBoard.getInstance();
   private final Joystick _joystickOne = m_ControlBoard.getJoystick();
+  private final XboxController _XboxController = m_ControlBoard.getXboxController();
   private final Limelight m_limelight= Limelight.getInstance();
 
   public final ShuffleboardManager m_shuffleboardManager = ShuffleboardManager.getInstance();
@@ -73,6 +76,7 @@ public class RobotContainer {
     m_drive.setDefaultCommand(new Tank(m_ControlBoard::getForward, m_ControlBoard::getRot));
 
     new JoystickButton(_joystickOne, 2).onTrue(new moveBackwards(3));
+    new JoystickButton(_XboxController, XboxController.Button.kA.value).onTrue(new AutoDrive(3, true));
   }
 
   private void initAuton() {
@@ -88,8 +92,9 @@ public class RobotContainer {
     // An example command will be run in autonomous
     System.err.println(" ----------------------------------------");
     System.err.println(m_autoChooser.getSelected());
-    return m_autoChooser.getSelected().andThen(new moveBackwards(2));
+    return m_autoChooser.getSelected().andThen(new AutoDrive(2, false));
     //return new moveBackwards(3);
+    //return new AutoDrive(2, false);
     //return null;
   }
 }

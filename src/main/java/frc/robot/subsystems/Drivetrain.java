@@ -6,6 +6,7 @@ package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.CANSparkBase.IdleMode;
 
 import java.io.PipedInputStream;
 import java.util.function.BiConsumer;
@@ -89,6 +90,13 @@ public class Drivetrain extends SubsystemBase {
     _left_motor1 = new CANSparkMax(DriveConstants.LEFT1, MotorType.kBrushless);
     _left_motor2 = new CANSparkMax(DriveConstants.LEFT2, MotorType.kBrushless);
 
+    /* 
+    _right_motor1.setIdleMode(IdleMode.kBrake);
+    _right_motor2.setIdleMode(IdleMode.kBrake);
+    _left_motor1.setIdleMode(IdleMode.kBrake);
+    _left_motor2.setIdleMode(IdleMode.kBrake);
+    */
+
     _right_motor1.setInverted(false);
     //_right_motor2.setInverted(true);
     _left_motor1.setInverted(true);
@@ -99,6 +107,7 @@ public class Drivetrain extends SubsystemBase {
 
     _left_Encoder = _left_motor1.getEncoder();
     _right_Encoder = _right_motor1.getEncoder();
+
 
     _drive = new DifferentialDrive(_left_motor1,_right_motor1);
 
@@ -188,6 +197,11 @@ public class Drivetrain extends SubsystemBase {
 
   public double getRightVelocity() {
     return _right_Encoder.getVelocity()/BuildConstants.GR*BuildConstants.WHEEL_CIRCUMFERENCE/60 *BuildConstants.INCHES_TO_METERS;
+  }
+
+  public void stopMotors() {
+    _left_motor1.set(0);
+    _right_motor1.set(0);
   }
 
   /*public Command invertMotors() {

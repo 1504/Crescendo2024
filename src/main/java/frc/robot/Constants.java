@@ -16,10 +16,10 @@ import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
  */
 public final class Constants {
   public static class DriveConstants {
-    public static final int LEFT1 = 2;
-    public static final int LEFT2 = 4;
-    public static final int RIGHT1 = 1;
-    public static final int RIGHT2 = 3;
+    public static final int LEFT1 = 1;
+    public static final int LEFT2 = 2;
+    public static final int RIGHT1 = 3;
+    public static final int RIGHT2 = 4;
     public static final double DEADBAND = 0.03;
 
     //voltage constraints
@@ -69,8 +69,8 @@ public final class Constants {
     public static final double WHEEL_TO_CENTER_SIDE_INCHES = 0.26 / INCHES_TO_METERS; //NEED TO MEASURE
     public static final double WHEEL_TO_CENTER_FRONT_INCHES = 0.3175 / INCHES_TO_METERS;
   
-    public static final double GR = 12;
-    public static final double WHEEL_CIRCUMFERENCE = 6 * Math.PI;
+    public static final double GR = 6.28333333333;
+    public static final double WHEEL_CIRCUMFERENCE = 4 * Math.PI;
     public static final double INCHES_PER_REVOLUTION = WHEEL_CIRCUMFERENCE / GR;
 
     public static final DifferentialDriveKinematics _KINEMATICS = new DifferentialDriveKinematics(0);
