@@ -13,27 +13,31 @@ import edu.wpi.first.wpilibj2.command.Command;
 
 public class Shooter extends Command {
   private final PIDShooter m_shooter;
-  private final double topSpeed; // top speed of the intake
-  private final double bottomSpeed; // bottom speed of the intake
+  private final double rightSpeed; // right speed of the intake
+  private final double leftSpeed; // bottom speed of the intake
   /** Creates a new Intake. */
-  public Shooter(PIDShooter shooter, double topSpeed, double bottomSpeed) {
+  public Shooter(PIDShooter shooter, double rightSpeed, double leftSpeed) {
     // Use addRequirements() here to declare subsystem dependencies.
     m_shooter = shooter;
-    this.topSpeed = topSpeed;
-    this.bottomSpeed = bottomSpeed;
+    this.rightSpeed = rightSpeed;
+    this.leftSpeed = leftSpeed;
     addRequirements(m_shooter);
   }
 
   @Override
   public void initialize() {
-    m_shooter.setTop(topSpeed);
-    m_shooter.setBottom(bottomSpeed);
+    m_shooter.setRight(rightSpeed);
+    m_shooter.setLeft(leftSpeed);
+  }
+
+  @Override
+  public void execute(){
   }
 
   @Override
   public void end(boolean interrupted) {
-    m_shooter.setTop(0);
-    m_shooter.setBottom(0);
+    m_shooter.setRight(0);
+    m_shooter.setLeft(0);
     m_shooter.stopShoot();
 
   }

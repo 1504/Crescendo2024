@@ -9,57 +9,58 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.controller.SimpleMotorFeedforward;
+/*import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+*/
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ShootConstants;
 
 public class PIDShooter extends SubsystemBase {
   /** Creates a new PIDIntake. */
-  private final CANSparkMax _topShooter;
-  private final CANSparkMax _bottomShooter;
+  private final CANSparkMax _rightShooter;
+  private final CANSparkMax _leftShooter;
 
-  private final PIDController _topPID;
-  private final PIDController _bottomPID;
+  private final PIDController _rightPID;
+  private final PIDController _leftPID;
 
-  private final RelativeEncoder _topEncoder;
-  private final RelativeEncoder _bottomEncoder;
+  private final RelativeEncoder _rightEncoder;
+  private final RelativeEncoder _leftEncoder;
 
   public PIDShooter() {
-    _topShooter = new CANSparkMax(ShootConstants.TOP_SHOOTER, MotorType.kBrushless);
-    _bottomShooter = new CANSparkMax(ShootConstants.BOTTOM_SHOOTER, MotorType.kBrushless);
+    _rightShooter = new CANSparkMax(ShootConstants.RIGHT_SHOOTER, MotorType.kBrushless);
+    _leftShooter = new CANSparkMax(ShootConstants.LEFT_SHOOTER, MotorType.kBrushless);
 
-    _topPID = new PIDController(ShootConstants.TOP_P, ShootConstants.TOP_I, ShootConstants.TOP_D);
-    _bottomPID = new PIDController(ShootConstants.BOTTOM_P, ShootConstants.BOTTOM_I, ShootConstants.BOTTOM_D);
+    _rightPID = new PIDController(ShootConstants.RIGHT_P, ShootConstants.RIGHT_I, ShootConstants.RIGHT_D);
+    _leftPID = new PIDController(ShootConstants.LEFT_P, ShootConstants.LEFT_I, ShootConstants.LEFT_D);
 
-    _topEncoder = _topShooter.getEncoder();
-    _bottomEncoder = _bottomShooter.getEncoder();
+    _rightEncoder = _rightShooter.getEncoder();
+    _leftEncoder = _leftShooter.getEncoder();
 
-    _bottomShooter.setInverted(true);
+    _leftShooter.setInverted(true);
   }
 
-  public double getBotSpeed(){
-    return _bottomEncoder.getVelocity();
+  public double getLeftSpeed(){
+    return _leftEncoder.getVelocity();
   }
 
-  public double getTopSpeed(){
-    return _topEncoder.getVelocity();
+  public double getRightSpeed(){
+    return _rightEncoder.getVelocity();
   }
 
-  public void setTop(double speed){
-    _topPID.setSetpoint(speed);
+  public void setRight(double speed){
+    _rightPID.setSetpoint(speed);
   }
 
-  public void setBottom(double speed){
-    _topPID.setSetpoint(speed);
+  public void setLeft(double speed){
+    _rightPID.setSetpoint(speed);
   }
 
   public void stopShoot(){
-    _topShooter.stopMotor();
-    _bottomShooter.stopMotor();
+    _rightShooter.stopMotor();
+    _leftShooter.stopMotor();
   }
   @Override
   public void periodic() {
