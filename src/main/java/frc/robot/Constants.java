@@ -41,16 +41,16 @@ public final class Constants {
   }
 
   public static class ShootConstants {
-    public static final int TOP_SHOOTER = 0;
-    public static final int BOTTOM_SHOOTER = 1;
+    public static final int RIGHT_SHOOTER = 1;
+    public static final int LEFT_SHOOTER = -1;
 
-    public static final double TOP_P = 0;
-    public static final double TOP_I = 0;
-    public static final double TOP_D = 0;
+    public static final double RIGHT_P = 1;
+    public static final double RIGHT_I = 0;
+    public static final double RIGHT_D = 0;
 
-    public static final double BOTTOM_P = 0;
-    public static final double BOTTOM_I = 0;
-    public static final double BOTTOM_D = 0;
+    public static final double LEFT_P = -1;
+    public static final double LEFT_I = 0;
+    public static final double LEFT_D = 0;
   }
 
   public static class PIDConstants {
