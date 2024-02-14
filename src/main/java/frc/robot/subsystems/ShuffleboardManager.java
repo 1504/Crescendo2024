@@ -86,14 +86,14 @@ public class ShuffleboardManager extends SubsystemBase {
       GyroDY = _Gyroscope.add("Gyro Displacement Y", 0).withPosition(0, 2).withSize(2, 1).withWidget(BuiltInWidgets.kTextView).getEntry();
       GyroDZ = _Gyroscope.add("Gyro Displacement Z", 0).withPosition(2, 2).withSize(2, 1).withWidget(BuiltInWidgets.kTextView).getEntry();
 
-      LeftPosition = PIDTuning.add("Left Encoder Position", 0).withPosition(0, 0).withSize(2, 2).getEntry();
-      RightPosition = PIDTuning.add("Right Encoder Position", 0).withPosition(2, 0).withSize(2,2).getEntry();
-      leftVelocity = PIDTuning.add("Left wheel velocity",0).withPosition(4, 0).withSize(3,3).withWidget(BuiltInWidgets.kGraph).getEntry();
-      rightVelocity = PIDTuning.add("Right wheel velocity",0).withPosition(7, 0).withSize(3,3).withWidget(BuiltInWidgets.kGraph).getEntry();
-      PIDTuning.add("Left PID",_drive.getLeftPid()).withPosition(0, 2).withSize(2,1);
-      PIDTuning.add("Right PID", _drive.getRightPID()).withPosition(2, 2).withSize(2,1);
-      PIDTuning.add("Run Command", new moveBackwards(2)).withPosition(0, 4).withSize(2, 1);
-      distTraveled = PIDTuning.add("Distance Traveled", 0).withPosition(2, 4).withSize(2, 1).withWidget(BuiltInWidgets.kTextView).getEntry();
+      LeftPosition = PIDTuning.add("Left Encoder Position", 0).withPosition(0, 0).withSize(2, 1).getEntry();
+      RightPosition = PIDTuning.add("Right Encoder Position", 0).withPosition(0, 1).withSize(2,1).getEntry();
+      leftVelocity = PIDTuning.add("Left wheel velocity",0).withPosition(2, 0).withSize(3,3).withWidget(BuiltInWidgets.kGraph).getEntry();
+      rightVelocity = PIDTuning.add("Right wheel velocity",0).withPosition(5, 0).withSize(3,3).withWidget(BuiltInWidgets.kGraph).getEntry();
+      PIDTuning.add("Left PID",_drive.getLeftPid()).withPosition(0, 2).withSize(1,2);
+      PIDTuning.add("Right PID", _drive.getRightPID()).withPosition(1, 2).withSize(1,2);
+      PIDTuning.add("Run Command", new moveBackwards(2)).withPosition(2, 3).withSize(2, 1);
+      distTraveled = PIDTuning.add("Distance Traveled", 0).withPosition(4, 3).withSize(2, 1).withWidget(BuiltInWidgets.kTextView).getEntry();
 
 
     } catch (Exception e) {
