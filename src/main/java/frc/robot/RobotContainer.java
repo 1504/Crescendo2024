@@ -5,6 +5,7 @@
 package frc.robot;
 
 import frc.robot.commands.FlipFront;
+import frc.robot.commands.Intake;
 import frc.robot.commands.Tank;
 import frc.robot.commands.Turtles;
 import frc.robot.commands.moveBackwards;
@@ -20,6 +21,7 @@ import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -28,6 +30,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -41,6 +44,7 @@ public class RobotContainer {
   public final ShuffleboardManager m_ShuffleboardManager = ShuffleboardManager.getInstance();
   private final ControlBoard m_ControlBoard = ControlBoard.getInstance();
   private final Joystick _joystickOne = m_ControlBoard.getJoystick();
+  private final XboxController _xboxController =  new XboxController(2);
   private final Limelight m_limelight= Limelight.getInstance();
 
   public final ShuffleboardManager m_shuffleboardManager = ShuffleboardManager.getInstance();
@@ -73,6 +77,7 @@ public class RobotContainer {
     m_drive.setDefaultCommand(new Tank(m_ControlBoard::getForward, m_ControlBoard::getRot));
 
     new JoystickButton(_joystickOne, 2).onTrue(new moveBackwards(3));
+    new JoystickButton(_xboxController, XboxController.Button.kA.value).whileTrue(new Intake());
   }
 
   private void initAuton() {
