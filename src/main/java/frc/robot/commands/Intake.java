@@ -13,6 +13,7 @@ public class Intake extends Command {
   public Intake(GroundIntake _intake) {
     // Use addRequirements() here to declare subsystem dependencies.
     m_intake = _intake;
+    addRequirements(m_intake);
   }
 
   // Called when the command is initially scheduled.
