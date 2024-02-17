@@ -6,7 +6,6 @@ package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
-import com.revrobotics.CANSparkBase.IdleMode;
 
 import java.io.PipedInputStream;
 import java.util.function.BiConsumer;
@@ -31,7 +30,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DriveConstants;
-import frc.robot.Constants;
 import frc.robot.Constants.BuildConstants;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
@@ -73,7 +71,7 @@ public class Drivetrain extends SubsystemBase {
 
   //odometry stuff ends
   DifferentialDriveKinematics kinematics =
-  new DifferentialDriveKinematics(24*Constants.BuildConstants.INCHES_TO_METERS);
+  new DifferentialDriveKinematics(1);
 
 
   private DifferentialDrive _drive;
@@ -91,13 +89,6 @@ public class Drivetrain extends SubsystemBase {
     _left_motor1 = new CANSparkMax(DriveConstants.LEFT1, MotorType.kBrushless);
     _left_motor2 = new CANSparkMax(DriveConstants.LEFT2, MotorType.kBrushless);
 
-    /* 
-    _right_motor1.setIdleMode(IdleMode.kBrake);
-    _right_motor2.setIdleMode(IdleMode.kBrake);
-    _left_motor1.setIdleMode(IdleMode.kBrake);
-    _left_motor2.setIdleMode(IdleMode.kBrake);
-    */
-
     _right_motor1.setInverted(false);
     //_right_motor2.setInverted(true);
     _left_motor1.setInverted(true);
@@ -109,16 +100,13 @@ public class Drivetrain extends SubsystemBase {
     _left_Encoder = _left_motor1.getEncoder();
     _right_Encoder = _right_motor1.getEncoder();
 
-
     _drive = new DifferentialDrive(_left_motor1,_right_motor1);
 
-    double p = 1.4; //left 6.1261, right 7.5226
-    double i = 2;
-    double d = 0; //left 0.20986, right 0.1059775
+    double p = 1.8074;
 
-    _left_pid = new PIDController(p, i, d);
-    _right_pid = new PIDController(p, i, d);
-    _theta_pid = new PIDController(0.01, 0, d);
+    _left_pid = new PIDController(p, 0, 0);
+    _right_pid = new PIDController(p, 0, 0);
+    _theta_pid = new PIDController(0.01, 0, 0);
 
 
     SmartDashboard.putData("Drive", _drive); 
@@ -162,11 +150,6 @@ public class Drivetrain extends SubsystemBase {
       _drive.arcadeDrive(xSpd, ySpd);
   }
 
-  public void drivePID(double velocity) {
-    _right_motor1.setVoltage(_right_pid.calculate(this.getRightVelocity(), velocity));
-    _left_motor1.setVoltage(_left_pid.calculate(this.getLeftVelocity(), velocity));
-  }
-
   public void switchFront() {
     if (!flipped) {
       _left_motor1.setInverted(false);
@@ -205,11 +188,6 @@ public class Drivetrain extends SubsystemBase {
 
   public double getRightVelocity() {
     return _right_Encoder.getVelocity()/BuildConstants.GR*BuildConstants.WHEEL_CIRCUMFERENCE/60 *BuildConstants.INCHES_TO_METERS;
-  }
-
-  public void stopMotors() {
-    _left_motor1.set(0);
-    _right_motor1.set(0);
   }
 
   /*public Command invertMotors() {
@@ -252,21 +230,12 @@ public class Drivetrain extends SubsystemBase {
     return _left_Encoder.getPosition()/BuildConstants.GR*BuildConstants.WHEEL_CIRCUMFERENCE *BuildConstants.INCHES_TO_METERS;
   }
 
-  public void driveRobotRelative(ChassisSpeeds robotRelativeSpeeds) {
-    ChassisSpeeds targetSpeeds = ChassisSpeeds.discretize(robotRelativeSpeeds, 0.02);
-    DifferentialDriveWheelSpeeds wheelSpeeds = kinematics.toWheelSpeeds(targetSpeeds);
-    double leftVelocity = wheelSpeeds.leftMetersPerSecond;
-    double rightVelocity = wheelSpeeds.rightMetersPerSecond;
-    setWheelSpeeds(leftVelocity, rightVelocity);
-  }
-
   public ChassisSpeeds getSpeeds() {
     double leftVelocity = getLeftVelocity();
     double rightVelocity = getRightVelocity();
     double headingVelocity = m_gyro.getRotation2d().getRadians();
 
     System.err.println(leftVelocity + "       " + rightVelocity + "      " + headingVelocity);
-
     return new ChassisSpeeds(leftVelocity, rightVelocity, headingVelocity);
 }
   
@@ -274,11 +243,13 @@ public class Drivetrain extends SubsystemBase {
     DifferentialDriveWheelSpeeds wheelSpeeds = kinematics.toWheelSpeeds(speeds);
     // Left velocity
     double leftVelocity = wheelSpeeds.leftMetersPerSecond;
+
     // Right velocity
     double rightVelocity = wheelSpeeds.rightMetersPerSecond;
 
     //double leftVelocity = _left_pid.calculate(speeds.leftMetersPerSecond);
     //double rightVelocity = _right_pid.calculate(speeds.rightMetersPerSecond);
+
     setWheelSpeeds(leftVelocity, rightVelocity);
 }
 
