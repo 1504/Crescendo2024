@@ -2,6 +2,9 @@
   "NTProvider": {
     "types": {
       "/FMSInfo": "FMSInfo",
+      "/Shuffleboard/PID Tuning/Left PID": "PIDController",
+      "/Shuffleboard/PID Tuning/Right PID": "PIDController",
+      "/Shuffleboard/PID Tuning/Run Command": "Command",
       "/SmartDashboard/Auto Chooser": "String Chooser",
       "/SmartDashboard/Drive": "DifferentialDrive",
       "/SmartDashboard/Gyro": "Gyro"

@@ -19,15 +19,12 @@ public class moveBackwards extends Command {
   protected double error;
 
   // pid constants
-  double kP = 0.2;
+  double kP = 1.4;
   double kI = 0.0;
   double kD = 0.0;
 
   // create PID controller
   private final PIDController m_pidController = new PIDController(kP, kI, kD);
-
-
-
 
   /** Creates a new moveBackwards. */
   public moveBackwards(double d) {
@@ -55,7 +52,6 @@ public class moveBackwards extends Command {
     
     //m_drivetrain.driveTank(m_pidController.calculate(m_drivetrain.getDistanceTraveled()), 0);
     
-    
     if( -m_drivetrain.getDistanceTraveled() <dist) {
       m_drivetrain.driveTank(-AutoConstants.AUTO_MAX_SPEED_METERS_PER_SECOND*0.4, 0);
     }
@@ -66,7 +62,7 @@ public class moveBackwards extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_drivetrain.driveTank(0, 0);
+    m_drivetrain.driveTank(0,0);
   }
 
   // Returns true when the command should end.
