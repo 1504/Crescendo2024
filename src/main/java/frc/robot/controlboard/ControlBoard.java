@@ -33,7 +33,7 @@ public class ControlBoard {
 
     public double getForward() {
         if (Math.abs(_xboxController.getLeftY()) > 0.1) {
-            return -_xboxController.getLeftY();
+            return _xboxController.getLeftY();
         }
         return 0;
         /*if(Math.abs(_joystickOne.getY()) > 0.1) {
