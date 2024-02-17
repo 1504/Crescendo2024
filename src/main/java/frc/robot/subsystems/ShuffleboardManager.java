@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.BuildConstants;
 import frc.robot.Constants.IOConstants;
 import frc.robot.controlboard.ControlBoard;
 import frc.robot.commands.*;
@@ -116,8 +117,8 @@ public class ShuffleboardManager extends SubsystemBase {
     GyroDY.setDouble(_gyroOne.getDisplacementY());
     GyroDZ.setDouble(_gyroOne.getDisplacementZ());
 
-    LeftPosition.setDouble(_drive.getLeftEncoder().getPosition());
-    RightPosition.setDouble(_drive.getRightEncoder().getPosition());
+    LeftPosition.setDouble(_drive.getLeftEncoder().getPosition()/BuildConstants.GR * BuildConstants.WHEEL_CIRCUMFERENCE * BuildConstants.INCHES_TO_METERS);
+    RightPosition.setDouble(_drive.getRightEncoder().getPosition()/BuildConstants.GR*BuildConstants.WHEEL_CIRCUMFERENCE*BuildConstants.INCHES_TO_METERS);
 
     distTraveled.setDouble(_drive.getDistanceTraveled());
 

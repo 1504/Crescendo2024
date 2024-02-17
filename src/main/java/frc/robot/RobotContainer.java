@@ -10,6 +10,7 @@ import frc.robot.commands.PIDdrive;
 import frc.robot.commands.Tank;
 import frc.robot.commands.Turtles;
 import frc.robot.commands.moveBackwards;
+import frc.robot.commands.resetEncoders;
 import frc.robot.controlboard.ControlBoard;
 // import frc.robot.commands.Turtle2;
 import frc.robot.subsystems.Drivetrain;
@@ -76,8 +77,10 @@ public class RobotContainer {
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
     m_drive.setDefaultCommand(new Tank(m_ControlBoard::getForward, m_ControlBoard::getRot));
 
-    new JoystickButton(_joystickOne, 2).onTrue(new moveBackwards(3));
-    new JoystickButton(_XboxController, XboxController.Button.kA.value).whileTrue(new PIDdrive(2));
+    //new JoystickButton(_joystickOne, 2).onTrue(new moveBackwards(3));
+    new JoystickButton(_XboxController, XboxController.Button.kB.value).whileTrue(new PIDdrive(2
+    ));
+    new JoystickButton(_XboxController, XboxController.Button.kA.value).whileTrue(new resetEncoders());
   }
 
   private void initAuton() {
