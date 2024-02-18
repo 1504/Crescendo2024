@@ -6,8 +6,8 @@ import frc.robot.Constants.IOConstants;
 
 public class ControlBoard {
 
-      private final Joystick _joystickOne = new Joystick(IOConstants.JOYSTICK_ONE);
-      private final Joystick _joystickTwo = new Joystick(IOConstants.JOYSTICK_TWO);
+      //private final Joystick _joystickOne = new Joystick(IOConstants.JOYSTICK_ONE);
+      //private final Joystick _joystickTwo = new Joystick(IOConstants.JOYSTICK_TWO);
       private final XboxController _xboxController = new XboxController(IOConstants.XBOX_CONTROLLER);
       private static ControlBoard _instance = null;
 
@@ -41,11 +41,11 @@ public class ControlBoard {
         }
         return 0; */
     }
-
+/* 
     public Joystick getJoystick() {
         return _joystickOne;
     }
-
+*/
     public XboxController getXboxController() {
         return _xboxController;
     }

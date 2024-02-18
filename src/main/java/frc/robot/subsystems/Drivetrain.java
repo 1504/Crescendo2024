@@ -18,6 +18,7 @@ import com.pathplanner.lib.util.ReplanningConfig;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.networktables.GenericEntry;
@@ -65,7 +66,9 @@ public class Drivetrain extends SubsystemBase {
   private final PIDController _right_pid;
   private final PIDController _theta_pid;
 
-  private boolean flipped = false;
+  private final SimpleMotorFeedforward feedForward;
+
+  //private boolean flipped = false;
 
   //odometry stuff
   private final DifferentialDriveOdometry m_odometry;
@@ -120,6 +123,8 @@ public class Drivetrain extends SubsystemBase {
     _right_pid = new PIDController(p, i, d);
     _theta_pid = new PIDController(0.01, 0, d);
 
+    feedForward = new SimpleMotorFeedforward(0.5, 0.5);
+
 
     SmartDashboard.putData("Drive", _drive); 
 
@@ -147,7 +152,7 @@ public class Drivetrain extends SubsystemBase {
             this::getPose, // Robot pose supplier
             this::resetOdometry, // Method to reset odometry (will be called if your auto has a starting pose)
             this::getSpeeds, // Current ChassisSpeeds supplier
-            this::setSpeeds, // Method that will drive the robot given ChassisSpeeds
+            this::driveRobotRelative, //setSpeeds, // Method that will drive the robot given ChassisSpeeds
             new ReplanningConfig(), // Default path replanning config. See the API for the options here
             this::flipPath,
             this // Reference to this subsystem to set requirements
@@ -163,10 +168,10 @@ public class Drivetrain extends SubsystemBase {
   }
 
   public void drivePID(double velocity) {
-    _right_motor1.setVoltage(_right_pid.calculate(this.getRightVelocity(), velocity));
-    _left_motor1.setVoltage(_left_pid.calculate(this.getLeftVelocity(), velocity));
+    _right_motor1.setVoltage(_right_pid.calculate(feedForward.calculate(velocity)+this.getRightVelocity(), velocity));
+    _left_motor1.setVoltage(_left_pid.calculate(feedForward.calculate(velocity)+this.getLeftVelocity(), velocity));
   }
-
+/* 
   public void switchFront() {
     if (!flipped) {
       _left_motor1.setInverted(false);
@@ -185,7 +190,7 @@ public class Drivetrain extends SubsystemBase {
   public boolean getFlipped() {
     return flipped;
   }
-
+*/
   public void resetEncoders() {
     _left_Encoder.setPosition(0);
     _right_Encoder.setPosition(0);
@@ -264,10 +269,9 @@ public class Drivetrain extends SubsystemBase {
     double leftVelocity = getLeftVelocity();
     double rightVelocity = getRightVelocity();
     double headingVelocity = m_gyro.getRotation2d().getRadians();
-
     System.err.println(leftVelocity + "       " + rightVelocity + "      " + headingVelocity);
 
-    return new ChassisSpeeds(leftVelocity, rightVelocity, headingVelocity);
+    return kinematics.toChassisSpeeds(new DifferentialDriveWheelSpeeds(getLeftVelocity(), getRightVelocity()));
 }
   
   public void setSpeeds(ChassisSpeeds speeds) {
@@ -286,8 +290,8 @@ public void setWheelSpeeds(double right, double left) {
   _left_pid.setSetpoint(left);
   _right_pid.setSetpoint(right);
   
-  _left_motor1.setVoltage(_left_pid.calculate(getLeftVelocity()));
-  _right_motor1.setVoltage(_right_pid.calculate(getRightVelocity()));
+  _left_motor1.setVoltage(feedForward.calculate(left) + _left_pid.calculate(getLeftVelocity()));
+  _right_motor1.setVoltage(feedForward.calculate(right) + _right_pid.calculate(getRightVelocity()));
 }
 
   public Boolean flipPath() {

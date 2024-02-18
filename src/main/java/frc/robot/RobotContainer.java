@@ -43,7 +43,7 @@ public class RobotContainer {
   private final Drivetrain m_drive = Drivetrain.getInstance();
   public final ShuffleboardManager m_ShuffleboardManager = ShuffleboardManager.getInstance();
   private final ControlBoard m_ControlBoard = ControlBoard.getInstance();
-  private final Joystick _joystickOne = m_ControlBoard.getJoystick();
+  //private final Joystick _joystickOne = m_ControlBoard.getJoystick();
   private final XboxController _XboxController = m_ControlBoard.getXboxController();
   private final Limelight m_limelight= Limelight.getInstance();
 
@@ -76,7 +76,7 @@ public class RobotContainer {
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
     m_drive.setDefaultCommand(new Tank(m_ControlBoard::getForward, m_ControlBoard::getRot));
 
-    new JoystickButton(_joystickOne, 2).onTrue(new moveBackwards(3));
+    //new JoystickButton(_joystickOne, 2).onTrue(new moveBackwards(3));
     new JoystickButton(_XboxController, XboxController.Button.kA.value).whileTrue(new PIDdrive(2));
   }
 
