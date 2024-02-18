@@ -27,7 +27,7 @@ public class GroundIntake extends SubsystemBase {
   PIDController intake_pid; 
 
   private GroundIntake() {
-    intake_pid = new PIDController(IntakeConstants.kP, 0, 0);
+    //intake_pid = new PIDController(IntakeConstants.kP, 0, 0);
     m_motor.setInverted(true); 
     //m_motor.setIdleMode(IdleMode.kBrake);
     // TODO: ADD SOFT BREAK IN INTAKE USING INFARED SENSOR
@@ -40,9 +40,9 @@ public class GroundIntake extends SubsystemBase {
     return instance;
   }
 
-  public PIDController getPID() {
+  /*public PIDController getPID() {
     return intake_pid;
-  }
+  }*/
 
   public void roll(double speed) {
     m_motor.set(speed);
