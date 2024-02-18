@@ -6,10 +6,12 @@ package frc.robot;
 
 import frc.robot.commands.AutoDrive;
 import frc.robot.commands.FlipFront;
+
 import frc.robot.commands.PIDdrive;
 import frc.robot.commands.Tank;
 import frc.robot.commands.Turtles;
 import frc.robot.commands.moveBackwards;
+import frc.robot.commands.resetEncoders;
 import frc.robot.controlboard.ControlBoard;
 // import frc.robot.commands.Turtle2;
 import frc.robot.subsystems.Drivetrain;
@@ -32,6 +34,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
+
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
  * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
@@ -45,6 +48,7 @@ public class RobotContainer {
   private final ControlBoard m_ControlBoard = ControlBoard.getInstance();
   //private final Joystick _joystickOne = m_ControlBoard.getJoystick();
   private final XboxController _XboxController = m_ControlBoard.getXboxController();
+
   private final Limelight m_limelight= Limelight.getInstance();
 
   public final ShuffleboardManager m_shuffleboardManager = ShuffleboardManager.getInstance();
@@ -93,9 +97,9 @@ public class RobotContainer {
     // An example command will be run in autonomous
     System.err.println(" ----------------------------------------");
     System.err.println(m_autoChooser.getSelected());
-    return m_autoChooser.getSelected().andThen(new AutoDrive(2, false));
-    //return new moveBackwards(3);
-    //return new AutoDrive(2, false);
-    //return null;
+
+    //m_autoChooser.getSelected().andThen(new AutoDrive(2, false));
+    return m_autoChooser.getSelected();
+    //return m_autoChooser.getSelected().andThen(new moveBackwards(2));
   }
 }

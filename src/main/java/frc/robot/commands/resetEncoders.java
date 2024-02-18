@@ -5,33 +5,30 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.GroundIntake;
+import frc.robot.subsystems.Drivetrain;
 
-public class Intake extends Command {
+public class resetEncoders extends Command {
 
-  private static final GroundIntake m_intake = GroundIntake.getInstance();
-  /** Creates a new Intake. */
-  public Intake() {
+  protected final Drivetrain m_drive = Drivetrain.getInstance();
+  /** Creates a new resetEncoders. */
+  public resetEncoders() {
+    // Use addRequirements() here to declare subsystem dependencies.
+    addRequirements(m_drive);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-
+    m_drive.resetEncoders();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {
-    m_intake.roll(0.5);
-    System.out.println("me when i intake");
-  }
+  public void execute() {}
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {
-    m_intake.stopMotor();
-  }
+  public void end(boolean interrupted) {}
 
   // Returns true when the command should end.
   @Override

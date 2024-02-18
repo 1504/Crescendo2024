@@ -115,9 +115,9 @@ public class Drivetrain extends SubsystemBase {
 
     _drive = new DifferentialDrive(_left_motor1,_right_motor1);
 
-    double p = 2;
-    double i = 0;
-    double d = 0;
+    double p = 1.4; //left 6.1261, right 7.5226
+    double i = 2;
+    double d = 0; //left 0.20986, right 0.1059775
 
     _left_pid = new PIDController(p, i, d);
     _right_pid = new PIDController(p, i, d);
