@@ -51,6 +51,10 @@ public final class Constants {
     public static final double LEFT_P = -1;
     public static final double LEFT_I = 0;
     public static final double LEFT_D = 0;
+
+    public static final double left_speed = 1;
+    public static final double right_speed = 1;
+    
   }
 
   public static class PIDConstants {

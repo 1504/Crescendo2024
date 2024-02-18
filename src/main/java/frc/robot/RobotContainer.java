@@ -4,10 +4,12 @@
 
 package frc.robot;
 
+import frc.robot.Constants.ShootConstants;
 import frc.robot.commands.AutoDrive;
 import frc.robot.commands.FlipFront;
 
 import frc.robot.commands.PIDdrive;
+import frc.robot.commands.Shooter;
 import frc.robot.commands.Tank;
 import frc.robot.commands.Turtles;
 import frc.robot.commands.moveBackwards;
@@ -16,6 +18,7 @@ import frc.robot.controlboard.ControlBoard;
 // import frc.robot.commands.Turtle2;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Limelight;
+import frc.robot.subsystems.PIDShooter;
 import frc.robot.subsystems.ShuffleboardManager;
 
 import java.util.HashMap;
@@ -56,6 +59,8 @@ public class RobotContainer {
 
   public static final HashMap<String, Command> m_eventMap = new HashMap<>();
   private final SendableChooser<Command> m_autoChooser;
+
+  private final PIDShooter m_shooter = PIDShooter.getInstance();
   
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -82,9 +87,10 @@ public class RobotContainer {
     m_drive.setDefaultCommand(new Tank(m_ControlBoard::getForward, m_ControlBoard::getRot));
 
     //new JoystickButton(_joystickOne, 2).onTrue(new moveBackwards(3));
-    new JoystickButton(_XboxController, XboxController.Button.kB.value).whileTrue(new PIDdrive(2
-    ));
+    new JoystickButton(_XboxController, XboxController.Button.kB.value).whileTrue(new PIDdrive(2));
     new JoystickButton(_XboxController, XboxController.Button.kA.value).whileTrue(new resetEncoders());
+
+    new JoystickButton(_XboxController, XboxController.Button.kY.value).whileTrue(new Shooter(m_shooter, ShootConstants.right_speed, ShootConstants.left_speed));
   }
 
   private void initAuton() {

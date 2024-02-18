@@ -19,6 +19,9 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ShootConstants;
 
 public class PIDShooter extends SubsystemBase {
+
+  private static PIDShooter _instance = null;
+
   /** Creates a new PIDIntake. */
   private final CANSparkMax _rightShooter;
   private final CANSparkMax _leftShooter;
@@ -28,6 +31,13 @@ public class PIDShooter extends SubsystemBase {
 
   private final RelativeEncoder _rightEncoder;
   private final RelativeEncoder _leftEncoder;
+
+  public static PIDShooter getInstance() {
+    if( _instance == null) {
+      _instance = new PIDShooter();
+    }
+    return _instance;
+  }
 
   public PIDShooter() {
     _rightShooter = new CANSparkMax(ShootConstants.RIGHT_SHOOTER, MotorType.kBrushless);
