@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 */
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.BuildConstants;
 import frc.robot.Constants.ShootConstants;
 
 public class PIDShooter extends SubsystemBase {
@@ -53,11 +54,11 @@ public class PIDShooter extends SubsystemBase {
   }
 
   public double getLeftSpeed(){
-    return _leftEncoder.getVelocity();
+    return _leftEncoder.getVelocity()/BuildConstants.GR * BuildConstants.WHEEL_CIRCUMFERENCE/60 *BuildConstants.INCHES_TO_METERS;
   }
 
   public double getRightSpeed(){
-    return _rightEncoder.getVelocity();
+    return _rightEncoder.getVelocity()/BuildConstants.GR * BuildConstants.WHEEL_CIRCUMFERENCE/60 *BuildConstants.INCHES_TO_METERS;
   }
 
   public void setRight(double speed){
@@ -65,15 +66,22 @@ public class PIDShooter extends SubsystemBase {
   }
 
   public void setLeft(double speed){
-    _rightPID.setSetpoint(speed);
+    _leftPID.setSetpoint(speed);
   }
 
   public void stopShoot(){
     _rightShooter.stopMotor();
     _leftShooter.stopMotor();
   }
+
+  public void shoot() {
+    _rightShooter.setVoltage(_rightPID.calculate(this.getRightSpeed()));
+    _leftShooter.setVoltage(_leftPID.calculate(this.getLeftSpeed()));
+
+  }
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    shoot();
   }
 }

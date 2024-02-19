@@ -41,19 +41,19 @@ public final class Constants {
   }
 
   public static class ShootConstants {
-    public static final int RIGHT_SHOOTER = 1;
-    public static final int LEFT_SHOOTER = -1;
+    public static final int RIGHT_SHOOTER = 11;
+    public static final int LEFT_SHOOTER = 12;
 
-    public static final double RIGHT_P = 1;
+    public static final double RIGHT_P = 2.8;
     public static final double RIGHT_I = 0;
     public static final double RIGHT_D = 0;
 
-    public static final double LEFT_P = -1;
+    public static final double LEFT_P = 2.8;
     public static final double LEFT_I = 0;
     public static final double LEFT_D = 0;
 
-    public static final double left_speed = 1;
-    public static final double right_speed = 1;
+    public static final double left_speed = -6.5;
+    public static final double right_speed = -6.5;
     
   }
 

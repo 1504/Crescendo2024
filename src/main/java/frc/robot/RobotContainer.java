@@ -89,7 +89,7 @@ public class RobotContainer {
     //new JoystickButton(_joystickOne, 2).onTrue(new moveBackwards(3));
     new JoystickButton(_XboxController, XboxController.Button.kB.value).whileTrue(new PIDdrive(2));
     new JoystickButton(_XboxController, XboxController.Button.kA.value).whileTrue(new resetEncoders());
-
+       
     new JoystickButton(_XboxController, XboxController.Button.kY.value).whileTrue(new Shooter(m_shooter, ShootConstants.right_speed, ShootConstants.left_speed));
   }
 
