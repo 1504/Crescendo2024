@@ -81,7 +81,8 @@ public class RobotContainer {
     m_drive.setDefaultCommand(new Tank(m_ControlBoard::getForward, m_ControlBoard::getRot));
 
     //new JoystickButton(_joystickOne, 2).onTrue(new moveBackwards(3));
-    new JoystickButton(_XboxController, XboxController.Button.kA.value).whileTrue(new PIDdrive(2));
+    //new JoystickButton(_XboxController, XboxController.Button.kA.value).whileTrue(new PIDdrive(0.25));
+    m_drive.setDefaultCommand(m_drive.stopDrivetrain());
   }
 
   private void initAuton() {

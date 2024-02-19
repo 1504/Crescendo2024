@@ -113,27 +113,27 @@ public class Drivetrain extends SubsystemBase {
     _right_Encoder = _right_motor1.getEncoder();
 
 
-    _drive = new DifferentialDrive(_left_motor1,_right_motor1);
+    //_drive = new DifferentialDrive(_left_motor1,_right_motor1);
 
-    double p = 1.4; //left 6.1261, right 7.5226
-    double i = 2;
+    double p = 2; //left 6.1261, right 7.5226
+    double i = 0;
     double d = 0; //left 0.20986, right 0.1059775
 
     _left_pid = new PIDController(p, i, d);
     _right_pid = new PIDController(p, i, d);
     _theta_pid = new PIDController(0.01, 0, d);
 
-    feedForward = new SimpleMotorFeedforward(0.5, 0.5);
+    feedForward = new SimpleMotorFeedforward(0.2, 0);
 
 
-    SmartDashboard.putData("Drive", _drive); 
+    //SmartDashboard.putData("Drive", _drive); 
 
     //odometry stuff starts
     m_odometry = new DifferentialDriveOdometry(m_gyro.getRotation2d(),
   _left_Encoder.getPosition(), _right_Encoder.getPosition(),
   new Pose2d(0, 0, new Rotation2d()));
 
-    m_gyro.reset();
+    //m_gyro.reset();
 
     //odometry stuff ends
 
@@ -159,17 +159,25 @@ public class Drivetrain extends SubsystemBase {
     );
   }
 
+  public Command stopDrivetrain() {
+    return run(() -> {
+      driveTank(0, 0);
+    });
+  }
+
   // tank drive method
   public void driveTank(double xSpeed, double ySpeed) {
     // deadband the inputs
       double ySpd = Math.abs(ySpeed) < DriveConstants.DEADBAND ? 0 : Math.pow(ySpeed, 1);
       double xSpd = Math.abs(xSpeed) < DriveConstants.DEADBAND ? 0 : Math.pow(xSpeed, 1);
-      _drive.arcadeDrive(xSpd, ySpd);
+      //_drive.arcadeDrive(xSpd, ySpd);
   }
 
   public void drivePID(double velocity) {
-    _right_motor1.setVoltage(_right_pid.calculate(feedForward.calculate(velocity)+this.getRightVelocity(), velocity));
-    _left_motor1.setVoltage(_left_pid.calculate(feedForward.calculate(velocity)+this.getLeftVelocity(), velocity));
+
+    setWheelSpeeds(velocity, velocity);
+    //_right_motor1.setVoltage(_right_pid.calculate(feedForward.calculate(velocity)+this.getRightVelocity(), velocity));
+    //_left_motor1.setVoltage(_left_pid.calculate(feedForward.calculate(velocity)+this.getLeftVelocity(), velocity));
   }
 /* 
   public void switchFront() {
@@ -258,11 +266,11 @@ public class Drivetrain extends SubsystemBase {
   }
 
   public void driveRobotRelative(ChassisSpeeds robotRelativeSpeeds) {
-    ChassisSpeeds targetSpeeds = ChassisSpeeds.discretize(robotRelativeSpeeds, 0.02);
+    ChassisSpeeds targetSpeeds = robotRelativeSpeeds;
     DifferentialDriveWheelSpeeds wheelSpeeds = kinematics.toWheelSpeeds(targetSpeeds);
     double leftVelocity = wheelSpeeds.leftMetersPerSecond;
     double rightVelocity = wheelSpeeds.rightMetersPerSecond;
-    setWheelSpeeds(leftVelocity, rightVelocity);
+    setWheelSpeeds(rightVelocity, leftVelocity);
   }
 
   public ChassisSpeeds getSpeeds() {
@@ -289,9 +297,12 @@ public class Drivetrain extends SubsystemBase {
 public void setWheelSpeeds(double right, double left) {
   _left_pid.setSetpoint(left);
   _right_pid.setSetpoint(right);
-  
-  _left_motor1.setVoltage(feedForward.calculate(left) + _left_pid.calculate(getLeftVelocity()));
-  _right_motor1.setVoltage(feedForward.calculate(right) + _right_pid.calculate(getRightVelocity()));
+
+  double left_target = _left_pid.calculate(getLeftVelocity());
+  double right_target = _right_pid.calculate(getRightVelocity());
+
+  _left_motor1.setVoltage(feedForward.calculate(left_target) + left_target);
+  _right_motor1.setVoltage(feedForward.calculate(right_target) + right_target);
 }
 
   public Boolean flipPath() {
