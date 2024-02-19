@@ -16,6 +16,7 @@ import frc.robot.Constants.IntakeConstants;
 public class GroundIntake extends SubsystemBase {
   /** Creates a new GroundIntake. */
   private final CANSparkMax m_motor = new CANSparkMax(IntakeConstants.intakePort, MotorType.kBrushless);
+  private final CANSparkMax f_motor = new CANSparkMax(IntakeConstants.intakePort, MotorType.kBrushless);
   private final RelativeEncoder m_encoder = m_motor.getEncoder();
   private final double MAXSPEED = 0.5;
 
@@ -24,12 +25,12 @@ public class GroundIntake extends SubsystemBase {
 
   private static GroundIntake instance = null;
 
-  PIDController intake_pid; 
+  PIDController intake_pid;
+  private double curr_pos = 0;
 
   private GroundIntake() {
-    //intake_pid = new PIDController(IntakeConstants.kP, 0, 0);
+    intake_pid = new PIDController(IntakeConstants.kP, 0, 0);
     m_motor.setInverted(true); 
-    //m_motor.setIdleMode(IdleMode.kBrake);
     // TODO: ADD SOFT BREAK IN INTAKE USING INFARED SENSOR
   }
 
@@ -40,9 +41,9 @@ public class GroundIntake extends SubsystemBase {
     return instance;
   }
 
-  /*public PIDController getPID() {
+  public PIDController getPID() {
     return intake_pid;
-  }*/
+  }
 
   public void roll(double speed) {
     m_motor.set(speed);
@@ -70,9 +71,12 @@ public class GroundIntake extends SubsystemBase {
     m_motor.set(0);
   }
 
+  public void flipIntake(){
+
+  }
+
   /**
    * Toggles the auto mode
-   */
   public void toggleAuto() {
     auto = !auto;
   }
@@ -81,12 +85,25 @@ public class GroundIntake extends SubsystemBase {
    * Sets the auto mode
    *
    * @param a the auto mode to set to
-   */
+  
   public void setAuto(boolean a) {
     auto = a;
   }
+  */
+
+  public void setSetpoint(double setpoint){
+    intake_pid.setSetpoint(setpoint);
+    curr_pos = setpoint;
+  }
+
+  public void addSetpoint(double amt){
+    intake_pid.setSetpoint(curr_pos + amt);
+  }
+  
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    double val = intake_pid.calculate(m_encoder.getPosition());
+    m_motor.set(val);
   }
 }
