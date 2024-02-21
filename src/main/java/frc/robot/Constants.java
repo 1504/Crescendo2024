@@ -32,7 +32,8 @@ public final class Constants {
   public final class IOConstants {
     public static final int JOYSTICK_ONE = 0;
     public static final int JOYSTICK_TWO = 1;
-    public static final int XBOX_CONTROLLER = 2;
+    public static final int XBOX_CONTROLLER_1 = 1;
+    public static final int XBOX_CONTROLLER_2 = 2;
   }
 
   public static class OperatorConstants {
@@ -93,12 +94,18 @@ public final class Constants {
   }
 
   public static class IntakeConstants {
-    public static final int intakePort = 5;
+    public static final int intakePort_1 = 21;
+    public static final int intakePort_2 = 22;
     public static final double kP = 0;
+
+    public static final double MAX_INTAKE_SPEED = 0.7;
+    public static final double MAX_FLIP_SPEED = 0.2;
+
+    public static final double FLIPPER_DOWN_POS = -35; //TEST
+    public static final double FLIPPER_UP_POS = 0; 
   }
 
   public static class AutoConstants {
-    public static final String [] PATHS = {"b2_auto"};
 
     public static final boolean USE_VISION = false;
     public static final double AUTO_MAX_SPEED_METERS_PER_SECOND = 1;

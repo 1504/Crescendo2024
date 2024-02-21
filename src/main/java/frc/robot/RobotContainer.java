@@ -6,16 +6,19 @@ package frc.robot;
 
 import frc.robot.Constants.ShootConstants;
 import frc.robot.commands.AutoDrive;
-import frc.robot.commands.FlipFront;
-
+import frc.robot.commands.FlipperDown;
+import frc.robot.commands.FlipperUp;
+import frc.robot.commands.Intake;
+import frc.robot.commands.Invert;
+import frc.robot.commands.Outtake;
 import frc.robot.commands.PIDdrive;
+import frc.robot.commands.RawFlip;
 import frc.robot.commands.Shooter;
 import frc.robot.commands.Tank;
 import frc.robot.commands.Turtles;
 import frc.robot.commands.moveBackwards;
 import frc.robot.commands.resetEncoders;
 import frc.robot.controlboard.ControlBoard;
-// import frc.robot.commands.Turtle2;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.PIDShooter;
@@ -49,9 +52,9 @@ public class RobotContainer {
   private final Drivetrain m_drive = Drivetrain.getInstance();
   public final ShuffleboardManager m_ShuffleboardManager = ShuffleboardManager.getInstance();
   private final ControlBoard m_ControlBoard = ControlBoard.getInstance();
-  private final Joystick _joystickOne = m_ControlBoard.getJoystick();
-
-  private final XboxController _XboxController = m_ControlBoard.getXboxController();
+  
+  private final XboxController _XboxController1 = m_ControlBoard.getXboxController1();
+  private final XboxController _XboxController2 = m_ControlBoard.getXboxController2();
 
   private final Limelight m_limelight= Limelight.getInstance();
 
@@ -86,11 +89,13 @@ public class RobotContainer {
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
     m_drive.setDefaultCommand(new Tank(m_ControlBoard::getForward, m_ControlBoard::getRot));
 
-    //new JoystickButton(_joystickOne, 2).onTrue(new moveBackwards(3));
-    //new JoystickButton(_XboxController, XboxController.Button.kB.value).whileTrue(new PIDdrive(2));
-    //new JoystickButton(_XboxController, XboxController.Button.kA.value).whileTrue(new resetEncoders());
-       
-    new JoystickButton(_XboxController, XboxController.Button.kY.value).whileTrue(new Shooter(m_shooter, ShootConstants.right_speed, ShootConstants.left_speed));
+    new JoystickButton(_XboxController1, XboxController.Button.kLeftStick.value).whileTrue(new RawFlip(false)); //flip down
+    new JoystickButton(_XboxController1, XboxController.Button.kRightStick.value).whileTrue(new RawFlip(true)); //flip up
+    new JoystickButton(_XboxController1, XboxController.Button.kLeftBumper.value).onTrue(new FlipperDown());
+    new JoystickButton(_XboxController1, XboxController.Button.kRightBumper.value).onTrue(new FlipperUp());
+    new JoystickButton(_XboxController1, XboxController.Button.kY.value).whileTrue(new Intake());
+    new JoystickButton(_XboxController1, XboxController.Button.kX.value).whileTrue(new Shooter(m_shooter, ShootConstants.right_speed, ShootConstants.left_speed));
+    new JoystickButton(_XboxController1, XboxController.Button.kA.value).whileTrue(new Outtake());
   }
 
   private void initAuton() {

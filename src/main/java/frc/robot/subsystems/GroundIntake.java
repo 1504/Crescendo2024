@@ -15,23 +15,21 @@ import frc.robot.Constants.IntakeConstants;
 
 public class GroundIntake extends SubsystemBase {
   /** Creates a new GroundIntake. */
-  private final CANSparkMax m_motor = new CANSparkMax(IntakeConstants.intakePort, MotorType.kBrushless);
-  private final CANSparkMax f_motor = new CANSparkMax(IntakeConstants.intakePort, MotorType.kBrushless);
-  private final RelativeEncoder m_encoder = m_motor.getEncoder();
-  private final double MAXSPEED = 0.5;
+  private final CANSparkMax motor_1 = new CANSparkMax(IntakeConstants.intakePort_1, MotorType.kBrushless); //motor_1 - intake
+  private final CANSparkMax motor_2 = new CANSparkMax(IntakeConstants.intakePort_2, MotorType.kBrushless); // flips
+  private final RelativeEncoder m_encoder_1 = motor_1.getEncoder();
+  private final RelativeEncoder m_encoder_2 = motor_2.getEncoder();
 
   private boolean auto = false;
 
-
   private static GroundIntake instance = null;
 
-  PIDController intake_pid;
   private double curr_pos = 0;
 
+  private boolean down = false;
+
   private GroundIntake() {
-    intake_pid = new PIDController(IntakeConstants.kP, 0, 0);
-    m_motor.setInverted(true); 
-    // TODO: ADD SOFT BREAK IN INTAKE USING INFARED SENSOR
+    
   }
 
   public static GroundIntake getInstance() {
@@ -41,39 +39,44 @@ public class GroundIntake extends SubsystemBase {
     return instance;
   }
 
-  public PIDController getPID() {
-    return intake_pid;
+  public void roll(){
+    motor_1.set(IntakeConstants.MAX_INTAKE_SPEED);
   }
 
-  public void roll(double speed) {
-    m_motor.set(speed);
+  public void outRoll() {
+    motor_1.set(-IntakeConstants.MAX_INTAKE_SPEED);
   }
 
   public void rawIntake() {
     if (!auto) {
-      m_motor.set(MAXSPEED);
-    }
-  }
-
-  /**
-   * Reverse spin the intake without using PID
-   */
-  public void rawReverse() {
-    if (!auto) {
-      m_motor.set(-MAXSPEED);
+      motor_1.set(IntakeConstants.MAX_INTAKE_SPEED);
     }
   }
 
   /**
    * Stops the motor
    */
-  public void stopMotor() {
-    m_motor.set(0);
+  public void stopMotor1() {
+    motor_1.set(0);
+  }
+  public void stopMotor2() {
+    motor_2.set(0);
   }
 
-  public void flipIntake(){
-
+  public void rawFlipUp(){
+    motor_2.set(IntakeConstants.MAX_FLIP_SPEED);
   }
+
+  public void rawFlipDown() {
+    motor_2.set(-IntakeConstants.MAX_FLIP_SPEED);
+  }
+
+  
+
+  public RelativeEncoder getFlipEncoder() {
+    return m_encoder_2;
+  }
+
 
   /**
    * Toggles the auto mode
@@ -91,6 +94,7 @@ public class GroundIntake extends SubsystemBase {
   }
   */
 
+  /* 
   public void setSetpoint(double setpoint){
     intake_pid.setSetpoint(setpoint);
     curr_pos = setpoint;
@@ -99,11 +103,13 @@ public class GroundIntake extends SubsystemBase {
   public void addSetpoint(double amt){
     intake_pid.setSetpoint(curr_pos + amt);
   }
+  */
+
   
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    double val = intake_pid.calculate(m_encoder.getPosition());
-    m_motor.set(val);
+    //double val = m_encoder.getPosition();
+    //motor_1.set(val);
   }
 }

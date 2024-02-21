@@ -31,11 +31,13 @@ public class ShuffleboardManager extends SubsystemBase {
   private final Limelight _limelight = Limelight.getInstance();
   private final Gyroscope _gyroOne = Gyroscope.getInstance();
   private final ControlBoard _controlboard = ControlBoard.getInstance();
+  private final GroundIntake _groundIntake = GroundIntake.getInstance();
 
   ShuffleboardTab telemetry;
   ShuffleboardTab limelight;
   ShuffleboardTab _Gyroscope;
   ShuffleboardTab PIDTuning;
+  ShuffleboardTab Intake;
 
   // telemetry
   private GenericEntry leftEncoder;
@@ -56,6 +58,8 @@ public class ShuffleboardManager extends SubsystemBase {
   private GenericEntry rightVelocity;
   private GenericEntry distTraveled;
 
+  private GenericEntry flipEncoder;
+
 
   // limelight
   private GenericEntry distanceFromAT;
@@ -70,6 +74,7 @@ public class ShuffleboardManager extends SubsystemBase {
       telemetry = Shuffleboard.getTab("Telemetry");
       _Gyroscope = Shuffleboard.getTab("Gyroscope");
       PIDTuning = Shuffleboard.getTab("PID Tuning");
+      Intake = Shuffleboard.getTab("Intake");
 
       leftEncoder = telemetry.add("Left Encoder", 0).withPosition(0, 0).withSize(2, 2).withWidget(BuiltInWidgets.kGraph).getEntry();
       rightEncoder = telemetry.add("Right Encoder", 2).withPosition(2, 0).withSize(2, 2).withWidget(BuiltInWidgets.kGraph).getEntry();
@@ -96,6 +101,7 @@ public class ShuffleboardManager extends SubsystemBase {
       PIDTuning.add("Run Command", new moveBackwards(2)).withPosition(2, 3).withSize(2, 1);
       distTraveled = PIDTuning.add("Distance Traveled", 0).withPosition(4, 3).withSize(2, 1).withWidget(BuiltInWidgets.kTextView).getEntry();
 
+      flipEncoder = Intake.add("Intake Flip Encoder Pos", 0).withPosition(0, 0).withSize(2,1).getEntry();
 
     } catch (Exception e) {
       System.out.println("ShuffleboardManager error: " + e);
@@ -125,6 +131,7 @@ public class ShuffleboardManager extends SubsystemBase {
     leftVelocity.setDouble(_drive.getLeftVelocity());
     rightVelocity.setDouble(_drive.getRightVelocity());
 
+    flipEncoder.setDouble(_groundIntake.getFlipEncoder().getPosition());
   }
 
   @Override

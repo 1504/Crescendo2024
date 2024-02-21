@@ -66,6 +66,7 @@ public class Drivetrain extends SubsystemBase {
   private final PIDController _theta_pid;
 
   private boolean flipped = false;
+  private boolean invert = false;
 
   //odometry stuff
   private final DifferentialDriveOdometry m_odometry;
@@ -157,14 +158,25 @@ public class Drivetrain extends SubsystemBase {
   // tank drive method
   public void driveTank(double xSpeed, double ySpeed) {
     // deadband the inputs
+    if (invert) {
+      double ySpd = Math.abs(ySpeed) < DriveConstants.DEADBAND ? 0 : -Math.pow(ySpeed, 1);
+      double xSpd = Math.abs(xSpeed) < DriveConstants.DEADBAND ? 0 : -Math.pow(xSpeed, 1);
+      _drive.arcadeDrive(xSpd, ySpd);
+    }
+    else {
       double ySpd = Math.abs(ySpeed) < DriveConstants.DEADBAND ? 0 : Math.pow(ySpeed, 1);
       double xSpd = Math.abs(xSpeed) < DriveConstants.DEADBAND ? 0 : Math.pow(xSpeed, 1);
       _drive.arcadeDrive(xSpd, ySpd);
+    }
   }
 
   public void drivePID(double velocity) {
     _right_motor1.setVoltage(_right_pid.calculate(this.getRightVelocity(), velocity));
     _left_motor1.setVoltage(_left_pid.calculate(this.getLeftVelocity(), velocity));
+  }
+
+  public void invert() {
+    invert = !invert;
   }
 
   public void switchFront() {

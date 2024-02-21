@@ -5,32 +5,37 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants.IntakeConstants;
 import frc.robot.subsystems.GroundIntake;
 
-public class Intake extends Command {
-
-  private static final GroundIntake m_intake = GroundIntake.getInstance();
-  /** Creates a new Intake. */
-  public Intake() {
+public class RawFlip extends Command {
+  private final GroundIntake m_intake = GroundIntake.getInstance();
+  private boolean flipUp = false;
+  /** Creates a new RawFlip. */
+  public RawFlip(boolean flip) {
+    flipUp = flip;
+    addRequirements(m_intake);
+    // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {
-
-  }
+  public void initialize() {}
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_intake.roll();
-    System.out.println("me when i intake");
+      if(flipUp){
+        m_intake.rawFlipUp();
+      } else {
+        m_intake.rawFlipDown();
+      }
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_intake.stopMotor1();
+    m_intake.stopMotor2();
   }
 
   // Returns true when the command should end.
