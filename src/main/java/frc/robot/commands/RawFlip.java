@@ -26,9 +26,9 @@ public class RawFlip extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-      if(flipUp && m_intake.getFlipEncoder().getPosition() <= Constants.IntakeConstants.FLIPPER_DOWN_POS){
+      if(flipUp && m_intake.getFlipperEncoder().getPosition() <= Constants.IntakeConstants.FLIPPER_DOWN_POS){
         m_intake.rawFlipUp();
-      } else if(!flipUp && m_intake.getFlipEncoder().getPosition() >= Constants.IntakeConstants.FLIPPER_UP_POS) {
+      } else if(!flipUp && m_intake.getFlipperEncoder().getPosition() >= Constants.IntakeConstants.FLIPPER_UP_POS) {
         m_intake.rawFlipDown();
       }
   }
@@ -36,7 +36,7 @@ public class RawFlip extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_intake.stopMotor2();
+    m_intake.stopFlipper();
   }
 
   // Returns true when the command should end.
