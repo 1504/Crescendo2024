@@ -123,8 +123,8 @@ public class ShuffleboardManager extends SubsystemBase {
 
     distTraveled.setDouble(_drive.getDistanceTraveled());
 
-    leftVelocity.setDouble(_drive.getLeftVelocity());
-    rightVelocity.setDouble(_drive.getRightVelocity());
+    leftVelocity.setDouble(-_drive.getLeftVelocity());
+    rightVelocity.setDouble(-_drive.getRightVelocity());
 
     flipEncoder.setDouble(_groundIntake.getFlipperEncoder().getPosition());
   }

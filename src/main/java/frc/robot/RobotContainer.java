@@ -52,6 +52,7 @@ public class RobotContainer {
   private final XboxController _GadgetsController = m_ControlBoard.getGadgetsController();
   private final XboxController _DriveController = m_ControlBoard.getDriveController();
 
+
   private final Limelight m_limelight= Limelight.getInstance();
 
   public final ShuffleboardManager m_shuffleboardManager = ShuffleboardManager.getInstance();
@@ -92,6 +93,7 @@ public class RobotContainer {
     new JoystickButton(_GadgetsController, XboxController.Button.kY.value).whileTrue(new Intake());
     new JoystickButton(_GadgetsController, XboxController.Button.kX.value).whileTrue(new Shooter(m_shooter, ShootConstants.right_speed, ShootConstants.left_speed));
     new JoystickButton(_GadgetsController, XboxController.Button.kA.value).whileTrue(new Outtake());
+
   }
 
   private void initAuton() {

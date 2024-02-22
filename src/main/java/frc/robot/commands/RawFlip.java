@@ -2,37 +2,41 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands.Intake;
+package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants;
+import frc.robot.Constants.IntakeConstants;
 import frc.robot.subsystems.GroundIntake;
 
-public class Outtake extends Command {
-
-  private static final GroundIntake m_intake = GroundIntake.getInstance();
-  /** Creates a new Outtake. */
-  public Outtake() {
+public class RawFlip extends Command {
+  private final GroundIntake m_intake = GroundIntake.getInstance();
+  private boolean flipUp = false;
+  /** Creates a new RawFlip. */
+  public RawFlip(boolean flip) {
+    flipUp = flip;
+    addRequirements(m_intake);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
   @Override
-
-  public void initialize() {
-    //m_drivetrain.switchFront();
-    System.err.println("done");
-  }
+  public void initialize() {}
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_intake.outRoll();
+      if(flipUp && m_intake.getFlipEncoder().getPosition() <= Constants.IntakeConstants.FLIPPER_DOWN_POS){
+        m_intake.rawFlipUp();
+      } else if(!flipUp && m_intake.getFlipEncoder().getPosition() >= Constants.IntakeConstants.FLIPPER_UP_POS) {
+        m_intake.rawFlipDown();
+      }
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_intake.stopIntake();
+    m_intake.stopMotor2();
   }
 
   // Returns true when the command should end.
