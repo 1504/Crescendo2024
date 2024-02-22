@@ -159,7 +159,7 @@ public class Drivetrain extends SubsystemBase {
     // deadband the inputs
       double ySpd = Math.abs(ySpeed) < DriveConstants.DEADBAND ? 0 : Math.pow(ySpeed, 1);
       double xSpd = Math.abs(xSpeed) < DriveConstants.DEADBAND ? 0 : Math.pow(xSpeed, 1);
-      //_drive.arcadeDrive(xSpd, ySpd);
+      _drive.arcadeDrive(xSpd, ySpd);
   }
 
   public void drivePID(double velocity) {
