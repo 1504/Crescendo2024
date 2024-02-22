@@ -109,7 +109,7 @@ public class RobotContainer {
     System.err.println(m_autoChooser.getSelected());
 
     //m_autoChooser.getSelected().andThen(new AutoDrive(2, false));
-    return m_autoChooser.getSelected();
-    //return m_autoChooser.getSelected().andThen(new moveBackwards(2));
+    //return m_autoChooser.getSelected();
+    return m_autoChooser.getSelected().andThen(new moveBackwards(2));
   }
 }

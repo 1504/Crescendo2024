@@ -4,38 +4,28 @@
 
 package frc.robot.subsystems;
 
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.RelativeEncoder;
-import com.revrobotics.CANSparkBase.IdleMode;
-
-import java.io.PipedInputStream;
-import java.util.function.BiConsumer;
-import java.util.function.Supplier;
-
 import com.pathplanner.lib.auto.AutoBuilder;
-import com.pathplanner.lib.util.PIDConstants;
 import com.pathplanner.lib.util.ReplanningConfig;
 import com.revrobotics.CANSparkLowLevel.MotorType;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.RelativeEncoder;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.networktables.GenericEntry;
-import edu.wpi.first.networktables.NetworkTableEntry;
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants.DriveConstants;
-import frc.robot.Constants;
-import frc.robot.Constants.BuildConstants;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelPositions;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
+import frc.robot.Constants.BuildConstants;
+import frc.robot.Constants.DriveConstants;
 
 public class Drivetrain extends SubsystemBase {
 
@@ -83,7 +73,6 @@ public class Drivetrain extends SubsystemBase {
 
   ShuffleboardTab telemetry = Shuffleboard.getTab("Telemetry");
 
-  private final AutoBuilder m_autoBuilder;
   public Drivetrain() {
     // initializes tank motor controllers
     _right_motor1 = new CANSparkMax(DriveConstants.RIGHT1, MotorType.kBrushless);
@@ -140,8 +129,6 @@ public class Drivetrain extends SubsystemBase {
     else {
       m_pose = new Pose2d();
     }
-      m_autoBuilder = new AutoBuilder();
-
  
   AutoBuilder.configureRamsete(
             this::getPose, // Robot pose supplier
