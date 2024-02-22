@@ -1,15 +1,15 @@
 package frc.robot.controlboard;
 
-import edu.wpi.first.wpilibj.Joystick;
+//import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.Constants.IOConstants;
 
 public class ControlBoard {
 
-      private final Joystick _joystickOne = new Joystick(IOConstants.JOYSTICK_ONE);
-      private final Joystick _joystickTwo = new Joystick(IOConstants.JOYSTICK_TWO);
-      private final XboxController _xboxController_1 = new XboxController(IOConstants.XBOX_CONTROLLER_1);
-      private final XboxController _xboxController_2 = new XboxController(IOConstants.XBOX_CONTROLLER_2);
+      //private final Joystick _joystickOne = new Joystick(IOConstants.JOYSTICK_ONE);
+      //private final Joystick _joystickTwo = new Joystick(IOConstants.JOYSTICK_TWO);
+      private final XboxController _xboxController_gadgets = new XboxController(IOConstants.XBOX_CONTROLLER_GADGETS);
+      private final XboxController _xboxController_drive = new XboxController(IOConstants.XBOX_CONTROLLER_DRIVE);
       private static ControlBoard _instance = null;
 
 
@@ -28,22 +28,22 @@ public class ControlBoard {
 
 
     public double getRot() {
-        return _xboxController_2.getRightX();
+        return _xboxController_drive.getRightX();
         //return _joystickTwo.getX();
     }
 
     public double getForward() {
-        if (Math.abs(_xboxController_2.getLeftY()) > 0.1) {
-            return _xboxController_2.getLeftY();
+        if (Math.abs(_xboxController_drive.getLeftY()) > 0.1) {
+            return _xboxController_drive.getLeftY();
         }
         return 0;
     }
 
-    public XboxController getXboxController1() {
-        return _xboxController_1;
+    public XboxController getDriveController() {
+        return _xboxController_drive;
     }
 
-    public XboxController getXboxController2() {
-        return _xboxController_2;
+    public XboxController getGadgetsController() {
+        return _xboxController_gadgets;
     }
 }

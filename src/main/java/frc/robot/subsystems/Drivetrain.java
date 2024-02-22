@@ -27,8 +27,6 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants;
@@ -42,6 +40,7 @@ import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 public class Drivetrain extends SubsystemBase {
 
   static private Drivetrain _instance = null;
+  
   public static Drivetrain getInstance() {
     if (_instance == null) {
       _instance = new Drivetrain();
@@ -158,16 +157,9 @@ public class Drivetrain extends SubsystemBase {
   // tank drive method
   public void driveTank(double xSpeed, double ySpeed) {
     // deadband the inputs
-    if (invert) {
-      double ySpd = Math.abs(ySpeed) < DriveConstants.DEADBAND ? 0 : -Math.pow(ySpeed, 1);
-      double xSpd = Math.abs(xSpeed) < DriveConstants.DEADBAND ? 0 : -Math.pow(xSpeed, 1);
-      _drive.arcadeDrive(xSpd, ySpd);
-    }
-    else {
       double ySpd = Math.abs(ySpeed) < DriveConstants.DEADBAND ? 0 : Math.pow(ySpeed, 1);
       double xSpd = Math.abs(xSpeed) < DriveConstants.DEADBAND ? 0 : Math.pow(xSpeed, 1);
       _drive.arcadeDrive(xSpd, ySpd);
-    }
   }
 
   public void drivePID(double velocity) {
@@ -177,21 +169,6 @@ public class Drivetrain extends SubsystemBase {
 
   public void invert() {
     invert = !invert;
-  }
-
-  public void switchFront() {
-    if (!flipped) {
-      _left_motor1.setInverted(false);
-      _right_motor1.setInverted(true);
-      _drive = new DifferentialDrive(_right_motor1, _left_motor1);
-    }
-    else {
-      _left_motor1.setInverted(true);
-      _right_motor1.setInverted(false);
-      _drive = new DifferentialDrive(_left_motor1, _right_motor1);
-    }
-    flipped = !flipped;
-    System.out.println("flipped: " + flipped);
   }
 
   public boolean getFlipped() {
@@ -223,17 +200,6 @@ public class Drivetrain extends SubsystemBase {
     _left_motor1.set(0);
     _right_motor1.set(0);
   }
-
-  /*public Command invertMotors() {
-    //_right_motor1.setInverted(!inverted);
-    //_left_motor1.setInverted(!inverted); 
-    //_right_motor2.setInverted(!inverted);
-    //_right_motor2.setInverted(!inverted);
-    _drive = new DifferentialDrive(_right_motor1, _left_motor1);
-    inverted = !inverted;
-    return new PrintCommand("invert");
-  }*/
-
   
   public PIDController getLeftPid() {
     return _left_pid;
@@ -289,8 +255,6 @@ public class Drivetrain extends SubsystemBase {
     // Right velocity
     double rightVelocity = wheelSpeeds.rightMetersPerSecond;
 
-    //double leftVelocity = _left_pid.calculate(speeds.leftMetersPerSecond);
-    //double rightVelocity = _right_pid.calculate(speeds.rightMetersPerSecond);
     setWheelSpeeds(leftVelocity, rightVelocity);
 }
 

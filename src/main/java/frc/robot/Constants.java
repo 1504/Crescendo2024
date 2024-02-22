@@ -4,8 +4,6 @@
 
 package frc.robot;
 
-import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
-
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
  * constants. This class should not be used for any other purpose. All constants should be declared
@@ -32,8 +30,8 @@ public final class Constants {
   public final class IOConstants {
     public static final int JOYSTICK_ONE = 0;
     public static final int JOYSTICK_TWO = 1;
-    public static final int XBOX_CONTROLLER_1 = 1;
-    public static final int XBOX_CONTROLLER_2 = 2;
+    public static final int XBOX_CONTROLLER_GADGETS = 1;
+    public static final int XBOX_CONTROLLER_DRIVE = 2;
   }
 
   public static class OperatorConstants {

@@ -5,16 +5,13 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.networktables.GenericEntry;
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.BuildConstants;
-import frc.robot.Constants.IOConstants;
 import frc.robot.controlboard.ControlBoard;
-import frc.robot.commands.*;
+import frc.robot.commands.Auto.moveBackwards;
 
 public class ShuffleboardManager extends SubsystemBase {
 
@@ -42,8 +39,6 @@ public class ShuffleboardManager extends SubsystemBase {
   // telemetry
   private GenericEntry leftEncoder;
   private GenericEntry rightEncoder;
-  private GenericEntry xPos;
-  private GenericEntry yPos;
   private GenericEntry joystickX;
   private GenericEntry joystickY;
   private GenericEntry GyroPitch;
@@ -131,7 +126,7 @@ public class ShuffleboardManager extends SubsystemBase {
     leftVelocity.setDouble(_drive.getLeftVelocity());
     rightVelocity.setDouble(_drive.getRightVelocity());
 
-    flipEncoder.setDouble(_groundIntake.getFlipEncoder().getPosition());
+    flipEncoder.setDouble(_groundIntake.getFlipperEncoder().getPosition());
   }
 
   @Override

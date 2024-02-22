@@ -9,16 +9,16 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.RelativeEncoder;
 
-import edu.wpi.first.math.controller.PIDController;
+//import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.IntakeConstants;
 
 public class GroundIntake extends SubsystemBase {
   /** Creates a new GroundIntake. */
-  private final CANSparkMax motor_1 = new CANSparkMax(IntakeConstants.intakePort_1, MotorType.kBrushless); //motor_1 - intake
-  private final CANSparkMax motor_2 = new CANSparkMax(IntakeConstants.intakePort_2, MotorType.kBrushless); // flips
-  private final RelativeEncoder m_encoder_1 = motor_1.getEncoder();
-  private final RelativeEncoder m_encoder_2 = motor_2.getEncoder();
+  private final CANSparkMax intakeMotor = new CANSparkMax(IntakeConstants.intakePort_1, MotorType.kBrushless); //motor_1 - intake
+  private final CANSparkMax flipperMotor = new CANSparkMax(IntakeConstants.intakePort_2, MotorType.kBrushless); // flips
+  private final RelativeEncoder intakeEncoder = intakeMotor.getEncoder();
+  private final RelativeEncoder flipperEncoder = flipperMotor.getEncoder();
 
   private boolean auto = false;
 
@@ -40,41 +40,39 @@ public class GroundIntake extends SubsystemBase {
   }
 
   public void roll(){
-    motor_1.set(IntakeConstants.MAX_INTAKE_SPEED);
+    intakeMotor.set(IntakeConstants.MAX_INTAKE_SPEED);
   }
 
   public void outRoll() {
-    motor_1.set(-IntakeConstants.MAX_INTAKE_SPEED);
+    intakeMotor.set(-IntakeConstants.MAX_INTAKE_SPEED);
   }
 
   public void rawIntake() {
     if (!auto) {
-      motor_1.set(IntakeConstants.MAX_INTAKE_SPEED);
+      intakeMotor.set(IntakeConstants.MAX_INTAKE_SPEED);
     }
   }
 
   /**
    * Stops the motor
    */
-  public void stopMotor1() {
-    motor_1.set(0);
+  public void stopIntake() {
+    intakeMotor.set(0);
   }
-  public void stopMotor2() {
-    motor_2.set(0);
+  public void stopFlipper() {
+    flipperMotor.set(0);
   }
 
   public void rawFlipUp(){
-    motor_2.set(IntakeConstants.MAX_FLIP_SPEED);
+    flipperMotor.set(IntakeConstants.MAX_FLIP_SPEED);
   }
 
   public void rawFlipDown() {
-    motor_2.set(-IntakeConstants.MAX_FLIP_SPEED);
+    flipperMotor.set(-IntakeConstants.MAX_FLIP_SPEED);
   }
 
-  
-
-  public RelativeEncoder getFlipEncoder() {
-    return m_encoder_2;
+  public RelativeEncoder getFlipperEncoder() {
+    return flipperEncoder;
   }
 
 
