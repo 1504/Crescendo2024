@@ -104,7 +104,7 @@ public class Drivetrain extends SubsystemBase {
     _right_Encoder = _right_motor1.getEncoder();
 
 
-    //_drive = new DifferentialDrive(_left_motor1,_right_motor1);
+    _drive = new DifferentialDrive(_left_motor1,_right_motor1);
 
     double p = 2; //left 6.1261, right 7.5226
     double i = 0;
@@ -117,7 +117,7 @@ public class Drivetrain extends SubsystemBase {
     feedForward = new SimpleMotorFeedforward(0.2, 0);
 
 
-    //SmartDashboard.putData("Drive", _drive); 
+    SmartDashboard.putData("Drive", _drive); 
 
     //odometry stuff starts
     m_odometry = new DifferentialDriveOdometry(m_gyro.getRotation2d(),
@@ -230,7 +230,7 @@ public class Drivetrain extends SubsystemBase {
     DifferentialDriveWheelSpeeds wheelSpeeds = kinematics.toWheelSpeeds(targetSpeeds);
     double leftVelocity = wheelSpeeds.leftMetersPerSecond;
     double rightVelocity = wheelSpeeds.rightMetersPerSecond;
-    setWheelSpeeds(rightVelocity, leftVelocity);
+    setWheelSpeeds(leftVelocity, rightVelocity);
   }
 
   public ChassisSpeeds getSpeeds() {
@@ -239,6 +239,7 @@ public class Drivetrain extends SubsystemBase {
     double headingVelocity = m_gyro.getRotation2d().getRadians();
     System.err.println(leftVelocity + "       " + rightVelocity + "      " + headingVelocity);
 
+    //return new ChassisSpeeds(leftVelocity, rightVelocity, headingVelocity);
     return kinematics.toChassisSpeeds(new DifferentialDriveWheelSpeeds(getLeftVelocity(), getRightVelocity()));
 }
   
@@ -252,7 +253,7 @@ public class Drivetrain extends SubsystemBase {
     setWheelSpeeds(leftVelocity, rightVelocity);
 }
 
-public void setWheelSpeeds(double right, double left) {
+public void setWheelSpeeds(double left, double right) {
   _left_pid.setSetpoint(left);
   _right_pid.setSetpoint(right);
 
