@@ -6,12 +6,8 @@ package frc.robot;
 
 import frc.robot.Constants.ShootConstants;
 import frc.robot.commands.Intake.*;
-import frc.robot.commands.resetEncoders;
-import frc.robot.commands.Auto.AutoDrive;
 import frc.robot.commands.Auto.moveBackwards;
-import frc.robot.commands.Drive.PIDdrive;
 import frc.robot.commands.Drive.Tank;
-import frc.robot.commands.Drive.Turtles;
 import frc.robot.commands.Intake.FlipperDown;
 import frc.robot.commands.Intake.FlipperUp;
 import frc.robot.commands.Intake.Outtake;
@@ -26,7 +22,6 @@ import frc.robot.subsystems.ShuffleboardManager;
 import java.util.HashMap;
 
 import com.pathplanner.lib.auto.AutoBuilder;
-import com.pathplanner.lib.auto.NamedCommands;
 
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -53,7 +48,7 @@ public class RobotContainer {
   private final XboxController _DriveController = m_ControlBoard.getDriveController();
 
 
-  private final Limelight m_limelight= Limelight.getInstance();
+  //private final Limelight m_limelight= Limelight.getInstance();
 
   public final ShuffleboardManager m_shuffleboardManager = ShuffleboardManager.getInstance();
 
@@ -97,7 +92,6 @@ public class RobotContainer {
   }
 
   private void initAuton() {
-    
   }
 
   /**

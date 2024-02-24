@@ -58,7 +58,7 @@ public class Drivetrain extends SubsystemBase {
 
 
   private boolean flipped = false;
-  private boolean invert = false;
+
 
   private final SimpleMotorFeedforward feedForward;
 
@@ -128,14 +128,8 @@ public class Drivetrain extends SubsystemBase {
 
     //odometry stuff ends
 
-    Pose2d m_pose;
-    if( false) {
-      //m_pose = limelight.getPose();
-      m_pose = new Pose2d();
-    }
-    else {
-      m_pose = new Pose2d();
-    }
+    Pose2d m_pose = new Pose2d();
+  
  
   AutoBuilder.configureRamsete(
             this::getPose, // Robot pose supplier
