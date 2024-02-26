@@ -39,6 +39,11 @@ public final class Constants {
     public static final int kDriverControllerPort = 0;
   }
 
+  public static class ArmConstants {
+    public static final int LEFT_ARM = 31;
+    public static final int RIGHT_ARM = 32;
+  }
+
   public static class ShootConstants {
     public static final int RIGHT_SHOOTER = 11;
     public static final int LEFT_SHOOTER = 12;
