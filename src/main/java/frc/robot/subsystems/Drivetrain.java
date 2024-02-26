@@ -164,6 +164,10 @@ public class Drivetrain extends SubsystemBase {
     return flipped;
   }
 
+  public SimpleMotorFeedforward getFeedForward() {
+    return feedForward;
+  }
+
   public void resetEncoders() {
     _left_Encoder.setPosition(0);
     _right_Encoder.setPosition(0);
@@ -236,6 +240,12 @@ public class Drivetrain extends SubsystemBase {
     //return new ChassisSpeeds(leftVelocity, rightVelocity, headingVelocity);
     return kinematics.toChassisSpeeds(new DifferentialDriveWheelSpeeds(getLeftVelocity(), getRightVelocity()));
 }
+
+public void tankDriveVolts(double leftVolts, double rightVolts) {
+  _left_motor1.setVoltage(leftVolts);
+  _right_motor1.setVoltage(rightVolts);
+  _drive.feed();
+}
   
   public void setSpeeds(ChassisSpeeds speeds) {
     DifferentialDriveWheelSpeeds wheelSpeeds = kinematics.toWheelSpeeds(speeds);
@@ -272,6 +282,10 @@ public void setWheelSpeeds(double left, double right) {
 
   public Pose2d getPose() {
     return m_odometry.getPoseMeters();
+  }
+
+  public DifferentialDriveKinematics getKinematics() {
+    return kinematics;
   }
   
   @Override

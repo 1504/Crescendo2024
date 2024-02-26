@@ -4,14 +4,12 @@
 
 package frc.robot;
 
+import frc.robot.Constants.AutoConstants;
+import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.ShootConstants;
 import frc.robot.commands.Intake.*;
 import frc.robot.commands.Auto.moveBackwards;
 import frc.robot.commands.Drive.Tank;
-import frc.robot.commands.Intake.FlipperDown;
-import frc.robot.commands.Intake.FlipperUp;
-import frc.robot.commands.Intake.Outtake;
-import frc.robot.commands.Intake.RawFlip;
 import frc.robot.commands.Shooter.Shooter;
 import frc.robot.controlboard.ControlBoard;
 import frc.robot.subsystems.Drivetrain;
@@ -20,13 +18,26 @@ import frc.robot.subsystems.PIDShooter;
 import frc.robot.subsystems.ShuffleboardManager;
 
 import java.util.HashMap;
+import java.util.List;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.RamseteController;
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.trajectory.Trajectory;
+import edu.wpi.first.math.trajectory.TrajectoryConfig;
+import edu.wpi.first.math.trajectory.TrajectoryGenerator;
+import edu.wpi.first.math.trajectory.constraint.DifferentialDriveVoltageConstraint;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -100,12 +111,45 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    // An example command will be run in autonomous
-    System.err.println(" ----------------------------------------");
-    System.err.println(m_autoChooser.getSelected());
+    var autoVoltageConstraint = new DifferentialDriveVoltageConstraint(
+      m_drive.getFeedForward(), m_drive.getKinematics(), 10);
+    
+    TrajectoryConfig config= new TrajectoryConfig(AutoConstants.AUTO_MAX_SPEED_METERS_PER_SECOND, AutoConstants.AUTO_MAX_ACCEL_METERS_PER_SECOND_SQUARED)
+      .setKinematics(m_drive.getKinematics()).addConstraint(autoVoltageConstraint);
 
-    //m_autoChooser.getSelected().andThen(new AutoDrive(2, false));
-    //return m_autoChooser.getSelected();
-    return m_autoChooser.getSelected().andThen(new moveBackwards(2));
+    Trajectory exampleTrajectory =
+      TrajectoryGenerator.generateTrajectory(
+          // Start at the origin facing the +X direction
+          new Pose2d(0, 0, new Rotation2d(0)),
+          // Pass through these two interior waypoints, making an 's' curve path
+          List.of(new Translation2d(1, 1), new Translation2d(2, -1)),
+          // End 3 meters straight ahead of where we started, facing forward
+          new Pose2d(3, 0, new Rotation2d(0)),
+          // Pass config
+          config);
+    
+      RamseteCommand ramseteCommand =
+      new RamseteCommand(
+          exampleTrajectory,
+          m_drive::getPose,
+          new RamseteController(AutoConstants.kRamseteB, AutoConstants.kRamseteZeta),
+          new SimpleMotorFeedforward(
+              DriveConstants.ksVolts,
+              DriveConstants.kvVoltSecondsPerMeter,
+              DriveConstants.kaVoltSecondsSquaredPerMeter),
+          m_drive::getKinematics, // Changed to use the instance method
+          m_drive::getSpeeds,      // Changed to use the instance method
+          new PIDController(1, 0, 0),
+          new PIDController(1, 0, 0),
+          m_drive::tankDriveVolts, // Changed to use the instance method
+          m_drive
+      );
+      
+
+    // Reset odometry to the initial pose of the trajectory, run path following
+    // command, then stop at the end.
+    return Commands.runOnce(() -> m_drive.resetOdometry(exampleTrajectory.getInitialPose()))
+        .andThen(ramseteCommand)
+        .andThen(Commands.runOnce(() -> m_drive.tankDriveVolts(0, 0)));
   }
 }
