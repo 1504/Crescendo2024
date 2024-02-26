@@ -35,6 +35,7 @@ public class ShuffleboardManager extends SubsystemBase {
   ShuffleboardTab _Gyroscope;
   ShuffleboardTab PIDTuning;
   ShuffleboardTab Intake;
+  ShuffleboardTab PIDSetpoints;
 
   // telemetry
   private GenericEntry leftEncoder;
@@ -52,6 +53,8 @@ public class ShuffleboardManager extends SubsystemBase {
   private GenericEntry leftVelocity;
   private GenericEntry rightVelocity;
   private GenericEntry distTraveled;
+  private GenericEntry leftPIDsp;
+  private GenericEntry rightPIDsp;
 
   private GenericEntry flipEncoder;
 
@@ -69,6 +72,7 @@ public class ShuffleboardManager extends SubsystemBase {
       telemetry = Shuffleboard.getTab("Telemetry");
       _Gyroscope = Shuffleboard.getTab("Gyroscope");
       PIDTuning = Shuffleboard.getTab("PID Tuning");
+      PIDSetpoints = Shuffleboard.getTab("PID Setpoints");
       Intake = Shuffleboard.getTab("Intake");
 
       leftEncoder = telemetry.add("Left Encoder", 0).withPosition(0, 0).withSize(2, 2).withWidget(BuiltInWidgets.kGraph).getEntry();
@@ -87,11 +91,13 @@ public class ShuffleboardManager extends SubsystemBase {
       GyroDY = _Gyroscope.add("Gyro Displacement Y", 0).withPosition(0, 2).withSize(2, 1).withWidget(BuiltInWidgets.kTextView).getEntry();
       GyroDZ = _Gyroscope.add("Gyro Displacement Z", 0).withPosition(2, 2).withSize(2, 1).withWidget(BuiltInWidgets.kTextView).getEntry();
 
-      LeftPosition = PIDTuning.add("Left Encoder Position", 0).withPosition(0, 0).withSize(2, 1).getEntry();
-      RightPosition = PIDTuning.add("Right Encoder Position", 0).withPosition(0, 1).withSize(2,1).getEntry();
+      LeftPosition = PIDTuning.add("Left Encoder Position", 0).withPosition(0, 0).withSize(1, 1).getEntry();
+      RightPosition = PIDTuning.add("Right Encoder Position", 0).withPosition(1, 0).withSize(1,1).getEntry();
+      leftPIDsp = PIDSetpoints.add("Left PID Setpoint", 0).withPosition(0, 0).withSize(3,3).withWidget(BuiltInWidgets.kGraph).getEntry();
+      rightPIDsp = PIDSetpoints.add("Right PID Setpoint", 0).withPosition(3, 0).withSize(3,3).withWidget(BuiltInWidgets.kGraph).getEntry();
       leftVelocity = PIDTuning.add("Left wheel velocity",0).withPosition(2, 0).withSize(3,3).withWidget(BuiltInWidgets.kGraph).getEntry();
       rightVelocity = PIDTuning.add("Right wheel velocity",0).withPosition(5, 0).withSize(3,3).withWidget(BuiltInWidgets.kGraph).getEntry();
-      PIDTuning.add("Left PID",_drive.getLeftPid()).withPosition(0, 2).withSize(1,2);
+      PIDTuning.add("Left PID",_drive.getLeftPID()).withPosition(0, 2).withSize(1,2);
       PIDTuning.add("Right PID", _drive.getRightPID()).withPosition(1, 2).withSize(1,2);
       PIDTuning.add("Run Command", new moveBackwards(2)).withPosition(2, 3).withSize(2, 1);
       distTraveled = PIDTuning.add("Distance Traveled", 0).withPosition(4, 3).withSize(2, 1).withWidget(BuiltInWidgets.kTextView).getEntry();
@@ -123,10 +129,13 @@ public class ShuffleboardManager extends SubsystemBase {
 
     distTraveled.setDouble(_drive.getDistanceTraveled());
 
-    leftVelocity.setDouble(-_drive.getLeftVelocity());
-    rightVelocity.setDouble(-_drive.getRightVelocity());
+    leftVelocity.setDouble(_drive.getLeftVelocity());
+    rightVelocity.setDouble(_drive.getRightVelocity());
 
     flipEncoder.setDouble(_groundIntake.getFlipperEncoder().getPosition());
+
+    leftPIDsp.setDouble(_drive.getLeftPID().getSetpoint());
+    rightPIDsp.setDouble(_drive.getRightPID().getSetpoint());
   }
 
   @Override

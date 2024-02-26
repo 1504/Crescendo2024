@@ -6,12 +6,11 @@ package frc.robot;
 
 import frc.robot.Constants.ShootConstants;
 import frc.robot.commands.Intake.*;
+import frc.robot.commands.tuneKs;
+import frc.robot.commands.Auto.AutoDrive;
 import frc.robot.commands.Auto.moveBackwards;
+import frc.robot.commands.Drive.PIDdrive;
 import frc.robot.commands.Drive.Tank;
-import frc.robot.commands.Intake.FlipperDown;
-import frc.robot.commands.Intake.FlipperUp;
-import frc.robot.commands.Intake.Outtake;
-import frc.robot.commands.Intake.RawFlip;
 import frc.robot.commands.Shooter.Shooter;
 import frc.robot.controlboard.ControlBoard;
 import frc.robot.subsystems.Drivetrain;
@@ -20,6 +19,9 @@ import frc.robot.subsystems.PIDShooter;
 import frc.robot.subsystems.ShuffleboardManager;
 
 import java.util.HashMap;
+import java.util.function.BooleanSupplier;
+
+import edu.wpi.first.wpilibj.Timer;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 
@@ -27,9 +29,11 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 
 
 /**
@@ -89,6 +93,8 @@ public class RobotContainer {
     new JoystickButton(_GadgetsController, XboxController.Button.kY.value).whileTrue(new Shooter(m_shooter, ShootConstants.right_speed, ShootConstants.left_speed));
     new JoystickButton(_DriveController, XboxController.Button.kX.value).whileTrue(new Outtake());
 
+    new JoystickButton(_DriveController, XboxController.Button.kY.value).whileTrue(new PIDdrive(2));
+
   }
 
   private void initAuton() {
@@ -100,12 +106,17 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
+    Timer timer = new Timer();
+    timer.start();
+    BooleanSupplier sup = () -> timer.get() >= 5;
+    
     // An example command will be run in autonomous
     System.err.println(" ----------------------------------------");
     System.err.println(m_autoChooser.getSelected());
 
     //m_autoChooser.getSelected().andThen(new AutoDrive(2, false));
-    //return m_autoChooser.getSelected();
-    return m_autoChooser.getSelected().andThen(new moveBackwards(2));
+    return m_autoChooser.getSelected();
+    //return m_autoChooser.getSelected().andThen(new moveBackwards(2));
+    //return new AutoDrive(2, false);
   }
 }
