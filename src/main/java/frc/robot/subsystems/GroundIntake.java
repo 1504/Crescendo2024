@@ -53,6 +53,9 @@ public class GroundIntake extends SubsystemBase {
     }
   }
 
+  /**
+   * Stops the motor
+   */
   public void stopIntake() {
     intakeMotor.set(0);
   }

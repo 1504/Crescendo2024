@@ -28,6 +28,7 @@ public class Shooter extends Command {
   public void initialize() {
     m_shooter.setRight(rightSpeed);
     m_shooter.setLeft(leftSpeed);
+    m_shooter.shoot();
     System.err.println("shooting");
   }
 

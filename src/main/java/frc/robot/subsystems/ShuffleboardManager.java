@@ -96,7 +96,7 @@ public class ShuffleboardManager extends SubsystemBase {
       PIDTuning.add("Run Command", new moveBackwards(2)).withPosition(2, 3).withSize(2, 1);
       distTraveled = PIDTuning.add("Distance Traveled", 0).withPosition(4, 3).withSize(2, 1).withWidget(BuiltInWidgets.kTextView).getEntry();
 
-      flipEncoder = Intake.add("Intake Flip Encoder Pos", 0).withPosition(0, 0).withSize(2,1).getEntry();
+      flipEncoder = Intake.add("Intake Pos", 0).withPosition(0, 0).withSize(2,1).getEntry();
 
     } catch (Exception e) {
       System.out.println("ShuffleboardManager error: " + e);

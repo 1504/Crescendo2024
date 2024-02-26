@@ -30,6 +30,7 @@ public class RawFlip extends Command {
       } else if (!flipUp && m_intake.getFlipperEncoder().getPosition() >= Constants.IntakeConstants.FLIPPER_DOWN_POS) {
         m_intake.rawFlipDown();
       }
+      System.err.println(m_intake.getFlipperEncoder().getPosition());
   }
 
   // Called once the command ends or is interrupted.

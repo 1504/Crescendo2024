@@ -85,9 +85,9 @@ public class RobotContainer {
     new JoystickButton(_GadgetsController, XboxController.Button.kRightStick.value).whileTrue(new RawFlip(true)); //flip up
     new JoystickButton(_GadgetsController, XboxController.Button.kLeftBumper.value).onTrue(new FlipperDown());
     new JoystickButton(_GadgetsController, XboxController.Button.kRightBumper.value).onTrue(new FlipperUp());
-    new JoystickButton(_GadgetsController, XboxController.Button.kY.value).whileTrue(new Intake());
-    new JoystickButton(_GadgetsController, XboxController.Button.kX.value).whileTrue(new Shooter(m_shooter, ShootConstants.right_speed, ShootConstants.left_speed));
-    new JoystickButton(_GadgetsController, XboxController.Button.kA.value).whileTrue(new Outtake());
+    new JoystickButton(_DriveController, XboxController.Button.kA.value).whileTrue(new Intake());
+    new JoystickButton(_GadgetsController, XboxController.Button.kY.value).whileTrue(new Shooter(m_shooter, ShootConstants.right_speed, ShootConstants.left_speed));
+    new JoystickButton(_DriveController, XboxController.Button.kX.value).whileTrue(new Outtake());
 
   }
 
