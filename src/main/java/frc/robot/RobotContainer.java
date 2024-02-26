@@ -6,6 +6,8 @@ package frc.robot;
 
 import frc.robot.Constants.ShootConstants;
 import frc.robot.commands.Intake.*;
+import frc.robot.commands.Arm.ArmExtend;
+import frc.robot.commands.Arm.ArmRetract;
 import frc.robot.commands.tuneKs;
 import frc.robot.commands.Auto.AutoDrive;
 import frc.robot.commands.Auto.moveBackwards;
@@ -92,6 +94,8 @@ public class RobotContainer {
     new JoystickButton(_DriveController, XboxController.Button.kA.value).whileTrue(new Intake());
     new JoystickButton(_GadgetsController, XboxController.Button.kY.value).whileTrue(new Shooter(m_shooter, ShootConstants.right_speed, ShootConstants.left_speed));
     new JoystickButton(_DriveController, XboxController.Button.kX.value).whileTrue(new Outtake());
+    new JoystickButton(_DriveController, XboxController.Button.kLeftStick.value).whileTrue(new ArmExtend());
+    new JoystickButton(_DriveController, XboxController.Button.kRightStick.value).whileTrue(new ArmRetract());
 
     new JoystickButton(_DriveController, XboxController.Button.kY.value).whileTrue(new PIDdrive(2));
 
