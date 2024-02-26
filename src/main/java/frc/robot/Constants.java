@@ -52,7 +52,7 @@ public final class Constants {
     public static final double LEFT_D = 0;
 
     public static final double left_speed = -6.5;
-    public static final double right_speed = 6.5;
+    public static final double right_speed = -6.5;
     
   }
 
@@ -98,7 +98,7 @@ public final class Constants {
 
     public static final double MAX_INTAKE_SPEED = 0.7;
     public static final double MAX_FLIP_SPEED = 0.4;
-
+    public static final double FLIPPER_DOWN_POS = -33;
     public static final double FLIPPER_UP_POS = 0; 
   }
 
