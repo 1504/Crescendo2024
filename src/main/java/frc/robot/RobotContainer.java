@@ -11,6 +11,7 @@ import frc.robot.commands.Arm.ArmRetract;
 import frc.robot.commands.tuneKs;
 import frc.robot.commands.Auto.AutoDrive;
 import frc.robot.commands.Auto.AutoShooter;
+import frc.robot.commands.Auto.AutoTurn;
 import frc.robot.commands.Auto.moveBackwards;
 import frc.robot.commands.Drive.PIDdrive;
 import frc.robot.commands.Drive.Tank;
@@ -120,14 +121,14 @@ public class RobotContainer {
     timer.start();
     BooleanSupplier sup = () -> timer.get() >= 5;
     
-    // An example command will be run in autonomous
     System.err.println(" ----------------------------------------");
     System.err.println(m_autoChooser.getSelected());
-
-    //m_autoChooser.getSelected().andThen(new AutoDrive(2, false));
-    //return m_autoChooser.getSelected();
-    //return m_autoChooser.getSelected().andThen(new moveBackwards(2));
-    //return new AutoDrive(2, false);
-    return new AutoShooter(m_shooter, m_intake, 5).andThen(new moveBackwards(2));
+    //auto turn -- true = clockwise; false = counter
+    
+    return (new AutoShooter(m_shooter, m_intake, 5)
+      .andThen(new AutoDrive(1, false))
+      .andThen(new AutoTurn(false)))
+      .andThen(new AutoDrive(1, false));
+    //return new AutoShooter(m_shooter, m_intake, 5).andThen(new AutoDrive(1.5, false));
   }
 }

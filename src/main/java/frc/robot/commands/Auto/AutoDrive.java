@@ -33,10 +33,10 @@ public class AutoDrive extends Command {
   public void execute() {
     if(_forward)
     {
-      _drive.driveTank(0.6*AutoConstants.AUTO_MAX_SPEED_METERS_PER_SECOND, 0);
+      _drive.driveTank(-0.6*AutoConstants.AUTO_MAX_SPEED_METERS_PER_SECOND, 0);
     }
     else
-      _drive.driveTank(-0.6*AutoConstants.AUTO_MAX_SPEED_METERS_PER_SECOND, 0);
+      _drive.driveTank(0.6*AutoConstants.AUTO_MAX_SPEED_METERS_PER_SECOND, 0);
   }
 
   // Called once the command ends or is interrupted.
@@ -48,6 +48,6 @@ public class AutoDrive extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return Math.abs(_drive.getDistanceTraveled())>=(_distance-0.075);
+    return Math.abs(_drive.getDistanceTraveled())>=(_distance);
   }
 }

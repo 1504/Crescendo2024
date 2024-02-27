@@ -6,6 +6,7 @@ package frc.robot.subsystems;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.util.ReplanningConfig;
+import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
@@ -114,12 +115,11 @@ public class Drivetrain extends SubsystemBase {
     //_right_motor1 = new CANSparkMax(DriveConstants.RIGHT1, MotorType.kBrushless);
     //_right_motor2 = new CANSparkMax(DriveConstants.RIGHT2, MotorType.kBrushless);
 
-    /* 
+    
     _right_motor1.setIdleMode(IdleMode.kBrake);
     _right_motor2.setIdleMode(IdleMode.kBrake);
     _left_motor1.setIdleMode(IdleMode.kBrake);
     _left_motor2.setIdleMode(IdleMode.kBrake);
-    */
 
     _right_motor1.setInverted(false);
     //_right_motor2.setInverted(true);
@@ -183,6 +183,15 @@ public class Drivetrain extends SubsystemBase {
       double ySpd = Math.abs(ySpeed) < DriveConstants.DEADBAND ? 0 : Math.pow(ySpeed, 1);
       double xSpd = Math.abs(xSpeed) < DriveConstants.DEADBAND ? 0 : Math.pow(xSpeed, 1);
       _drive.arcadeDrive(xSpd, ySpd);
+  }
+
+  public void turn( boolean direction) { //clockwise - true; counter - false
+    if( direction) {
+      setWheelSpeeds(0,1);
+    }
+    else{
+      setWheelSpeeds(1,0);
+    }
   }
 
   public void drivePID(double velocity) {
