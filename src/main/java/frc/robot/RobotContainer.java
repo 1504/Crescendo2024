@@ -10,12 +10,14 @@ import frc.robot.commands.Arm.ArmExtend;
 import frc.robot.commands.Arm.ArmRetract;
 import frc.robot.commands.tuneKs;
 import frc.robot.commands.Auto.AutoDrive;
+import frc.robot.commands.Auto.AutoShooter;
 import frc.robot.commands.Auto.moveBackwards;
 import frc.robot.commands.Drive.PIDdrive;
 import frc.robot.commands.Drive.Tank;
 import frc.robot.commands.Shooter.Shooter;
 import frc.robot.controlboard.ControlBoard;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.GroundIntake;
 import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.PIDShooter;
 import frc.robot.subsystems.ShuffleboardManager;
@@ -62,6 +64,8 @@ public class RobotContainer {
   private final SendableChooser<Command> m_autoChooser;
 
   private final PIDShooter m_shooter = PIDShooter.getInstance();
+
+  private final GroundIntake m_intake = GroundIntake.getInstance();
   
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -121,8 +125,9 @@ public class RobotContainer {
     System.err.println(m_autoChooser.getSelected());
 
     //m_autoChooser.getSelected().andThen(new AutoDrive(2, false));
-    return m_autoChooser.getSelected();
+    //return m_autoChooser.getSelected();
     //return m_autoChooser.getSelected().andThen(new moveBackwards(2));
     //return new AutoDrive(2, false);
+    return new AutoShooter(m_shooter, m_intake, 5).andThen(new moveBackwards(2));
   }
 }

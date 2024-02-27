@@ -47,6 +47,10 @@ public class GroundIntake extends SubsystemBase {
     intakeMotor.set(-IntakeConstants.MAX_INTAKE_SPEED);
   }
 
+  public void stopRoll() {
+    intakeMotor.set(0);
+  }
+
   public void rawIntake() {
     if (!auto) {
       intakeMotor.set(IntakeConstants.MAX_INTAKE_SPEED);

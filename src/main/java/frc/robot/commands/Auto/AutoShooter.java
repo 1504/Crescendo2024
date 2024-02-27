@@ -5,6 +5,8 @@
 package frc.robot.commands.Auto;
 import frc.robot.subsystems.PIDShooter;
 import frc.robot.Constants;
+import frc.robot.Constants.AutoConstants;
+import frc.robot.Constants.ShootConstants;
 import frc.robot.commands.Intake.FlipperDown;
 import frc.robot.subsystems.GroundIntake;
 import edu.wpi.first.wpilibj.Timer; 
@@ -33,14 +35,14 @@ public class AutoShooter extends Command {
   public void initialize() {
     _timer.reset();
     _timer.start();
-    m_shooter.setRight(-6.5);
-    m_shooter.setLeft(-6.5);
-    System.err.println("me when i shooting school");
+    m_shooter.setRight(ShootConstants.right_speed);
+    m_shooter.setLeft(ShootConstants.left_speed);
+    m_shooter.shoot();
   }
 
   @Override
   public void execute(){
-    if (_timer.get() > 2) {
+    if (_timer.get() > 2 && _timer.get() <10) {
       m_intake.outRoll();
     }
   }
@@ -50,6 +52,7 @@ public class AutoShooter extends Command {
     m_shooter.setRight(0);
     m_shooter.setLeft(0);
     m_shooter.stopShoot();
+    m_intake.stopRoll();
     new FlipperDown();
   }
 
