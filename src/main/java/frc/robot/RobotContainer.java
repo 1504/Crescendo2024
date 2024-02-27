@@ -99,7 +99,7 @@ public class RobotContainer {
     new JoystickButton(_DriveController, XboxController.Button.kLeftStick.value).whileTrue(new ArmExtend());
     new JoystickButton(_DriveController, XboxController.Button.kRightStick.value).whileTrue(new ArmRetract());
 
-    new JoystickButton(_DriveController, XboxController.Button.kY.value).onTrue(m_autoChooser.getSelected());
+    new JoystickButton(_DriveController, XboxController.Button.kY.value).onTrue(new PIDdrive(1));
 
   }
 

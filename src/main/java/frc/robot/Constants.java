@@ -42,6 +42,8 @@ public final class Constants {
   public static class ArmConstants {
     public static final int LEFT_ARM = 31;
     public static final int RIGHT_ARM = 32;
+
+    public static final double ARM_EXTEND_POS = 0;
   }
 
   public static class ShootConstants {

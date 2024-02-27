@@ -109,10 +109,10 @@ public class Drivetrain extends SubsystemBase {
 
   public Drivetrain() {
     // initializes tank motor controllers
-    //_right_motor1 = new CANSparkMax(DriveConstants.RIGHT1, MotorType.kBrushless);
-    //_right_motor2 = new CANSparkMax(DriveConstants.RIGHT2, MotorType.kBrushless);
     //_left_motor1 = new CANSparkMax(DriveConstants.LEFT1, MotorType.kBrushless);
     //_left_motor2 = new CANSparkMax(DriveConstants.LEFT2, MotorType.kBrushless);
+    //_right_motor1 = new CANSparkMax(DriveConstants.RIGHT1, MotorType.kBrushless);
+    //_right_motor2 = new CANSparkMax(DriveConstants.RIGHT2, MotorType.kBrushless);
 
     /* 
     _right_motor1.setIdleMode(IdleMode.kBrake);
@@ -262,8 +262,8 @@ public class Drivetrain extends SubsystemBase {
     double headingVelocity = m_gyro.getRotation2d().getRadians();
     System.err.println(leftVelocity + "       " + rightVelocity + "      " + headingVelocity);
 
-    return new ChassisSpeeds(leftVelocity, rightVelocity, headingVelocity);
-    //return kinematics.toChassisSpeeds(new DifferentialDriveWheelSpeeds(getLeftVelocity(), getRightVelocity()));
+    //return new ChassisSpeeds(leftVelocity, rightVelocity, headingVelocity);
+    return kinematics.toChassisSpeeds(new DifferentialDriveWheelSpeeds(getLeftVelocity(), getRightVelocity()));
 }
   
   public void setSpeeds(ChassisSpeeds speeds) {
