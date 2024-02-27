@@ -5,6 +5,7 @@
 package frc.robot.commands.Arm;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants;
 import frc.robot.subsystems.Arm;
 
 
@@ -34,6 +35,8 @@ public class ArmRetract extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
+    if(_arm.getLeftEncoder().getPosition() <= Constants.ArmConstants.ARM_EXTEND_POS)
+      return true;
     return false;
   }
 }
