@@ -153,7 +153,7 @@ public class Drivetrain extends SubsystemBase {
   _left_Encoder.getPosition(), _right_Encoder.getPosition(),
   new Pose2d(0, 0, new Rotation2d()));
 
-    //m_gyro.reset();
+    m_gyro.reset();
 
     //odometry stuff ends
 
@@ -164,9 +164,7 @@ public class Drivetrain extends SubsystemBase {
             this::getPose, // Robot pose supplier
             this::resetOdometry, // Method to reset odometry (will be called if your auto has a starting pose)
             this::getSpeeds, // Current ChassisSpeeds supplier
-            this::driveRobotRelative,
-            2,
-            0.7, //setSpeeds, // Method that will drive the robot given ChassisSpeeds
+            this::setSpeeds, //setSpeeds, // Method that will drive the robot given ChassisSpeeds
             new ReplanningConfig(), // Default path replanning config. See the API for the options here
             this::flipPath,
             this // Reference to this subsystem to set requirements
@@ -264,8 +262,8 @@ public class Drivetrain extends SubsystemBase {
     double headingVelocity = m_gyro.getRotation2d().getRadians();
     System.err.println(leftVelocity + "       " + rightVelocity + "      " + headingVelocity);
 
-    //return new ChassisSpeeds(leftVelocity, rightVelocity, headingVelocity);
-    return kinematics.toChassisSpeeds(new DifferentialDriveWheelSpeeds(getLeftVelocity(), getRightVelocity()));
+    return new ChassisSpeeds(leftVelocity, rightVelocity, headingVelocity);
+    //return kinematics.toChassisSpeeds(new DifferentialDriveWheelSpeeds(getLeftVelocity(), getRightVelocity()));
 }
   
   public void setSpeeds(ChassisSpeeds speeds) {

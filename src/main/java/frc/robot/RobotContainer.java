@@ -67,11 +67,13 @@ public class RobotContainer {
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
 
+    m_autoChooser = AutoBuilder.buildAutoChooser("forward");
+    SmartDashboard.putData("Auto Chooser", m_autoChooser);
+
     // Configure the trigger bindings
     configureBindings();
   
-    m_autoChooser = AutoBuilder.buildAutoChooser("b1_auto");
-    SmartDashboard.putData("Auto Chooser", m_autoChooser);
+  
   }
 
   /**
@@ -97,7 +99,7 @@ public class RobotContainer {
     new JoystickButton(_DriveController, XboxController.Button.kLeftStick.value).whileTrue(new ArmExtend());
     new JoystickButton(_DriveController, XboxController.Button.kRightStick.value).whileTrue(new ArmRetract());
 
-    new JoystickButton(_DriveController, XboxController.Button.kY.value).whileTrue(new PIDdrive(2));
+    new JoystickButton(_DriveController, XboxController.Button.kY.value).onTrue(m_autoChooser.getSelected());
 
   }
 
