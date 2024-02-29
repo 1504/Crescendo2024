@@ -45,4 +45,16 @@ public class ControlBoard {
     public XboxController getGadgetsController() {
         return _xboxController_gadgets;
     }
+
+    public double getArmsUp() {
+        if(Math.abs(_xboxController_gadgets.getLeftY()) > 0.3)
+            return -_xboxController_gadgets.getLeftY();
+        return 0;
+    }
+
+    public double getIntakeUp() {
+        if(Math.abs(_xboxController_gadgets.getRightY()) > 0.3)
+            return -_xboxController_gadgets.getRightY();
+        return 0;
+    }
 }

@@ -74,8 +74,7 @@ public class Gyroscope extends SubsystemBase {
     }
 
     public Rotation2d getYawRotation() {
-        return (true) ? Rotation2d.fromDegrees(360 - getYaw())
-                : Rotation2d.fromDegrees(getYaw());
+        return Rotation2d.fromDegrees(360 - getYaw());
     }
 
     public void reset() {

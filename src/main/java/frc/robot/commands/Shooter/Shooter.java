@@ -12,13 +12,12 @@ import edu.wpi.first.wpilibj2.command.Command;
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 
 public class Shooter extends Command {
-  private final PIDShooter m_shooter;
+  private final PIDShooter m_shooter = PIDShooter.getInstance();
   private final double rightSpeed; // right speed of the intake
   private final double leftSpeed; // bottom speed of the intake
   /** Creates a new Intake. */
-  public Shooter(PIDShooter shooter, double rightSpeed, double leftSpeed) {
+  public Shooter(double rightSpeed, double leftSpeed) {
     // Use addRequirements() here to declare subsystem dependencies.
-    m_shooter = shooter;
     this.rightSpeed = rightSpeed;
     this.leftSpeed = leftSpeed;
     addRequirements(m_shooter);

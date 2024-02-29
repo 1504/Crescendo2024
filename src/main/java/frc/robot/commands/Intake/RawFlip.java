@@ -4,18 +4,24 @@
 
 package frc.robot.commands.Intake;
 
+import java.util.function.DoubleSupplier;
+
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.subsystems.GroundIntake;
 
 public class RawFlip extends Command {
   private final GroundIntake m_intake = GroundIntake.getInstance();
-  private boolean flipUp = false;
+  private boolean flipUp;
+  private DoubleSupplier speed;
   /** Creates a new RawFlip. */
-  public RawFlip(boolean flip) {
-    flipUp = flip;
+  public RawFlip(DoubleSupplier s) {
+    speed = s;
+    if(speed.getAsDouble() > 0)
+      flipUp = true;
+    else
+      flipUp = false;
     addRequirements(m_intake);
-    // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
@@ -26,11 +32,10 @@ public class RawFlip extends Command {
   @Override
   public void execute() {
       if(flipUp && m_intake.getFlipperEncoder().getPosition() <= Constants.IntakeConstants.FLIPPER_UP_POS){
-        m_intake.rawFlipUp();
+        m_intake.rawFlipUp(speed.getAsDouble());
       } else if (!flipUp && m_intake.getFlipperEncoder().getPosition() >= Constants.IntakeConstants.FLIPPER_DOWN_POS) {
-        m_intake.rawFlipDown();
+        m_intake.rawFlipDown(speed.getAsDouble());
       }
-      System.err.println(m_intake.getFlipperEncoder().getPosition());
   }
 
   // Called once the command ends or is interrupted.

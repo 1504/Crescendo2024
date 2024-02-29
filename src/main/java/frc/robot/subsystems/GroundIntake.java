@@ -5,6 +5,7 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkBase.IdleMode;
 //import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.RelativeEncoder;
@@ -24,12 +25,8 @@ public class GroundIntake extends SubsystemBase {
 
   private static GroundIntake instance = null;
 
-  private double curr_pos = 0;
-
-  private boolean down = false;
-
   private GroundIntake() {
-    
+    flipperMotor.setIdleMode(IdleMode.kBrake); 
   }
 
   public static GroundIntake getInstance() {
@@ -51,7 +48,7 @@ public class GroundIntake extends SubsystemBase {
     intakeMotor.set(0);
   }
 
-  public void rawIntake() {
+  public void rawIntake(double s) {
     if (!auto) {
       intakeMotor.set(IntakeConstants.MAX_INTAKE_SPEED);
     }
@@ -67,12 +64,12 @@ public class GroundIntake extends SubsystemBase {
     flipperMotor.set(0);
   }
 
-  public void rawFlipUp(){
-    flipperMotor.set(IntakeConstants.MAX_FLIP_SPEED);
+  public void rawFlipUp(double s){
+    flipperMotor.set(s * IntakeConstants.MAX_FLIP_SPEED);
   }
 
-  public void rawFlipDown() {
-    flipperMotor.set(-IntakeConstants.MAX_FLIP_SPEED);
+  public void rawFlipDown(double s) {
+    flipperMotor.set(s * -IntakeConstants.MAX_FLIP_SPEED);
   }
 
   public RelativeEncoder getFlipperEncoder() {

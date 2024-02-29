@@ -40,8 +40,8 @@ public final class Constants {
   }
 
   public static class ArmConstants {
-    public static final int LEFT_ARM = 31;
-    public static final int RIGHT_ARM = 32;
+    public static final int LEFT_ARM = 5;
+    public static final int RIGHT_ARM = 6;
 
     public static final double ARM_EXTEND_POS = 0;
   }
@@ -103,10 +103,13 @@ public final class Constants {
     public static final int intakePort_2 = 22;
     public static final double kP = 0;
 
-    public static final double MAX_INTAKE_SPEED = 0.7;
+    public static final double MAX_INTAKE_SPEED = 0.6;
     public static final double MAX_FLIP_SPEED = 0.4;
-    public static final double FLIPPER_DOWN_POS = -33;
-    public static final double FLIPPER_UP_POS = 0; 
+    public static final double FLIPPER_DOWN_POS = -32;
+    public static final double FLIPPER_UP_POS =-2; 
+
+    public static final boolean UP = true;
+    public static final boolean DOWN = false;
   }
 
   public static class AutoConstants {

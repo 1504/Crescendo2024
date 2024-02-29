@@ -12,6 +12,7 @@ public class Outtake extends Command {
   private static final GroundIntake m_intake = GroundIntake.getInstance();
   /** Creates a new Outtake. */
   public Outtake() {
+    addRequirements(m_intake);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 

@@ -4,43 +4,34 @@
 
 package frc.robot.subsystems;
 
-import com.pathplanner.lib.auto.AutoBuilder;
-import com.pathplanner.lib.util.ReplanningConfig;
+import static edu.wpi.first.units.MutableMeasure.mutable;
+import static edu.wpi.first.units.Units.Meters;
+import static edu.wpi.first.units.Units.MetersPerSecond;
+
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelPositions;
-import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.units.BaseUnits;
 import edu.wpi.first.units.Distance;
-import edu.wpi.first.units.Measure;
 import edu.wpi.first.units.MutableMeasure;
 import edu.wpi.first.units.Velocity;
-import edu.wpi.first.math.MathUtil;
-
-import static edu.wpi.first.units.MutableMeasure.mutable;
 import edu.wpi.first.units.Voltage;
-import static edu.wpi.first.units.Units.Meters;
-import static edu.wpi.first.units.Units.MetersPerSecond;
-import static edu.wpi.first.units.Units.Volts;
-
-import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Constants;
 import frc.robot.Constants.BuildConstants;
 import frc.robot.Constants.DriveConstants;
@@ -57,21 +48,15 @@ public class Drivetrain extends SubsystemBase {
     return _instance;
   }
 
-  //private final CANSparkMax _left_motor1;
-  //private final CANSparkMax _left_motor2;
-  //private final CANSparkMax _right_motor1;
-  //private final CANSparkMax _right_motor2;
+  private final CANSparkMax _left_motor1;
+  private final CANSparkMax _left_motor2;
+  private final CANSparkMax _right_motor1;
+  private final CANSparkMax _right_motor2;
 
-  private final CANSparkMax _right_motor1 = new CANSparkMax(DriveConstants.RIGHT1, MotorType.kBrushless);
-  private final CANSparkMax _right_motor2 = new CANSparkMax(DriveConstants.RIGHT2, MotorType.kBrushless);
-  private final CANSparkMax _left_motor1 = new CANSparkMax(DriveConstants.LEFT1, MotorType.kBrushless);
-  private final CANSparkMax _left_motor2 = new CANSparkMax(DriveConstants.LEFT2, MotorType.kBrushless);
   
-  private final RelativeEncoder _left_Encoder = _left_motor1.getEncoder();
-  private final RelativeEncoder _right_Encoder = _right_motor1.getEncoder();
   //encoders
-  //private final RelativeEncoder _left_Encoder;
-  //private final RelativeEncoder _right_Encoder; 
+  private final RelativeEncoder _left_Encoder;
+  private final RelativeEncoder _right_Encoder; 
 
   //pid controllers
   private final PIDController _left_pid;
@@ -80,9 +65,6 @@ public class Drivetrain extends SubsystemBase {
 
 
   private boolean flipped = false;
-
-
-  private final SimpleMotorFeedforward feedForward;
 
   //odometry stuff
   private final DifferentialDriveOdometry m_odometry;
@@ -110,10 +92,10 @@ public class Drivetrain extends SubsystemBase {
 
   public Drivetrain() {
     // initializes tank motor controllers
-    //_left_motor1 = new CANSparkMax(DriveConstants.LEFT1, MotorType.kBrushless);
-    //_left_motor2 = new CANSparkMax(DriveConstants.LEFT2, MotorType.kBrushless);
-    //_right_motor1 = new CANSparkMax(DriveConstants.RIGHT1, MotorType.kBrushless);
-    //_right_motor2 = new CANSparkMax(DriveConstants.RIGHT2, MotorType.kBrushless);
+    _left_motor1 = new CANSparkMax(DriveConstants.LEFT1, MotorType.kBrushless);
+    _left_motor2 = new CANSparkMax(DriveConstants.LEFT2, MotorType.kBrushless);
+    _right_motor1 = new CANSparkMax(DriveConstants.RIGHT1, MotorType.kBrushless);
+    _right_motor2 = new CANSparkMax(DriveConstants.RIGHT2, MotorType.kBrushless);
 
     
     _right_motor1.setIdleMode(IdleMode.kBrake);
@@ -129,22 +111,17 @@ public class Drivetrain extends SubsystemBase {
     _right_motor2.follow(_right_motor1);
     _left_motor2.follow(_left_motor1);
 
-    //_left_Encoder = _left_motor1.getEncoder();
-    //_right_Encoder = _right_motor1.getEncoder();
-
-
+    _left_Encoder = _left_motor1.getEncoder();
+    _right_Encoder = _right_motor1.getEncoder();
     _drive = new DifferentialDrive(_left_motor1,_right_motor1);
 
-    double p = 1; //left 6.1261, right 7.5226
+    double p = 1.678;
     double i = 0;
-    double d = 0; //left 0.20986, right 0.1059775
+    double d = 0;
 
     _left_pid = new PIDController(p, i, d);
     _right_pid = new PIDController(p, i, d);
     _theta_pid = new PIDController(0.01, 0, d);
-
-    feedForward = new SimpleMotorFeedforward(0.3, 0); //0.3
-
 
     SmartDashboard.putData("Drive", _drive); 
 
@@ -158,17 +135,6 @@ public class Drivetrain extends SubsystemBase {
     //odometry stuff ends
 
     Pose2d m_pose = new Pose2d();
-  
- 
-  AutoBuilder.configureRamsete(
-            this::getPose, // Robot pose supplier
-            this::resetOdometry, // Method to reset odometry (will be called if your auto has a starting pose)
-            this::getSpeeds, // Current ChassisSpeeds supplier
-            this::setSpeeds, //setSpeeds, // Method that will drive the robot given ChassisSpeeds
-            new ReplanningConfig(), // Default path replanning config. See the API for the options here
-            this::flipPath,
-            this // Reference to this subsystem to set requirements
-    );
   }
 
   public Command stopDrivetrain() {
@@ -257,55 +223,15 @@ public class Drivetrain extends SubsystemBase {
     return _left_Encoder.getPosition()/BuildConstants.GR*BuildConstants.WHEEL_CIRCUMFERENCE *BuildConstants.INCHES_TO_METERS;
   }
 
-  public void driveRobotRelative(ChassisSpeeds robotRelativeSpeeds) {
-    ChassisSpeeds targetSpeeds = ChassisSpeeds.discretize(robotRelativeSpeeds, 0.2);
-    DifferentialDriveWheelSpeeds wheelSpeeds = kinematics.toWheelSpeeds(targetSpeeds);
-    double leftVelocity = wheelSpeeds.leftMetersPerSecond;
-    double rightVelocity = wheelSpeeds.rightMetersPerSecond;
-    setWheelSpeeds(leftVelocity, rightVelocity);
-  }
-
-  public ChassisSpeeds getSpeeds() {
-    double leftVelocity = getLeftVelocity();
-    double rightVelocity = getRightVelocity();
-    double headingVelocity = m_gyro.getRotation2d().getRadians();
-    System.err.println(leftVelocity + "       " + rightVelocity + "      " + headingVelocity);
-
-    //return new ChassisSpeeds(leftVelocity, rightVelocity, headingVelocity);
-    return kinematics.toChassisSpeeds(new DifferentialDriveWheelSpeeds(getLeftVelocity(), getRightVelocity()));
-}
-  
-  public void setSpeeds(ChassisSpeeds speeds) {
-    DifferentialDriveWheelSpeeds wheelSpeeds = kinematics.toWheelSpeeds(speeds);
-    // Left velocity
-    double leftVelocity = wheelSpeeds.leftMetersPerSecond;
-    // Right velocity
-    double rightVelocity = wheelSpeeds.rightMetersPerSecond;
-
-    setWheelSpeeds(leftVelocity, rightVelocity);
-}
-
 public void setWheelSpeeds(double left, double right) {
   _left_pid.setSetpoint((left-0.19)/0.41);
   _right_pid.setSetpoint((right-0.19)/0.41);
 
-  //_left_pid.setSetpoint(left);
-  //_right_pid.setSetpoint(right);
-
   double left_target = MathUtil.clamp(_left_pid.calculate(getLeftVelocity()), -6, 6);
   double right_target = MathUtil.clamp(_right_pid.calculate(getRightVelocity()), -6, 6);
 
-  //System.err.println(feedForward.calculate(left_target));
-  //System.err.println(_left_pid.calculate(getLeftVelocity()));
-  //_left_motor1.setVoltage((_left_pid.calculate(getLeftVelocity()) + feedForward.calculate(left_target))/0.6);
-  //_right_motor1.setVoltage((_right_pid.calculate(getRightVelocity()) + feedForward.calculate(right_target))/.6);
-
   _left_motor1.setVoltage(left_target);
   _right_motor1.setVoltage(right_target);
-
-
-  //_left_motor1.setVoltage(feedForward.calculate(left_target) + left_target);
-  //_right_motor1.setVoltage(feedForward.calculate(right_target) + right_target);
 }
 
 public void tuneKS(double voltage) {
@@ -327,60 +253,6 @@ public void tuneKS(double voltage) {
 
   public Pose2d getPose() {
     return m_odometry.getPoseMeters();
-  }
-
-  private final SysIdRoutine m_sysIdRoutine =
-      new SysIdRoutine(
-          // Empty config defaults to 1 volt/second ramp rate and 7 volt step voltage.
-          new SysIdRoutine.Config(),
-          new SysIdRoutine.Mechanism(
-              // Tell SysId how to plumb the driving voltage to the motors.
-              (Measure<Voltage> volts) -> {
-                _left_motor1.setVoltage(volts.in(Volts));
-                _right_motor1.setVoltage(volts.in(Volts));
-              },
-              // Tell SysId how to record a frame of data for each motor on the mechanism being
-              // characterized.
-              log -> {
-                // Record a frame for the left motors.  Since these share an encoder, we consider
-                // the entire group to be one motor.
-                log.motor("drive-left")
-                    .voltage(
-                        m_appliedVoltage.mut_replace(
-                            _left_motor1.get() * RobotController.getBatteryVoltage(), Volts))
-                    .linearPosition(m_distance.mut_replace(_left_Encoder.getPosition(), Meters))
-                    .linearVelocity(
-                        m_velocity.mut_replace(_left_Encoder.getVelocity(), MetersPerSecond));
-                // Record a frame for the right motors.  Since these share an encoder, we consider
-                // the entire group to be one motor.
-                log.motor("drive-right")
-                    .voltage(
-                        m_appliedVoltage.mut_replace(
-                            _right_motor1.get() * RobotController.getBatteryVoltage(), Volts))
-                    .linearPosition(m_distance.mut_replace(_right_Encoder.getPosition(), Meters))
-                    .linearVelocity(
-                        m_velocity.mut_replace(_right_Encoder.getVelocity(), MetersPerSecond));
-              },
-              // Tell SysId to make generated commands require this subsystem, suffix test state in
-              // WPILog with this subsystem's name ("drive")
-              this));
-
-    /**
-   * Returns a command that will execute a quasistatic test in the given direction.
-   *
-   * @param direction The direction (forward or reverse) to run the test in
-   */
-  public Command sysIdQuasistatic(SysIdRoutine.Direction direction) {
-    return m_sysIdRoutine.quasistatic(direction);
-  }
-
-  /**
-   * Returns a command that will execute a dynamic test in the given direction.
-   *
-   * @param direction The direction (forward or reverse) to run the test in
-   */
-  public Command sysIdDynamic(SysIdRoutine.Direction direction) {
-    return m_sysIdRoutine.dynamic(direction);
   }
   
   @Override

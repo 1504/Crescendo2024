@@ -13,14 +13,14 @@ public class FlipperDown extends Command {
   private static final GroundIntake m_intake = GroundIntake.getInstance();
   /** Creates a new Flipper. */
   public FlipperDown() {
-
+    addRequirements(m_intake);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_intake.rawFlipDown();
+    m_intake.rawFlipDown(1);
   }
 
   // Called every time the scheduler runs while the command is scheduled.

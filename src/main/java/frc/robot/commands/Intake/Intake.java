@@ -12,6 +12,7 @@ public class Intake extends Command {
   private static final GroundIntake m_intake = GroundIntake.getInstance();
   /** Creates a new Intake. */
   public Intake() {
+    addRequirements(m_intake);
   }
 
   // Called when the command is initially scheduled.
