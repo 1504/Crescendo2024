@@ -5,21 +5,25 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Drivetrain;
 
 public class resetEncoders extends Command {
 
   protected final Drivetrain m_drive = Drivetrain.getInstance();
+  protected final Arm m_arm = Arm.getInstance();
   /** Creates a new resetEncoders. */
   public resetEncoders() {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(m_drive);
+    addRequirements(m_arm);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
     m_drive.resetEncoders();
+    m_arm.resetEncoders();
   }
 
   // Called every time the scheduler runs while the command is scheduled.

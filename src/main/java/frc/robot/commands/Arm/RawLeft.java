@@ -27,7 +27,7 @@ public class RawLeft extends Command {
   public void execute() {
 
     //TODO: check arm_dwon_pos arm_upPpos
-    if (m_arm.getLeftEncoder().getPosition() > ArmConstants.ARM_DOWN_POS && m_arm.getLeftEncoder().getPosition() < ArmConstants.ARM_UP_LEFT_POS)
+    if (m_arm.getLeftEncoder().getPosition() < ArmConstants.ARM_UP_LEFT_POS)
       m_arm.rawLeft(speed);
   }
 

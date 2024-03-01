@@ -7,6 +7,7 @@ package frc.robot;
 import frc.robot.Constants.IntakeConstants;
 import frc.robot.Constants.ShootConstants;
 import frc.robot.commands.Intake.*;
+import frc.robot.commands.resetEncoders;
 import frc.robot.commands.Arm.MoveArms;
 import frc.robot.commands.Arm.RawLeft;
 import frc.robot.commands.Arm.RawLeftDown;
@@ -92,6 +93,8 @@ public class RobotContainer {
     m_autoChooser.addOption("blue1", blue1());
     m_autoChooser.addOption("blue2", blue2());
     m_autoChooser.addOption("blue3", blue3());
+
+    m_arm.resetEncoders();
     // Configure the trigger bindings
     configureBindings();
   }
@@ -116,7 +119,7 @@ public class RobotContainer {
     new JoystickButton(_GadgetsController, XboxController.Button.kLeftBumper.value).onTrue(new FlipperDown());
     new JoystickButton(_GadgetsController, XboxController.Button.kRightBumper.value).onTrue(new FlipperUp());
     new JoystickButton(_GadgetsController, XboxController.Button.kY.value).whileTrue(new Shooter(ShootConstants.right_speed, ShootConstants.left_speed));
-    new JoystickButton(_GadgetsController, XboxController.Button.kA.value).onTrue(new ShootAndFeed());
+    //new JoystickButton(_GadgetsController, XboxController.Button.kA.value).onTrue(new ShootAndFeed());
     new JoystickButton(_GadgetsController, XboxController.Button.kB.value).whileTrue(new Intake());
 
 
@@ -126,6 +129,7 @@ public class RobotContainer {
     new JoystickButton(_DriveController, XboxController.Button.kRightBumper.value).whileTrue(new RawRightDown());
     //new JoystickButton(_DriveController, XboxController.Button.kY.value).onTrue(new PIDdrive(1));
     new JoystickButton(_DriveController, XboxController.Button.kB.value).whileTrue(new Outtake());
+    new JoystickButton(_DriveController, XboxController.Button.kA.value).whileTrue(new resetEncoders());
   }
 
   private void initAuton() {
@@ -174,6 +178,8 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
+    return m_autoChooser.getSelected();
+    /*
     Timer timer = new Timer();
     timer.start();
     BooleanSupplier sup = () -> timer.get() >= 5;
@@ -186,5 +192,6 @@ public class RobotContainer {
       .andThen(new AutoTurn(false)))
       .andThen(new AutoDrive(1, false));
     //return new AutoShooter(m_shooter, m_intake, 5).andThen(new AutoDrive(1.5, false));
+    */
   }
 }

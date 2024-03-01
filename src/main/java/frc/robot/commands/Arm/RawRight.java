@@ -26,7 +26,7 @@ public class RawRight extends Command {
   @Override
   //TODO: sdfss
   public void execute() {
-   if (m_arm.getRightEncoder().getPosition() > ArmConstants.ARM_DOWN_POS && m_arm.getRightEncoder().getPosition() < ArmConstants.ARM_UP_RIGHT_POS)
+   if (m_arm.getRightEncoder().getPosition() < ArmConstants.ARM_UP_RIGHT_POS)
       m_arm.rawRight(speed);
   }
 

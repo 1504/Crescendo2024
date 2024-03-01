@@ -103,6 +103,11 @@ public class Arm extends SubsystemBase {
     _right.stopMotor();
   }
 
+  public void resetEncoders() {
+    _left_encoder.setPosition(0);
+    _right_encoder.setPosition(0);
+  }
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
