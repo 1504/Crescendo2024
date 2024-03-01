@@ -9,7 +9,9 @@ import frc.robot.Constants.ShootConstants;
 import frc.robot.commands.Intake.*;
 import frc.robot.commands.Arm.MoveArms;
 import frc.robot.commands.Arm.RawLeft;
+import frc.robot.commands.Arm.RawLeftDown;
 import frc.robot.commands.Arm.RawRight;
+import frc.robot.commands.Arm.RawRightDown;
 import frc.robot.commands.Auto.AutoDrive;
 import frc.robot.commands.Auto.AutoShooter;
 import frc.robot.commands.Auto.AutoTurn;
@@ -120,8 +122,8 @@ public class RobotContainer {
 
     new JoystickButton(_DriveController, XboxController.Button.kBack.value).whileTrue(new RawLeft(0.5));
     new JoystickButton(_DriveController, XboxController.Button.kStart.value).whileTrue(new RawRight(0.5));
-    new JoystickButton(_DriveController, XboxController.Button.kLeftBumper.value).whileTrue(new RawLeft(-0.5));
-    new JoystickButton(_DriveController, XboxController.Button.kRightBumper.value).whileTrue(new RawRight(-0.5));
+    new JoystickButton(_DriveController, XboxController.Button.kLeftBumper.value).whileTrue(new RawLeftDown());
+    new JoystickButton(_DriveController, XboxController.Button.kRightBumper.value).whileTrue(new RawRightDown());
     //new JoystickButton(_DriveController, XboxController.Button.kY.value).onTrue(new PIDdrive(1));
     new JoystickButton(_DriveController, XboxController.Button.kB.value).whileTrue(new Outtake());
   }

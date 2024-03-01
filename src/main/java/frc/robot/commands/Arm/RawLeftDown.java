@@ -8,14 +8,14 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.ArmConstants;
 import frc.robot.subsystems.Arm;
 
-public class RawLeft extends Command {
-  private final Arm m_arm = Arm.getInstance();
-  double speed;
-  /** Creates a new RawLeft. */
-  public RawLeft(double s) {
-    speed = s;
-    addRequirements(m_arm);
+public class RawLeftDown extends Command {
+
+  public final Arm m_arm = Arm.getInstance();
+
+  /** Creates a new RawLeftDown. */
+  public RawLeftDown() {
     // Use addRequirements() here to declare subsystem dependencies.
+    addRequirements(m_arm);
   }
 
   // Called when the command is initially scheduled.
@@ -25,10 +25,9 @@ public class RawLeft extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-
-    //TODO: check arm_dwon_pos arm_upPpos
-    if (m_arm.getLeftEncoder().getPosition() > ArmConstants.ARM_DOWN_POS && m_arm.getLeftEncoder().getPosition() < ArmConstants.ARM_UP_LEFT_POS)
-      m_arm.rawLeft(speed);
+    if( m_arm.getLeftEncoder().getPosition() > ArmConstants.ARM_DOWN_POS) {
+      m_arm.rawLeft(-0.5);
+    }
   }
 
   // Called once the command ends or is interrupted.

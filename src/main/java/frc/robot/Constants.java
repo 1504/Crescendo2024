@@ -43,9 +43,9 @@ public final class Constants {
     public static final int LEFT_ARM = 5;
     public static final int RIGHT_ARM = 6;
 
-    public static final double ARM_EXTEND_POS = 0;
 
-    public static final double ARM_UP_POS = 123; //test
+    public static final double ARM_UP_LEFT_POS = 60; //test
+    public static final double ARM_UP_RIGHT_POS = 110;
     public static final double ARM_DOWN_POS = 0;
   }
 

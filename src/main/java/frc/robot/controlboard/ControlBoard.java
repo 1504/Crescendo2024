@@ -33,7 +33,7 @@ public class ControlBoard {
 
     public double getForward() {
         if (Math.abs(_xboxController_drive.getLeftY()) > 0.1) {
-            return -_xboxController_drive.getLeftY()*0.9;
+            return -_xboxController_drive.getLeftY()*0.95;
         }
         return 0;
     }
