@@ -29,6 +29,7 @@ public class ShuffleboardManager extends SubsystemBase {
   private final Gyroscope _gyroOne = Gyroscope.getInstance();
   private final ControlBoard _controlboard = ControlBoard.getInstance();
   private final GroundIntake _groundIntake = GroundIntake.getInstance();
+  private final Arm m_arm = Arm.getInstance();
 
   ShuffleboardTab telemetry;
   ShuffleboardTab limelight;
@@ -36,6 +37,7 @@ public class ShuffleboardManager extends SubsystemBase {
   ShuffleboardTab PIDTuning;
   ShuffleboardTab Intake;
   ShuffleboardTab PIDSetpoints;
+  ShuffleboardTab _Arm;
 
   // telemetry
   private GenericEntry leftEncoder;
@@ -55,8 +57,9 @@ public class ShuffleboardManager extends SubsystemBase {
   private GenericEntry distTraveled;
   private GenericEntry leftPIDsp;
   private GenericEntry rightPIDsp;
-
   private GenericEntry flipEncoder;
+  private GenericEntry leftArmPos;
+  private GenericEntry rightArmPos;
 
 
   // limelight
@@ -74,6 +77,7 @@ public class ShuffleboardManager extends SubsystemBase {
       PIDTuning = Shuffleboard.getTab("PID Tuning");
       PIDSetpoints = Shuffleboard.getTab("PID Setpoints");
       Intake = Shuffleboard.getTab("Intake");
+      _Arm =  Shuffleboard.getTab("Arm");
 
       leftEncoder = telemetry.add("Left Encoder", 0).withPosition(0, 0).withSize(2, 2).withWidget(BuiltInWidgets.kGraph).getEntry();
       rightEncoder = telemetry.add("Right Encoder", 2).withPosition(2, 0).withSize(2, 2).withWidget(BuiltInWidgets.kGraph).getEntry();
@@ -103,6 +107,9 @@ public class ShuffleboardManager extends SubsystemBase {
       distTraveled = PIDTuning.add("Distance Traveled", 0).withPosition(4, 3).withSize(2, 1).withWidget(BuiltInWidgets.kTextView).getEntry();
 
       flipEncoder = Intake.add("Intake Pos", 0).withPosition(0, 0).withSize(2,1).getEntry();
+
+      leftArmPos = _Arm.add("Left arm position", 0).withPosition(0, 0).withSize(2,1).withWidget(BuiltInWidgets.kTextView).getEntry();
+      rightArmPos = _Arm.add("Right arm position", 0).withPosition(2, 0).withSize(2,1).withWidget(BuiltInWidgets.kTextView).getEntry();
 
     } catch (Exception e) {
       System.out.println("ShuffleboardManager error: " + e);
@@ -136,6 +143,9 @@ public class ShuffleboardManager extends SubsystemBase {
 
     leftPIDsp.setDouble(_drive.getLeftPID().getSetpoint());
     rightPIDsp.setDouble(_drive.getRightPID().getSetpoint());
+
+    leftArmPos.setDouble(m_arm.getLeftEncoder().getPosition());
+    rightArmPos.setDouble(m_arm.getRightEncoder().getPosition());
   }
 
   @Override

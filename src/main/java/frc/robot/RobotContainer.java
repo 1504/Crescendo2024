@@ -34,6 +34,8 @@ import edu.wpi.first.wpilibj.Timer;
 import com.pathplanner.lib.auto.AutoBuilder;
 
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -71,15 +73,25 @@ public class RobotContainer {
   private final GroundIntake m_intake = GroundIntake.getInstance();
 
   private final Arm m_arm = Arm.getInstance();
+
+  private final SendableChooser<Command> m_autoChooser;
+
+  public ShuffleboardTab auto;
   
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-
+    auto = Shuffleboard.getTab("auto");
+    m_autoChooser = new SendableChooser<Command>();
+    auto.add("Auto Chooser", m_autoChooser);
+    m_autoChooser.addOption("red1", red1());
+    m_autoChooser.addOption("red2", red2());
+    m_autoChooser.addOption("red3", red3());
+    m_autoChooser.addOption("blue1", blue1());
+    m_autoChooser.addOption("blue2", blue2());
+    m_autoChooser.addOption("blue3", blue3());
     // Configure the trigger bindings
     configureBindings();
-  
-  
   }
 
   /**
@@ -116,7 +128,37 @@ public class RobotContainer {
 
   private void initAuton() {
   }
+// test these
+  public Command red1() {
+    return (new AutoShooter(m_shooter, m_intake, 5)
+      .andThen(new AutoDrive(1, false))
+      .andThen(new AutoTurn(false)))
+      .andThen(new AutoDrive(1, false));
+  }
 
+  public Command red2() {
+    return (new AutoShooter(m_shooter, m_intake, 5)
+      .andThen(new AutoDrive(1, false)));
+  }
+
+  public Command red3() {
+    return (new AutoShooter(m_shooter, m_intake, 5)
+      .andThen(new AutoDrive(1, false))
+      .andThen(new AutoTurn(true)))
+      .andThen(new AutoDrive(1, false));
+  }
+
+  public Command blue1() {
+    return null;
+  }
+
+  public Command blue2() {
+    return null;
+  }
+
+  public Command blue3() {
+    return null;
+  }
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
    *

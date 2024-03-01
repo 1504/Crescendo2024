@@ -25,10 +25,6 @@ public class Arm extends SubsystemBase {
   private final RelativeEncoder _left_encoder;
   private final RelativeEncoder _right_encoder;
 
-  ShuffleboardTab w_tab = Shuffleboard.getTab("Arm");
-  NetworkTableEntry positionLeft;
-  NetworkTableEntry positionRight;
-
   private static Arm instance = null;
 
   public static Arm getInstance() {

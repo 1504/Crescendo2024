@@ -5,6 +5,7 @@
 package frc.robot.commands.Arm;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants.ArmConstants;
 import frc.robot.subsystems.Arm;
 
 public class RawRight extends Command {
@@ -24,7 +25,8 @@ public class RawRight extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_arm.rawRight(speed);
+    if (m_arm.getRightEncoder().getPosition() > ArmConstants.ARM_DOWN_POS && m_arm.getRightEncoder().getPosition() < ArmConstants.ARM_UP_POS)
+      m_arm.rawRight(speed);
   }
 
   // Called once the command ends or is interrupted.
