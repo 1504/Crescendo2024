@@ -151,15 +151,22 @@ public class RobotContainer {
   }
 
   public Command blue1() {
-    return null;
+    return (new AutoShooter(m_shooter, m_intake, 5)
+      .andThen( new AutoDrive(1, false))
+      .andThen( new AutoTurn(true))
+      .andThen(new AutoDrive(1, false)));
   }
 
   public Command blue2() {
-    return null;
+    return ( new AutoShooter(m_shooter, m_intake, 5)
+      .andThen(new AutoDrive(1, false)));
   }
 
   public Command blue3() {
-    return null;
+    return (new AutoShooter(m_shooter, m_intake, 5)
+      .andThen(new AutoDrive(1, false))
+      .andThen(new AutoTurn(false))
+      .andThen(new AutoDrive(1, false)));
   }
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
