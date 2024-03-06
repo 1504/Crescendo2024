@@ -14,13 +14,16 @@ import frc.robot.commands.Arm.RawLeftDown;
 import frc.robot.commands.Arm.RawRight;
 import frc.robot.commands.Arm.RawRightDown;
 import frc.robot.commands.Auto.AutoDrive;
+import frc.robot.commands.Auto.AutoIntake;
 import frc.robot.commands.Auto.AutoShooter;
 import frc.robot.commands.Auto.AutoTurn;
 import frc.robot.commands.Auto.ShootAndFeed;
 import frc.robot.commands.Auto.moveBackwards;
 import frc.robot.commands.Drive.PIDdrive;
 import frc.robot.commands.Drive.Tank;
+import frc.robot.commands.Shooter.OuttakeShootTimed;
 import frc.robot.commands.Shooter.Shooter;
+import frc.robot.commands.Shooter.StopShooter;
 import frc.robot.controlboard.ControlBoard;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Drivetrain;
@@ -42,6 +45,8 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -116,11 +121,7 @@ public class RobotContainer {
 
     //new JoystickButton(_GadgetsController, XboxController.Button.kLeftStick.value).whileTrue(new RawFlip(IntakeConstants.DOWN)); //flip down
     //new JoystickButton(_GadgetsController, XboxController.Button.kRightStick.value).whileTrue(new RawFlip(IntakeConstants.UP)); //flip up
-    new JoystickButton(_GadgetsController, XboxController.Button.kLeftBumper.value).onTrue(new FlipperDown());
-    new JoystickButton(_GadgetsController, XboxController.Button.kRightBumper.value).onTrue(new FlipperUp());
-    new JoystickButton(_GadgetsController, XboxController.Button.kY.value).whileTrue(new Shooter(ShootConstants.right_speed, ShootConstants.left_speed));
     //new JoystickButton(_GadgetsController, XboxController.Button.kA.value).onTrue(new ShootAndFeed());
-    new JoystickButton(_GadgetsController, XboxController.Button.kB.value).whileTrue(new Intake());
 
 
     new JoystickButton(_DriveController, XboxController.Button.kBack.value).whileTrue(new RawLeft(0.5));
@@ -128,8 +129,26 @@ public class RobotContainer {
     new JoystickButton(_DriveController, XboxController.Button.kLeftBumper.value).whileTrue(new RawLeftDown());
     new JoystickButton(_DriveController, XboxController.Button.kRightBumper.value).whileTrue(new RawRightDown());
     //new JoystickButton(_DriveController, XboxController.Button.kY.value).onTrue(new PIDdrive(1));
-    new JoystickButton(_DriveController, XboxController.Button.kB.value).whileTrue(new Outtake());
     new JoystickButton(_DriveController, XboxController.Button.kA.value).whileTrue(new resetEncoders());
+
+    // INTAKE / OUTTAKE
+    new JoystickButton(_DriveController, XboxController.Button.kB.value).whileTrue(new Outtake());
+    
+    new JoystickButton(_GadgetsController, XboxController.Button.kB.value).whileTrue(new Intake());
+    
+    // SHOOTER
+    JoystickButton y = new JoystickButton(_GadgetsController, XboxController.Button.kY.value);
+    // While held
+    y.onTrue(new OuttakeShootTimed());
+    // When released
+    y.onFalse(new ParallelCommandGroup(new StopShooter(), new InstantIntake(0)));
+
+    // FLIPPER
+    new JoystickButton(_GadgetsController, XboxController.Button.kLeftBumper.value).onTrue(new FlipperDown());
+    new JoystickButton(_GadgetsController, XboxController.Button.kRightBumper.value).onTrue(new FlipperUp());
+
+    // Old SHOOTER
+    // new JoystickButton(_GadgetsController, XboxController.Button.kY.value).whileTrue(new Shooter(ShootConstants.right_speed, ShootConstants.left_speed));
   }
 
   private void initAuton() {
@@ -139,38 +158,49 @@ public class RobotContainer {
     return (new AutoShooter(m_shooter, m_intake, 5)
       .andThen(new AutoDrive(1, false))
       .andThen(new AutoTurn(false)))
-      .andThen(new AutoDrive(1, false));
+      .andThen(new AutoDrive(1.5, false));
   }
 
   public Command red2() {
-    return (new AutoShooter(m_shooter, m_intake, 5)
-      .andThen(new AutoDrive(1, false)));
+    return (new AutoShooter(m_shooter, m_intake, 4)
+      .andThen(new FlipperDown())
+      .andThen(Commands.parallel(new AutoIntake(3), new AutoDrive(1,false)))
+      //.andThen(new AutoDrive(1, false))
+      //.andThen(new FlipperUp())
+      .andThen(new AutoDrive(1, true))
+      .andThen(new FlipperUp())
+      .andThen(new AutoShooter(m_shooter, m_intake, 4)));
+      //.andThen(new AutoDrive(1.3, false)));
   }
 
   public Command red3() {
     return (new AutoShooter(m_shooter, m_intake, 5)
       .andThen(new AutoDrive(1, false))
       .andThen(new AutoTurn(true)))
-      .andThen(new AutoDrive(1, false));
+      .andThen(new AutoDrive(1.5, false));
   }
 
   public Command blue1() {
     return (new AutoShooter(m_shooter, m_intake, 5)
       .andThen( new AutoDrive(1, false))
       .andThen( new AutoTurn(true))
-      .andThen(new AutoDrive(1, false)));
+      .andThen(new AutoDrive(1.5, false)));
   }
 
   public Command blue2() {
-    return ( new AutoShooter(m_shooter, m_intake, 5)
-      .andThen(new AutoDrive(1, false)));
+    return (new AutoShooter(m_shooter, m_intake, 3)
+      .andThen(new FlipperDown())
+      .andThen(Commands.parallel(new AutoIntake(3), new AutoDrive(1,false)))
+      .andThen(new AutoDrive(1, true))
+      .andThen(new FlipperUp())
+      .andThen(new AutoShooter(m_shooter, m_intake, 4)));
   }
 
   public Command blue3() {
     return (new AutoShooter(m_shooter, m_intake, 5)
       .andThen(new AutoDrive(1, false))
       .andThen(new AutoTurn(false))
-      .andThen(new AutoDrive(1, false)));
+      .andThen(new AutoDrive(1.5, false)));
   }
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.

@@ -16,7 +16,9 @@ import frc.robot.Constants.IntakeConstants;
 
 public class GroundIntake extends SubsystemBase {
   /** Creates a new GroundIntake. */
-  private final CANSparkMax intakeMotor = new CANSparkMax(IntakeConstants.intakePort_1, MotorType.kBrushless); //motor_1 - intake
+  private final CANSparkMax intakeMotor = new CANSparkMax(IntakeConstants.intakePort_1, MotorType.kBrushless); // motor_1
+                                                                                                               // -
+                                                                                                               // intake
   private final CANSparkMax flipperMotor = new CANSparkMax(IntakeConstants.intakePort_2, MotorType.kBrushless); // flips
   private final RelativeEncoder intakeEncoder = intakeMotor.getEncoder();
   private final RelativeEncoder flipperEncoder = flipperMotor.getEncoder();
@@ -26,7 +28,7 @@ public class GroundIntake extends SubsystemBase {
   private static GroundIntake instance = null;
 
   private GroundIntake() {
-    flipperMotor.setIdleMode(IdleMode.kBrake); 
+    flipperMotor.setIdleMode(IdleMode.kBrake);
   }
 
   public static GroundIntake getInstance() {
@@ -36,7 +38,7 @@ public class GroundIntake extends SubsystemBase {
     return instance;
   }
 
-  public void roll(){
+  public void roll() {
     intakeMotor.set(IntakeConstants.MAX_INTAKE_SPEED);
   }
 
@@ -49,9 +51,11 @@ public class GroundIntake extends SubsystemBase {
   }
 
   public void rawIntake(double s) {
-    if (!auto) {
-      intakeMotor.set(IntakeConstants.MAX_INTAKE_SPEED);
-    }
+    intakeMotor.set(IntakeConstants.MAX_INTAKE_SPEED);
+  }
+
+  public void variableIntake(double s) {
+    intakeMotor.set(s);
   }
 
   /**
@@ -60,11 +64,12 @@ public class GroundIntake extends SubsystemBase {
   public void stopIntake() {
     intakeMotor.set(0);
   }
+
   public void stopFlipper() {
     flipperMotor.set(0);
   }
 
-  public void rawFlipUp(double s){
+  public void rawFlipUp(double s) {
     flipperMotor.set(s * IntakeConstants.MAX_FLIP_SPEED);
   }
 
@@ -76,39 +81,37 @@ public class GroundIntake extends SubsystemBase {
     return flipperEncoder;
   }
 
-
   /**
    * Toggles the auto mode
-  public void toggleAuto() {
-    auto = !auto;
-  }
-
-  /**
+   * public void toggleAuto() {
+   * auto = !auto;
+   * }
+   * 
+   * /**
    * Sets the auto mode
    *
    * @param a the auto mode to set to
-  
-  public void setAuto(boolean a) {
-    auto = a;
-  }
-  */
+   * 
+   *          public void setAuto(boolean a) {
+   *          auto = a;
+   *          }
+   */
 
-  /* 
-  public void setSetpoint(double setpoint){
-    intake_pid.setSetpoint(setpoint);
-    curr_pos = setpoint;
-  }
+  /*
+   * public void setSetpoint(double setpoint){
+   * intake_pid.setSetpoint(setpoint);
+   * curr_pos = setpoint;
+   * }
+   * 
+   * public void addSetpoint(double amt){
+   * intake_pid.setSetpoint(curr_pos + amt);
+   * }
+   */
 
-  public void addSetpoint(double amt){
-    intake_pid.setSetpoint(curr_pos + amt);
-  }
-  */
-
-  
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    //double val = m_encoder.getPosition();
-    //motor_1.set(val);
+    // double val = m_encoder.getPosition();
+    // motor_1.set(val);
   }
 }

@@ -4,6 +4,9 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.cscore.HttpCamera;
+import edu.wpi.first.cscore.HttpCamera.HttpCameraKind;
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -12,6 +15,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.BuildConstants;
 import frc.robot.controlboard.ControlBoard;
 import frc.robot.commands.Auto.moveBackwards;
+import frc.robot.Constants.LimelightConstants;;
 
 public class ShuffleboardManager extends SubsystemBase {
 
@@ -60,6 +64,7 @@ public class ShuffleboardManager extends SubsystemBase {
   private GenericEntry flipEncoder;
   private GenericEntry leftArmPos;
   private GenericEntry rightArmPos;
+  private HttpCamera limelightFeed = new HttpCamera("Limelight Camera", LimelightConstants.limelightURL, HttpCameraKind.kMJPGStreamer);
 
 
   // limelight
@@ -111,6 +116,9 @@ public class ShuffleboardManager extends SubsystemBase {
       leftArmPos = _Arm.add("Left arm position", 0).withPosition(0, 0).withSize(2,1).withWidget(BuiltInWidgets.kTextView).getEntry();
       rightArmPos = _Arm.add("Right arm position", 0).withPosition(2, 0).withSize(2,1).withWidget(BuiltInWidgets.kTextView).getEntry();
 
+      CameraServer.addCamera(limelightFeed);
+      //CameraServer.startAutomaticCapture(limelightFeed);
+      limelight.add(limelightFeed);
     } catch (Exception e) {
       System.out.println("ShuffleboardManager error: " + e);
     }

@@ -24,9 +24,9 @@ public class RawRightDown extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if( m_arm.getRightEncoder().getPosition() > ArmConstants.ARM_DOWN_POS) {
+    //if( m_arm.getRightEncoder().getPosition() > ArmConstants.ARM_DOWN_POS) {
       m_arm.rawRight(-0.5);
-    }
+    
   }
 
   // Called once the command ends or is interrupted.
