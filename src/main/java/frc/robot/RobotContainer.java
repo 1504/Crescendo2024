@@ -162,14 +162,14 @@ public class RobotContainer {
   }
 
   public Command red2() {
-    return (new AutoShooter(m_shooter, m_intake, 4)
+    return (new AutoShooter(m_shooter, m_intake, 2)
       .andThen(new FlipperDown())
-      .andThen(Commands.parallel(new AutoIntake(3), new AutoDrive(1,false)))
+      .andThen(Commands.parallel(new AutoIntake(1), new AutoDrive(1,false)))
       //.andThen(new AutoDrive(1, false))
       //.andThen(new FlipperUp())
       .andThen(new AutoDrive(1, true))
       .andThen(new FlipperUp())
-      .andThen(new AutoShooter(m_shooter, m_intake, 4)));
+      .andThen(new AutoShooter(m_shooter, m_intake, 2)));
       //.andThen(new AutoDrive(1.3, false)));
   }
 

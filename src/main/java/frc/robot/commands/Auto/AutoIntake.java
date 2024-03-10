@@ -45,6 +45,6 @@ public class AutoIntake extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return _timer.get() > 5;
+    return _timer.get() > time;
   }
 }

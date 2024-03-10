@@ -42,7 +42,7 @@ public class AutoShooter extends Command {
 
   @Override
   public void execute(){
-    if (_timer.get() > 2 && _timer.get() <10) {
+    if (_timer.get() > 1 && _timer.get() <10) {
       m_intake.outRoll();
     }
   }

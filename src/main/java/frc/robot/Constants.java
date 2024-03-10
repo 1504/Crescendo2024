@@ -110,7 +110,7 @@ public final class Constants {
 
     public static final double MAX_INTAKE_SPEED = 0.6;
     public static final double MAX_FLIP_SPEED = 0.4;
-    public static final double FLIPPER_DOWN_POS = -36;
+    public static final double FLIPPER_DOWN_POS = -34;
     public static final double FLIPPER_UP_POS =-2; 
 
     public static final boolean UP = true;
