@@ -3,63 +3,46 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot.commands.Auto;
-import frc.robot.subsystems.PIDShooter;
-import frc.robot.Constants;
-import frc.robot.Constants.AutoConstants;
-import frc.robot.Constants.ShootConstants;
+import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.commands.Intake.FlipperDown;
 import frc.robot.subsystems.GroundIntake;
-import edu.wpi.first.wpilibj.Timer; 
-import edu.wpi.first.wpilibj2.command.Command;
-
-// NOTE:  Consider using this command inline, rather than writing a subclass.  For more
-// information, see: 
-// https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
+import frc.robot.subsystems.Shooter;
 
 public class AutoShooter extends Command {
-  private final PIDShooter m_shooter;// bottom speed of the intake
-  private final GroundIntake m_intake;
-  private final Timer _timer;
-  private final double _time;
+  private final Timer _timer = new Timer();
+  private static GroundIntake m_intake = GroundIntake.getInstance();
+  private static Shooter m_shooter = Shooter.getInstance();
+
   /** Creates a new Intake. */
-  public AutoShooter(PIDShooter shooter, GroundIntake intake, double time) {
-    _timer = new Timer();
-    _time = time;
-    // Use addRequirements() here to declare subsystem dependencies.
-    m_intake = intake;
-    m_shooter = shooter;
-    addRequirements(m_shooter);
+  public AutoShooter() {
+    addRequirements(m_shooter, m_intake);
   }
 
   @Override
   public void initialize() {
     _timer.reset();
     _timer.start();
-    m_shooter.setRight(ShootConstants.right_speed);
-    m_shooter.setLeft(ShootConstants.left_speed);
-    m_shooter.shoot();
   }
 
   @Override
   public void execute(){
-    if (_timer.get() > 2 && _timer.get() <10) {
+    m_shooter.shoot();
+    if (_timer.get() > 1) {
       m_intake.outRoll();
     }
   }
 
   @Override
   public void end(boolean interrupted) {
-    m_shooter.setRight(0);
-    m_shooter.setLeft(0);
     m_shooter.stopShoot();
     m_intake.stopRoll();
     new FlipperDown();
   }
 
-  // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return _timer.get() > _time;
+    return _timer.get() > 2;
   }
 }
 

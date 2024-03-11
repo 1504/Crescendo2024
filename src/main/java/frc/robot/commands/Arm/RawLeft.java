@@ -11,33 +11,27 @@ import frc.robot.subsystems.Arm;
 public class RawLeft extends Command {
   private final Arm m_arm = Arm.getInstance();
   double speed;
-  /** Creates a new RawLeft. */
+
   public RawLeft(double s) {
     speed = s;
     addRequirements(m_arm);
-    // Use addRequirements() here to declare subsystem dependencies.
   }
 
-  // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+  }
 
-  // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-
-    //TODO: check arm_dwon_pos arm_upPpos
     if (m_arm.getLeftEncoder().getPosition() < ArmConstants.ARM_UP_LEFT_POS)
       m_arm.rawLeft(speed);
   }
 
-  // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
     m_arm.rawLeft(0);
   }
 
-  // Returns true when the command should end.
   @Override
   public boolean isFinished() {
     return false;

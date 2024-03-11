@@ -12,50 +12,46 @@ public class AutoTurn extends Command {
 
   private final Drivetrain m_drive = Drivetrain.getInstance();
   private final Gyroscope m_gyro = Gyroscope.getInstance();
+  private final double turnDegrees;
 
-  private final boolean direction; //true = clockwise -- false = counter
+  private final boolean direction; // true = clockwise -- false = counter
 
   /** Creates a new AutoTurn. */
-  public AutoTurn(boolean d) {
-    // Use addRequirements() here to declare subsystem dependencies.
+  public AutoTurn(double degrees, boolean d) {
     direction = d;
+    turnDegrees = degrees;
     addRequirements(m_drive);
   }
 
-  // Called when the command is initially scheduled.
   @Override
   public void initialize() {
     m_gyro.reset();
   }
 
-  // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if( direction) {
+    if (direction) {
       System.err.println(m_gyro.getRotation2d().getDegrees());
-      if( m_gyro.getRotation2d().getDegrees() > -57 ) {
+      if (m_gyro.getRotation2d().getDegrees() > -turnDegrees) {
         m_drive.turn(direction);
       }
-    }
-    else {
-      if( m_gyro.getRotation2d().getDegrees() < 57 ) {
+    } else {
+      if (m_gyro.getRotation2d().getDegrees() < turnDegrees) {
         m_drive.turn(direction);
       }
     }
   }
 
-  // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
     m_drive.stopMotors();
   }
 
-  // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if(direction)
-      return m_gyro.getRotation2d().getDegrees() <= -57;
+    if (direction)
+      return m_gyro.getRotation2d().getDegrees() <= turnDegrees;
     else
-      return m_gyro.getRotation2d().getDegrees() >= 57;
+      return m_gyro.getRotation2d().getDegrees() >= turnDegrees;
   }
 }

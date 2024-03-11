@@ -12,29 +12,26 @@ import frc.robot.subsystems.Arm;
 public class MoveArms extends Command {
   private DoubleSupplier speed;
   private final Arm m_arm = Arm.getInstance();
-  /** Creates a new MoveArms. */
+
   public MoveArms(DoubleSupplier s) {
     speed = s;
     addRequirements(m_arm);
   }
 
-  // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+  }
 
-  // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
     m_arm.extendBoth(speed.getAsDouble());
   }
 
-  // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
     m_arm.stopMotors();
   }
 
-  // Returns true when the command should end.
   @Override
   public boolean isFinished() {
     return false;

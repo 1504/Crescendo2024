@@ -9,34 +9,15 @@ import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 
-/**
- * Gyroscope subsystem
- * <p>
- * Warning: This class is a singleton. Use getInstance() to get the instance of
- * the Gyroscope subsystem
- * The constructor is private to prevent other classes from instantiating it.
- */
 public class Gyroscope extends SubsystemBase {
     private static final AHRS _gyro = new AHRS(SerialPort.Port.kMXP);
     private static Gyroscope _instance = null;
     ShuffleboardTab telemetry = Shuffleboard.getTab("Telemetry");
 
-    @Override
-    public void periodic() {
-
-    }
-
-    /**
-     * getInstance to provide a singleton instance of the Gyroscope subsystem
-     * 
-     * @return the instance of the Gyroscope subsystem
-     */
     public static Gyroscope getInstance() {
-
         if (_instance == null) {
             _instance = new Gyroscope();
         }
-
         return _instance;
     }
 
@@ -80,6 +61,11 @@ public class Gyroscope extends SubsystemBase {
     public void reset() {
         _gyro.reset();
         System.out.println("Gyro Reset");
+    }
+
+    @Override
+    public void periodic() {
+
     }
 
 }

@@ -22,7 +22,7 @@ public class IntakeVariable extends Command {
   @Override
 
   public void initialize() {
-    this.m_intake.variableIntake(speedGlobal);
+    m_intake.variableIntake(speedGlobal);
   }
 
   // Called every time the scheduler runs while the command is scheduled.

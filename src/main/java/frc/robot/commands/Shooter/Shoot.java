@@ -4,41 +4,33 @@
 
 package frc.robot.commands.Shooter;
 
-import frc.robot.subsystems.PIDShooter;
+import frc.robot.subsystems.Shooter;
 import edu.wpi.first.wpilibj2.command.Command;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 
-public class Shooter extends Command {
-  private final PIDShooter m_shooter = PIDShooter.getInstance();
-  private final double rightSpeed; // right speed of the intake
-  private final double leftSpeed; // bottom speed of the intake
+public class Shoot extends Command {
+  private final Shooter m_shooter = Shooter.getInstance();
   /** Creates a new Intake. */
-  public Shooter(double rightSpeed, double leftSpeed) {
+  public Shoot() {
     // Use addRequirements() here to declare subsystem dependencies.
-    this.rightSpeed = rightSpeed;
-    this.leftSpeed = leftSpeed;
     addRequirements(m_shooter);
   }
 
   @Override
   public void initialize() {
-    m_shooter.setRight(rightSpeed);
-    m_shooter.setLeft(leftSpeed);
-    m_shooter.shoot();
     System.err.println("shooting");
   }
 
   @Override
   public void execute(){
+    m_shooter.shoot();
   }
 
   @Override
   public void end(boolean interrupted) {
-    m_shooter.setRight(0);
-    m_shooter.setLeft(0);
     m_shooter.stopShoot();
 
   }

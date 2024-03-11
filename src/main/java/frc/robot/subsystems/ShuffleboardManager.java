@@ -14,7 +14,6 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.BuildConstants;
 import frc.robot.controlboard.ControlBoard;
-import frc.robot.commands.Auto.moveBackwards;
 import frc.robot.Constants.LimelightConstants;;
 
 public class ShuffleboardManager extends SubsystemBase {
@@ -34,6 +33,7 @@ public class ShuffleboardManager extends SubsystemBase {
   private final ControlBoard _controlboard = ControlBoard.getInstance();
   private final GroundIntake _groundIntake = GroundIntake.getInstance();
   private final Arm m_arm = Arm.getInstance();
+  private final Flipper _flipper = Flipper.getInstance();
 
   ShuffleboardTab telemetry;
   ShuffleboardTab limelight;
@@ -108,7 +108,6 @@ public class ShuffleboardManager extends SubsystemBase {
       rightVelocity = PIDTuning.add("Right wheel velocity",0).withPosition(5, 0).withSize(3,3).withWidget(BuiltInWidgets.kGraph).getEntry();
       PIDTuning.add("Left PID",_drive.getLeftPID()).withPosition(0, 2).withSize(1,2);
       PIDTuning.add("Right PID", _drive.getRightPID()).withPosition(1, 2).withSize(1,2);
-      PIDTuning.add("Run Command", new moveBackwards(2)).withPosition(2, 3).withSize(2, 1);
       distTraveled = PIDTuning.add("Distance Traveled", 0).withPosition(4, 3).withSize(2, 1).withWidget(BuiltInWidgets.kTextView).getEntry();
 
       flipEncoder = Intake.add("Intake Pos", 0).withPosition(0, 0).withSize(2,1).getEntry();
@@ -147,7 +146,7 @@ public class ShuffleboardManager extends SubsystemBase {
     leftVelocity.setDouble(_drive.getLeftVelocity());
     rightVelocity.setDouble(_drive.getRightVelocity());
 
-    flipEncoder.setDouble(_groundIntake.getFlipperEncoder().getPosition());
+    flipEncoder.setDouble(_flipper.getEncoder().getPosition());
 
     leftPIDsp.setDouble(_drive.getLeftPID().getSetpoint());
     rightPIDsp.setDouble(_drive.getRightPID().getSetpoint());

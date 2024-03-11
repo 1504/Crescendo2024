@@ -28,7 +28,6 @@ public class ControlBoard {
 
     public double getRot() {
         return _xboxController_drive.getRightX()*0.75;
-        //return _joystickTwo.getX();
     }
 
     public double getForward() {

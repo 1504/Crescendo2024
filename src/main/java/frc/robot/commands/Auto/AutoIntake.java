@@ -10,16 +10,14 @@ import frc.robot.subsystems.GroundIntake;
 
 public class AutoIntake extends Command {
   private static GroundIntake m_intake = GroundIntake.getInstance();
-  /** Creates a new AutoIntake. */
   private static Timer _timer = new Timer();
   private static double time;
+
   public AutoIntake(double t) {
     time = t;
     addRequirements(m_intake);
-    // Use addRequirements() here to declare subsystem dependencies.
   }
 
-  // Called when the command is initially scheduled.
   @Override
   public void initialize() {
     _timer.reset();
@@ -28,23 +26,20 @@ public class AutoIntake extends Command {
     m_intake.roll();
   }
 
-  // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (_timer.get() <time) {
+    if (_timer.get() < time) {
       m_intake.roll();
     }
   }
 
-  // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
     m_intake.stopRoll();
   }
 
-  // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return _timer.get() > 5;
+    return _timer.get() > time;
   }
 }

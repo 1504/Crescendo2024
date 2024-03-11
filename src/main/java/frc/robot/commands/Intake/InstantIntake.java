@@ -22,7 +22,7 @@ public class InstantIntake extends Command {
   @Override
 
   public void initialize() {
-    this.m_intake.rawIntake(speedGlobal);
+    m_intake.rawIntake(speedGlobal);
   }
 
   // Called every time the scheduler runs while the command is scheduled.

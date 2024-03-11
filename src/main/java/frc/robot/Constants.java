@@ -104,17 +104,20 @@ public final class Constants {
   }
 
   public static class IntakeConstants {
-    public static final int intakePort_1 = 21;
-    public static final int intakePort_2 = 22;
+    public static final int INTAKE_PORT = 21;
     public static final double kP = 0;
 
     public static final double MAX_INTAKE_SPEED = 0.6;
-    public static final double MAX_FLIP_SPEED = 0.4;
-    public static final double FLIPPER_DOWN_POS = -36;
-    public static final double FLIPPER_UP_POS =-2; 
 
     public static final boolean UP = true;
     public static final boolean DOWN = false;
+  }
+
+  public static class FlipperConstants {
+    public static final int FLIPPER_PORT = 22;
+    public static final double MAX_FLIP_SPEED = 0.8;
+    public static final double FLIPPER_DOWN_POS = -36;
+    public static final double FLIPPER_UP_POS =-2; 
   }
 
   public static class AutoConstants {
@@ -127,6 +130,10 @@ public final class Constants {
     public static final double kRamseteB = 2.0;
     public static final double kRamseteZeta = 0.7;
 
-    
+    public static final boolean foward = false;
+    public static final boolean backward = true;
+
+    public static final boolean clockwise = true;
+    public static final boolean counterClockwise = false;
   }
 }

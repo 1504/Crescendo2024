@@ -5,7 +5,6 @@
 package frc.robot.commands.Shooter;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import frc.robot.Constants.ShootConstants;
 import frc.robot.commands.Auto.WaitTimed;
 import frc.robot.commands.Intake.IntakeVariable;
 
@@ -16,7 +15,7 @@ public class OuttakeShootTimed extends SequentialCommandGroup {
   /** Creates a new OuttakeShootTimed. */
   public OuttakeShootTimed() {
     addCommands(
-      new InstantShooter(ShootConstants.right_speed, ShootConstants.left_speed),
+      new InstantShooter(),
       new WaitTimed(.75),
       new IntakeVariable(-.5)
     );

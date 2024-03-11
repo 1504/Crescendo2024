@@ -4,31 +4,22 @@
 
 package frc.robot.subsystems;
 
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkBase.IdleMode;
-//import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
+import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 
-//import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.IntakeConstants;
 
 public class GroundIntake extends SubsystemBase {
-  /** Creates a new GroundIntake. */
-  private final CANSparkMax intakeMotor = new CANSparkMax(IntakeConstants.intakePort_1, MotorType.kBrushless); // motor_1
-                                                                                                               // -
-                                                                                                               // intake
-  private final CANSparkMax flipperMotor = new CANSparkMax(IntakeConstants.intakePort_2, MotorType.kBrushless); // flips
-  private final RelativeEncoder intakeEncoder = intakeMotor.getEncoder();
-  private final RelativeEncoder flipperEncoder = flipperMotor.getEncoder();
-
-  private boolean auto = false;
+  private final CANSparkMax intakeMotor;
+  private final RelativeEncoder intakeEncoder; 
 
   private static GroundIntake instance = null;
 
   private GroundIntake() {
-    flipperMotor.setIdleMode(IdleMode.kBrake);
+    intakeMotor = new CANSparkMax(IntakeConstants.INTAKE_PORT, MotorType.kBrushless);
+    intakeEncoder = intakeMotor.getEncoder();
   }
 
   public static GroundIntake getInstance() {
@@ -58,60 +49,11 @@ public class GroundIntake extends SubsystemBase {
     intakeMotor.set(s);
   }
 
-  /**
-   * Stops the motor
-   */
   public void stopIntake() {
     intakeMotor.set(0);
   }
 
-  public void stopFlipper() {
-    flipperMotor.set(0);
-  }
-
-  public void rawFlipUp(double s) {
-    flipperMotor.set(s * IntakeConstants.MAX_FLIP_SPEED);
-  }
-
-  public void rawFlipDown(double s) {
-    flipperMotor.set(s * -IntakeConstants.MAX_FLIP_SPEED);
-  }
-
-  public RelativeEncoder getFlipperEncoder() {
-    return flipperEncoder;
-  }
-
-  /**
-   * Toggles the auto mode
-   * public void toggleAuto() {
-   * auto = !auto;
-   * }
-   * 
-   * /**
-   * Sets the auto mode
-   *
-   * @param a the auto mode to set to
-   * 
-   *          public void setAuto(boolean a) {
-   *          auto = a;
-   *          }
-   */
-
-  /*
-   * public void setSetpoint(double setpoint){
-   * intake_pid.setSetpoint(setpoint);
-   * curr_pos = setpoint;
-   * }
-   * 
-   * public void addSetpoint(double amt){
-   * intake_pid.setSetpoint(curr_pos + amt);
-   * }
-   */
-
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
-    // double val = m_encoder.getPosition();
-    // motor_1.set(val);
   }
 }

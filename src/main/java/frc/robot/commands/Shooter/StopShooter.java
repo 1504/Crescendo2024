@@ -4,7 +4,7 @@
 
 package frc.robot.commands.Shooter;
 
-import frc.robot.subsystems.PIDShooter;
+import frc.robot.subsystems.Shooter;
 import edu.wpi.first.wpilibj2.command.Command;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 
 public class StopShooter extends Command {
-  private final PIDShooter m_shooter = PIDShooter.getInstance();
+  private final Shooter m_shooter = Shooter.getInstance();
   /** Creates a new Intake. */
   public StopShooter() {
     addRequirements(m_shooter);

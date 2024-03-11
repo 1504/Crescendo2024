@@ -4,10 +4,6 @@
 
 package frc.robot.subsystems;
 
-import static edu.wpi.first.units.MutableMeasure.mutable;
-import static edu.wpi.first.units.Units.Meters;
-import static edu.wpi.first.units.Units.MetersPerSecond;
-
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.CANSparkMax;
@@ -15,17 +11,11 @@ import com.revrobotics.RelativeEncoder;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelPositions;
-import edu.wpi.first.units.BaseUnits;
-import edu.wpi.first.units.Distance;
-import edu.wpi.first.units.MutableMeasure;
-import edu.wpi.first.units.Velocity;
-import edu.wpi.first.units.Voltage;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
@@ -82,13 +72,6 @@ public class Drivetrain extends SubsystemBase {
 
   ShuffleboardTab telemetry = Shuffleboard.getTab("Telemetry");
 
-
-
-  public static final Voltage Volts = BaseUnits.Voltage;
-
-  private final MutableMeasure<Voltage> m_appliedVoltage = mutable(Volts.of(0));
-  private final MutableMeasure<Distance> m_distance = mutable(Meters.of(0));
-  private final MutableMeasure<Velocity<Distance>> m_velocity = mutable(MetersPerSecond.of(0));
 
   public Drivetrain() {
     // initializes tank motor controllers
@@ -153,10 +136,10 @@ public class Drivetrain extends SubsystemBase {
 
   public void turn( boolean direction) { //clockwise - true; counter - false
     if( direction) {
-      setWheelSpeeds(0,1);
+      setWheelSpeeds(-1,1);
     }
     else{
-      setWheelSpeeds(1,0);
+      setWheelSpeeds(1,-1);
     }
   }
 
@@ -205,12 +188,6 @@ public class Drivetrain extends SubsystemBase {
   public PIDController getAnglePID() {
     return _theta_pid;
   }
-  
-  /**
-   * Returns the current wheel speeds of the robot.
-   *
-   * @return The current wheel speeds.
-   */
 
   public DifferentialDriveWheelPositions getCurrentState() {
     return new DifferentialDriveWheelPositions(
