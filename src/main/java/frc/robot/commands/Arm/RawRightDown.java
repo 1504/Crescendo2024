@@ -5,6 +5,7 @@
 package frc.robot.commands.Arm;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants.ArmConstants;
 import frc.robot.subsystems.Arm;
 
 public class RawRightDown extends Command {
@@ -21,7 +22,7 @@ public class RawRightDown extends Command {
 
   @Override
   public void execute() {
-    m_arm.rawRight(-0.5);
+    m_arm.rawRight(ArmConstants.ARM_DOWN_SPEED);
   }
 
   @Override

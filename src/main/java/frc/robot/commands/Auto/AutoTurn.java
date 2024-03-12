@@ -13,6 +13,7 @@ public class AutoTurn extends Command {
   private final Drivetrain m_drive = Drivetrain.getInstance();
   private final Gyroscope m_gyro = Gyroscope.getInstance();
   private final double turnDegrees;
+  private double currDegrees;
 
   private final boolean direction; // true = clockwise -- false = counter
 
@@ -20,6 +21,7 @@ public class AutoTurn extends Command {
   public AutoTurn(double degrees, boolean d) {
     direction = d;
     turnDegrees = degrees;
+    currDegrees = m_gyro.getYaw();
     addRequirements(m_drive);
   }
 
@@ -30,16 +32,30 @@ public class AutoTurn extends Command {
 
   @Override
   public void execute() {
-    if (direction) {
-      System.err.println(m_gyro.getRotation2d().getDegrees());
-      if (m_gyro.getRotation2d().getDegrees() > -turnDegrees) {
-        m_drive.turn(direction);
-      }
-    } else {
-      if (m_gyro.getRotation2d().getDegrees() < turnDegrees) {
+    /* 
+    if(direction) {
+      if(m_gyro.getYaw() >= -turnDegrees) {
         m_drive.turn(direction);
       }
     }
+    else{
+      if(m_gyro.getYaw() <= turnDegrees) {
+        m_drive.turn(direction);
+      }
+    }
+    */
+
+    
+    if (direction) {
+      if (m_gyro.getRotation2d().getDegrees() >= -turnDegrees) {
+        m_drive.turn(direction);
+      }
+    } 
+    else {
+      if (m_gyro.getRotation2d().getDegrees() <= turnDegrees) {
+        m_drive.turn(direction);
+      }
+    } 
   }
 
   @Override
@@ -49,9 +65,18 @@ public class AutoTurn extends Command {
 
   @Override
   public boolean isFinished() {
+    /* 
+    if(direction)
+      return m_gyro.getYaw() <= -turnDegrees;
+    else
+      return m_gyro.getYaw() >= turnDegrees;
+      */
+    
+    System.err.println(m_gyro.getRotation2d().getDegrees());
     if (direction)
-      return m_gyro.getRotation2d().getDegrees() <= turnDegrees;
+      return m_gyro.getRotation2d().getDegrees() <= -turnDegrees;
     else
       return m_gyro.getRotation2d().getDegrees() >= turnDegrees;
+      
   }
 }

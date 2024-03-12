@@ -136,10 +136,10 @@ public class Drivetrain extends SubsystemBase {
 
   public void turn( boolean direction) { //clockwise - true; counter - false
     if( direction) {
-      setWheelSpeeds(-1,1);
+      setWheelSpeeds(-0.75,0.75);
     }
     else{
-      setWheelSpeeds(1,-1);
+      setWheelSpeeds(0.75,-0.75);
     }
   }
 

@@ -13,9 +13,11 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.Constants.ArmConstants;
 import frc.robot.commands.resetEncoders;
 import frc.robot.commands.Arm.MoveArms;
 import frc.robot.commands.Arm.RawLeft;
@@ -34,10 +36,12 @@ import frc.robot.commands.Intake.Intake;
 import frc.robot.commands.Intake.Outtake;
 import frc.robot.commands.Intake.RawFlip;
 import frc.robot.commands.Shooter.OuttakeShootTimed;
+import frc.robot.commands.Shooter.Shoot;
 import frc.robot.commands.Shooter.StopShooter;
 import frc.robot.controlboard.ControlBoard;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Flipper;
 import frc.robot.subsystems.GroundIntake;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.ShuffleboardManager;
@@ -68,6 +72,8 @@ public class RobotContainer {
   private final Shooter m_shooter = Shooter.getInstance();
 
   private final GroundIntake m_intake = GroundIntake.getInstance();
+
+  private final Flipper m_flipper = Flipper.getInstance();
 
   private final Arm m_arm = Arm.getInstance();
 
@@ -105,7 +111,7 @@ public class RobotContainer {
   private void configureBindings() { 
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
     m_drive.setDefaultCommand(new Tank(m_ControlBoard::getForward, m_ControlBoard::getRot));
-    m_intake.setDefaultCommand(new RawFlip(m_ControlBoard::getIntakeUp)); //fliper up and down
+    m_flipper.setDefaultCommand(new RawFlip(m_ControlBoard::getIntakeUp)); //fliper up and down
     m_arm.setDefaultCommand(new MoveArms(m_ControlBoard::getArmsUp)); //arms up and down
 
     //new JoystickButton(_GadgetsController, XboxController.Button.kLeftStick.value).whileTrue(new RawFlip(IntakeConstants.DOWN)); //flip down
@@ -113,8 +119,8 @@ public class RobotContainer {
     //new JoystickButton(_GadgetsController, XboxController.Button.kA.value).onTrue(new ShootAndFeed());
 
 
-    new JoystickButton(_DriveController, XboxController.Button.kBack.value).whileTrue(new RawLeft(0.5));
-    new JoystickButton(_DriveController, XboxController.Button.kStart.value).whileTrue(new RawRight(0.5));
+    new JoystickButton(_DriveController, XboxController.Button.kBack.value).whileTrue(new RawLeft(ArmConstants.ARM_UP_SPEED));
+    new JoystickButton(_DriveController, XboxController.Button.kStart.value).whileTrue(new RawRight(ArmConstants.ARM_UP_SPEED));
     new JoystickButton(_DriveController, XboxController.Button.kLeftBumper.value).whileTrue(new RawLeftDown());
     new JoystickButton(_DriveController, XboxController.Button.kRightBumper.value).whileTrue(new RawRightDown());
     
@@ -138,26 +144,29 @@ public class RobotContainer {
     new JoystickButton(_GadgetsController, XboxController.Button.kRightBumper.value).onTrue(new FlipperUp());
 
     // Old SHOOTER
-    //new JoystickButton(_GadgetsController, XboxController.Button.kX.value).whileTrue(new Shoot());
+    new JoystickButton(_GadgetsController, XboxController.Button.kX.value).whileTrue(new Shoot());
+    new JoystickButton(_GadgetsController, XboxController.Button.kBack.value).whileTrue(new Outtake());
   }
 
   private void initAuton() {
   }
 // test these
-  public Command red1() { //UNTESTED
+  public Command red1() { 
     return (new AutoShooter()
       .andThen(new AutoDrive(0.35, false))
-      .andThen(new AutoTurn(30, false))) //autoturn spins IN PLACE now
-      .andThen(Commands.parallel(new AutoDrive(2.5, false), new AutoIntake(2), new FlipperDown())) // TEST THIS
-      .andThen(Commands.parallel(new AutoDrive(2.5, true), new FlipperUp()))
-      .andThen(new AutoTurn(30, true))
-      .andThen(new AutoDrive(0.35, true))
-      .andThen(new AutoShooter());
+      .andThen(new FlipperDown())
+      .andThen(new AutoTurn(35, false)) //autoturn spins IN PLACE now
+      .andThen(Commands.parallel(new AutoDrive(2.5, false), new AutoIntake(1))) // TEST THIS
+      .andThen(Commands.parallel(new AutoDrive(2.4, true), new FlipperUp()))
+      .andThen(new AutoTurn(35, true))
+      .andThen(new AutoDrive(0.25, true))
+      .andThen(new AutoShooter()));
   }
 
-  public Command red2() { //UNTESTED
+  public Command red2() { 
     return (new AutoShooter()
-      .andThen(Commands.parallel(new AutoIntake(1), new AutoDrive(1,false)), new FlipperDown()) // TEST THIS
+      .andThen(new FlipperDown())
+      .andThen(Commands.parallel(new AutoIntake(1), new AutoDrive(1,false))) // TEST THIS
       .andThen(new AutoDrive(1, true))
       .andThen(new FlipperUp())
       .andThen(new AutoShooter()));
@@ -165,11 +174,12 @@ public class RobotContainer {
 
   public Command red3() { //UNTESTED
     return (new AutoShooter()
-      .andThen(new AutoDrive(0.35, true))
-      .andThen(new AutoTurn(30, false))) //autoturn spins IN PLACE now
+      .andThen(new AutoDrive(0.35, false))
+      .andThen(new AutoTurn(35, true)))
+      //.andThen(new FlipperDown()) //autoturn spins IN PLACE now
       .andThen(Commands.parallel(new AutoDrive(2.5, false), new AutoIntake(2), new FlipperDown())) // TEST THIS
-      .andThen(Commands.parallel(new AutoDrive(2.5, true), new FlipperUp()))
-      .andThen(new AutoTurn(30, false))
+      .andThen(Commands.parallel(new AutoDrive(2.4, true), new FlipperUp()))
+      .andThen(new AutoTurn(35, false))
       .andThen(new AutoDrive(0.35, true))
       .andThen(new AutoShooter());
   }

@@ -27,7 +27,7 @@ public class FlipperUp extends Command {
     m_flipper.rawFlipUp(1);
     if (m_flipper.getEncoder().getPosition() >= FlipperConstants.FLIPPER_UP_POS-12)
     {
-      m_flipper.rawFlipUp(0.5);
+      m_flipper.rawFlipUp(0.3);
     }
   }
 

@@ -39,19 +39,19 @@ public class Arm extends SubsystemBase {
   }
 
   public double getLeftRPM() {
-    return _left_encoder.getVelocity();
+    return _left_encoder.getVelocity()/9;
   }
 
   public double getRightRPM() {
-    return _right_encoder.getVelocity();
+    return _right_encoder.getVelocity()/12;
   }
 
   public double getLeftDistance() {
-    return _left_encoder.getPosition();
+    return _left_encoder.getPosition()/9;
   }
 
   public double getRightDistance() {
-    return _right_encoder.getPosition();
+    return _right_encoder.getPosition()/12;
   }
 
   public RelativeEncoder getLeftEncoder() {
@@ -64,16 +64,16 @@ public class Arm extends SubsystemBase {
 
   // Should later be set to go up a certain distance with PID controllers
   public void extendBoth(double s) {
-    _left.set(s);
-    _right.set(s);
+    _left.set(s/13*4.5);
+    _right.set(s/9*4.5);
   }
 
   public void rawLeft(double s) {
-    _left.set(s);
+    _left.set(s/15);
   }
 
   public void rawRight(double s) {
-    _right.set(s);
+    _right.set(s/9);
   }
 
   public void stopMotors() {

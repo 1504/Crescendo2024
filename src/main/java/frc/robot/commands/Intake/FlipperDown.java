@@ -25,7 +25,7 @@ public class FlipperDown extends Command {
   @Override
   public void execute() {
     m_flipper.rawFlipDown(1);
-    if (m_flipper.getEncoder().getPosition() <= FlipperConstants.FLIPPER_DOWN_POS + 12)
+    if (m_flipper.getEncoder().getPosition() <= FlipperConstants.FLIPPER_DOWN_POS + 15)
     {
       m_flipper.rawFlipDown(0.5);
     }

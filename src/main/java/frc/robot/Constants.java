@@ -47,6 +47,9 @@ public final class Constants {
     public static final double ARM_UP_LEFT_POS = 60; //test
     public static final double ARM_UP_RIGHT_POS = 110;
     public static final double ARM_DOWN_POS = 0;
+
+    public static final double ARM_UP_SPEED = 7.5;
+    public static final double ARM_DOWN_SPEED = -7.5;
   }
 
   public static class ShootConstants {

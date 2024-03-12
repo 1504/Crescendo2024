@@ -22,8 +22,6 @@ public class AutoIntake extends Command {
   public void initialize() {
     _timer.reset();
     _timer.start();
-
-    m_intake.roll();
   }
 
   @Override
