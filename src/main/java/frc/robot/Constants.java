@@ -85,7 +85,7 @@ public final class Constants {
     public static final double WHEEL_TO_CENTER_SIDE_INCHES = 0.26 / INCHES_TO_METERS; //NEED TO MEASURE
     public static final double WHEEL_TO_CENTER_FRONT_INCHES = 0.3175 / INCHES_TO_METERS;
   
-    public static final double GR = 6.28333333333333;
+    public static final double GR = 6.28333333333333; // change gear ratio from 72-1 to 57.86-1 gear ratio
     public static final double WHEEL_CIRCUMFERENCE = 4 * Math.PI;
     public static final double INCHES_PER_REVOLUTION = WHEEL_CIRCUMFERENCE / GR;
 
