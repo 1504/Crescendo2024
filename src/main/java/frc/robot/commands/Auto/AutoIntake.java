@@ -29,6 +29,9 @@ public class AutoIntake extends Command {
     if (_timer.get() < time) {
       m_intake.roll();
     }
+    else {
+      m_intake.stopRoll();
+    }
   }
 
   @Override

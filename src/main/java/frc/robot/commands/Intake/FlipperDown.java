@@ -24,10 +24,10 @@ public class FlipperDown extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_flipper.rawFlipDown(1);
-    if (m_flipper.getEncoder().getPosition() <= FlipperConstants.FLIPPER_DOWN_POS + 15)
+    m_flipper.rawFlipDown(0.6);
+    if (m_flipper.getEncoder().getPosition() >= FlipperConstants.FLIPPER_DOWN_POS - 13)
     {
-      m_flipper.rawFlipDown(0.5);
+      m_flipper.rawFlipDown(0.4);
     }
   }
 
@@ -40,7 +40,7 @@ public class FlipperDown extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if(m_flipper.getEncoder().getPosition() <= FlipperConstants.FLIPPER_DOWN_POS)
+    if(m_flipper.getEncoder().getPosition() >= FlipperConstants.FLIPPER_DOWN_POS)
       return true;
     return false;
   }

@@ -27,9 +27,9 @@ public class AutoDrive extends Command {
   @Override
   public void execute() {
     if (_forward) {
-      _drive.driveTank(-0.6 * AutoConstants.AUTO_MAX_SPEED_METERS_PER_SECOND, 0);
+      _drive.driveTank(-0.5 * AutoConstants.AUTO_MAX_SPEED_METERS_PER_SECOND, 0);
     } else
-      _drive.driveTank(0.6 * AutoConstants.AUTO_MAX_SPEED_METERS_PER_SECOND, 0);
+      _drive.driveTank(0.5 * AutoConstants.AUTO_MAX_SPEED_METERS_PER_SECOND, 0);
   }
 
   @Override

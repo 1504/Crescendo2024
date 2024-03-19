@@ -36,11 +36,11 @@ public class Flipper extends SubsystemBase {
   }
 
   public void rawFlipUp(double s) {
-    flipperMotor.set(s * FlipperConstants.MAX_FLIP_SPEED);
+    flipperMotor.set(s * -FlipperConstants.MAX_FLIP_SPEED);
   }
 
   public void rawFlipDown(double s) {
-    flipperMotor.set(s * -FlipperConstants.MAX_FLIP_SPEED);
+    flipperMotor.set(s * FlipperConstants.MAX_FLIP_SPEED);
   }
 
   public RelativeEncoder getEncoder() {

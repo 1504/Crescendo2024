@@ -46,11 +46,13 @@ import frc.robot.subsystems.GroundIntake;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.ShuffleboardManager;
 
-
 /**
- * This class is where the bulk of the robot should be declared. Since Command-based is a
- * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
- * periodic methods (other than the scheduler calls). Instead, the structure of the robot (including
+ * This class is where the bulk of the robot should be declared. Since
+ * Command-based is a
+ * "declarative" paradigm, very little robot logic should actually be handled in
+ * the {@link Robot}
+ * periodic methods (other than the scheduler calls). Instead, the structure of
+ * the robot (including
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
@@ -58,12 +60,11 @@ public class RobotContainer {
   private final Drivetrain m_drive = Drivetrain.getInstance();
   public final ShuffleboardManager m_ShuffleboardManager = ShuffleboardManager.getInstance();
   private final ControlBoard m_ControlBoard = ControlBoard.getInstance();
-  
+
   private final XboxController _GadgetsController = m_ControlBoard.getGadgetsController();
   private final XboxController _DriveController = m_ControlBoard.getDriveController();
 
-
-  //private final Limelight m_limelight= Limelight.getInstance();
+  // private final Limelight m_limelight= Limelight.getInstance();
 
   public final ShuffleboardManager m_shuffleboardManager = ShuffleboardManager.getInstance();
 
@@ -80,19 +81,27 @@ public class RobotContainer {
   private final SendableChooser<Command> m_autoChooser;
 
   public ShuffleboardTab auto;
-  
 
-  /** The container for the robot. Contains subsystems, OI devices, and commands. */
+  /**
+   * The container for the robot. Contains subsystems, OI devices, and commands.
+   */
   public RobotContainer() {
     auto = Shuffleboard.getTab("auto");
     m_autoChooser = new SendableChooser<Command>();
-    auto.add("Auto Chooser", m_autoChooser);
-    m_autoChooser.addOption("red1", red1());
-    m_autoChooser.addOption("red2", red2());
-    m_autoChooser.addOption("red3", red3());
-    m_autoChooser.addOption("blue1", blue1());
-    m_autoChooser.addOption("blue2", blue2());
-    m_autoChooser.addOption("blue3", blue3());
+    auto.add("Auto Chooser", m_autoChooser).withSize(2,1);
+    m_autoChooser.addOption("red amp 2", redAmp(2));
+    m_autoChooser.addOption("red middle 2", redMiddle(2));
+    m_autoChooser.addOption("red source 2", redSource(2));
+    m_autoChooser.addOption("blue amp 2", blueAmp(2));
+    m_autoChooser.addOption("blue middle 2", blueMiddle(2));
+    m_autoChooser.addOption("blue source 2", blueSource(2));
+
+    m_autoChooser.addOption("red amp 1", redAmp(1));
+    m_autoChooser.addOption("red middle 1", redMiddle(1));
+    m_autoChooser.addOption("red source 1", redSource(1));
+    m_autoChooser.addOption("blue amp 1", blueAmp(1));
+    m_autoChooser.addOption("blue middle 1", blueMiddle(1));
+    m_autoChooser.addOption("blue source 1", blueSource(1));
 
     m_arm.resetEncoders();
     // Configure the trigger bindings
@@ -100,113 +109,168 @@ public class RobotContainer {
   }
 
   /**
-   * Use this method to define your trigger->command mappings. Triggers can be created via the
-   * {@link Trigger#Trigger(java.util.function.BooleanSupplier)} constructor with an arbitrary
+   * Use this method to define your trigger->command mappings. Triggers can be
+   * created via the
+   * {@link Trigger#Trigger(java.util.function.BooleanSupplier)} constructor with
+   * an arbitrary
    * predicate, or via the named factories in {@link
-   * edu.wpi.first.wpilibj2.command.button.CommandGenericHID}'s subclasses for {@link
-   * CommandXboxController Xbox}/{@link edu.wpi.first.wpilibj2.command.button.CommandPS4Controller
-   * PS4} controllers or {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight
+   * edu.wpi.first.wpilibj2.command.button.CommandGenericHID}'s subclasses for
+   * {@link
+   * CommandXboxController
+   * Xbox}/{@link edu.wpi.first.wpilibj2.command.button.CommandPS4Controller
+   * PS4} controllers or
+   * {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight
    * joysticks}.
    */
-  private void configureBindings() { 
-    // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
-    m_drive.setDefaultCommand(new Tank(m_ControlBoard::getForward, m_ControlBoard::getRot));
-    m_flipper.setDefaultCommand(new RawFlip(m_ControlBoard::getIntakeUp)); //fliper up and down
-    m_arm.setDefaultCommand(new MoveArms(m_ControlBoard::getArmsUp)); //arms up and down
+  private void configureBindings() {
+    m_drive.setDefaultCommand(new Tank(m_ControlBoard::getForward, m_ControlBoard::getRot));//drive
+    m_flipper.setDefaultCommand(new RawFlip(m_ControlBoard::getIntakeUp)); // fliper up and down
+    m_arm.setDefaultCommand(new MoveArms(m_ControlBoard::getArmsUp)); // arms up and down
 
-    //new JoystickButton(_GadgetsController, XboxController.Button.kLeftStick.value).whileTrue(new RawFlip(IntakeConstants.DOWN)); //flip down
-    //new JoystickButton(_GadgetsController, XboxController.Button.kRightStick.value).whileTrue(new RawFlip(IntakeConstants.UP)); //flip up
-    //new JoystickButton(_GadgetsController, XboxController.Button.kA.value).onTrue(new ShootAndFeed());
+    // ARMS UP
+    new JoystickButton(_DriveController, XboxController.Button.kBack.value)
+        .whileTrue(new RawLeft(ArmConstants.ARM_UP_SPEED));
+    new JoystickButton(_DriveController, XboxController.Button.kStart.value)
+        .whileTrue(new RawRight(ArmConstants.ARM_UP_SPEED));
 
+    // ARMS DOWN
+    new JoystickButton(_DriveController, XboxController.Button.kLeftBumper.value)
+      .whileTrue(new RawLeftDown());
+    new JoystickButton(_DriveController, XboxController.Button.kRightBumper.value)
+      .whileTrue(new RawRightDown());
 
-    new JoystickButton(_DriveController, XboxController.Button.kBack.value).whileTrue(new RawLeft(ArmConstants.ARM_UP_SPEED));
-    new JoystickButton(_DriveController, XboxController.Button.kStart.value).whileTrue(new RawRight(ArmConstants.ARM_UP_SPEED));
-    new JoystickButton(_DriveController, XboxController.Button.kLeftBumper.value).whileTrue(new RawLeftDown());
-    new JoystickButton(_DriveController, XboxController.Button.kRightBumper.value).whileTrue(new RawRightDown());
-    
-    //new JoystickButton(_DriveController, XboxController.Button.kY.value).onTrue(new PIDdrive(1));
     new JoystickButton(_DriveController, XboxController.Button.kA.value).whileTrue(new resetEncoders());
 
     // INTAKE / OUTTAKE
     new JoystickButton(_DriveController, XboxController.Button.kB.value).whileTrue(new Outtake());
-    
+
     new JoystickButton(_GadgetsController, XboxController.Button.kB.value).whileTrue(new Intake());
-    
+
     // SHOOTER
     JoystickButton y = new JoystickButton(_GadgetsController, XboxController.Button.kY.value);
-    // While held
-    y.onTrue(new OuttakeShootTimed());
-    // When released
-    y.onFalse(new ParallelCommandGroup(new StopShooter(), new InstantIntake(0)));
+    y.onTrue(new OuttakeShootTimed()); // While held
+    y.onFalse(new ParallelCommandGroup(new StopShooter(), new InstantIntake(0))); // When released
 
     // FLIPPER
     new JoystickButton(_GadgetsController, XboxController.Button.kLeftBumper.value).onTrue(new FlipperDown());
     new JoystickButton(_GadgetsController, XboxController.Button.kRightBumper.value).onTrue(new FlipperUp());
 
-    // Old SHOOTER
+    // MANUEL SHOOTER
     new JoystickButton(_GadgetsController, XboxController.Button.kX.value).whileTrue(new Shoot());
     new JoystickButton(_GadgetsController, XboxController.Button.kBack.value).whileTrue(new Outtake());
   }
 
-  private void initAuton() {
-  }
-// test these
-  public Command red1() { 
-    return (new AutoShooter()
-      .andThen(new AutoDrive(0.35, false))
-      .andThen(new FlipperDown())
-      .andThen(new AutoTurn(35, false)) //autoturn spins IN PLACE now
-      .andThen(Commands.parallel(new AutoDrive(2.5, false), new AutoIntake(1))) // TEST THIS
-      .andThen(Commands.parallel(new AutoDrive(2.4, true), new FlipperUp()))
-      .andThen(new AutoTurn(35, true))
-      .andThen(new AutoDrive(0.25, true))
-      .andThen(new AutoShooter()));
-  }
-
-  public Command red2() { 
-    return (new AutoShooter()
-      .andThen(new FlipperDown())
-      .andThen(Commands.parallel(new AutoIntake(1), new AutoDrive(1,false))) // TEST THIS
-      .andThen(new AutoDrive(1, true))
-      .andThen(new FlipperUp())
-      .andThen(new AutoShooter()));
+  public Command redAmp(int notes) {
+    if (notes == 2) {
+      return (new AutoShooter()
+          .andThen(new AutoDrive(0.35, false))
+          .andThen(new FlipperDown())
+          .andThen(new AutoTurn(38, false))
+          .andThen(Commands.parallel(new AutoDrive(2, false), new AutoIntake(1)))
+          .andThen(new WaitCommand(0.2))
+          .andThen(Commands.parallel(new AutoDrive(2, true), new FlipperUp()))
+          .andThen(new AutoTurn(38, true))
+          .andThen(new AutoDrive(0.35, true))
+          .andThen(new AutoShooter()));
+    } else if (notes == 1) {
+      return new AutoShooter()
+          .andThen(new AutoDrive(0.5, false))
+          .andThen(new AutoTurn(38, false))
+          .andThen(new AutoDrive(2, false));
+    }
+    return null;
   }
 
-  public Command red3() { //UNTESTED
-    return (new AutoShooter()
-      .andThen(new AutoDrive(0.35, false))
-      .andThen(new AutoTurn(35, true)))
-      //.andThen(new FlipperDown()) //autoturn spins IN PLACE now
-      .andThen(Commands.parallel(new AutoDrive(2.5, false), new AutoIntake(2), new FlipperDown())) // TEST THIS
-      .andThen(Commands.parallel(new AutoDrive(2.4, true), new FlipperUp()))
-      .andThen(new AutoTurn(35, false))
-      .andThen(new AutoDrive(0.35, true))
-      .andThen(new AutoShooter());
+  public Command redMiddle(int notes) {
+    if (notes == 2) {
+      return (new AutoShooter()
+          .andThen(new FlipperDown())
+          .andThen(Commands.parallel(new AutoIntake(0.5), new AutoDrive(1, false)))
+          .andThen(Commands.parallel(new AutoDrive(1, true), new FlipperUp())
+              .andThen(new AutoShooter())));
+    } else if (notes == 1) {
+      return new AutoShooter()
+          .andThen(new AutoDrive(2, false));
+    }
+    return null;
   }
 
-  public Command blue1() {
-    return (new AutoShooter()
-      .andThen( new AutoDrive(1, false))
-      .andThen( new AutoTurn(57, true))
-      .andThen(new AutoDrive(1.5, false)));
+  public Command redSource(int notes) {
+    if (notes == 2) {
+      return (new AutoShooter()
+          .andThen(new AutoDrive(0.35, false))
+          .andThen(new AutoTurn(38, true)))
+          .andThen(Commands.parallel(new AutoIntake(0), new AutoDrive(1.3, false), new FlipperDown()))
+          .andThen(new WaitCommand(0.1))
+          .andThen(Commands.parallel(new AutoDrive(1.3, true), new FlipperUp()))
+          .andThen(new AutoTurn(38, false))
+          .andThen(new WaitCommand(0.1))
+          .andThen(new AutoDrive(0.35, true))
+          .andThen(new AutoShooter());
+    } else if (notes == 1) {
+      return new AutoShooter()
+          .andThen(new AutoDrive(0.5, false))
+          .andThen(new AutoTurn(38, true))
+          .andThen(new AutoDrive(2, false));
+    }
+    return null;
   }
 
-  public Command blue2() {
-    return (new AutoShooter()
-      .andThen(new FlipperDown())
-      .andThen(Commands.parallel(new AutoIntake(3), new AutoDrive(1,false)))
-      .andThen(new AutoDrive(1, true))
-      .andThen(new FlipperUp())
-      .andThen(new AutoShooter()));
+  public Command blueSource(int notes) {
+    if (notes == 2) {
+      return (new AutoShooter()
+          .andThen(new AutoDrive(0.35, false))
+          .andThen(new FlipperDown())
+          .andThen(new AutoTurn(38, false))
+          .andThen(Commands.parallel(new AutoDrive(1.3, false), new AutoIntake(1)))
+          .andThen(new WaitCommand(0.2))
+          .andThen(Commands.parallel(new AutoDrive(1.3, true), new FlipperUp()))
+          .andThen(new AutoTurn(38, true))
+          .andThen(new AutoDrive(0.35, true))
+          .andThen(new AutoShooter()));
+    } else if (notes == 1) {
+      return new AutoShooter()
+          .andThen(new AutoDrive(0.5, false))
+          .andThen(new AutoTurn(38, false))
+          .andThen(new AutoDrive(2, false));
+    }
+    return null;
   }
 
-  public Command blue3() {
-    return (new AutoShooter()
-      .andThen(new AutoDrive(1, false))
-      .andThen(new AutoTurn(57, false))
-      .andThen(new AutoDrive(1.5, false)));
+  public Command blueMiddle(int notes) {
+    if (notes == 2) {
+      return (new AutoShooter()
+          .andThen(new FlipperDown())
+          .andThen(Commands.parallel(new AutoIntake(0.5), new AutoDrive(1, false)))
+          .andThen(Commands.parallel(new AutoDrive(1, true), new FlipperUp())
+              .andThen(new AutoShooter())));
+    } else if (notes == 1) {
+      return new AutoShooter()
+          .andThen(new AutoDrive(2, false));
+    }
+    return null;
   }
 
+  public Command blueAmp(int notes) {
+    if (notes == 2) {
+      return (new AutoShooter()
+          .andThen(new AutoDrive(0.35, false))
+          .andThen(new AutoTurn(38, true)))
+          .andThen(Commands.parallel(new AutoIntake(0), new AutoDrive(2, false), new FlipperDown()))
+          .andThen(new WaitCommand(0.1))
+          .andThen(Commands.parallel(new AutoDrive(2, true), new FlipperUp()))
+          .andThen(new AutoTurn(38, false))
+          .andThen(new WaitCommand(0.1))
+          .andThen(new AutoDrive(0.35, true))
+          .andThen(new AutoShooter());
+    } else if (notes == 1) {
+      return new AutoShooter()
+          .andThen(new AutoDrive(0.5, false))
+          .andThen(new AutoTurn(38, true))
+          .andThen(new AutoDrive(2, false));
+    }
+    return null;
+  }
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.

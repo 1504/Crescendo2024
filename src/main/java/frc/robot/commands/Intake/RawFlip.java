@@ -31,10 +31,10 @@ public class RawFlip extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-      if(flipUp && m_flipper.getEncoder().getPosition() <= FlipperConstants.FLIPPER_UP_POS){
-        m_flipper.rawFlipUp(speed.getAsDouble());
-      } else if (!flipUp && m_flipper.getEncoder().getPosition() >= FlipperConstants.FLIPPER_DOWN_POS) {
-        m_flipper.rawFlipDown(speed.getAsDouble());
+      if(flipUp && m_flipper.getEncoder().getPosition() >= FlipperConstants.FLIPPER_UP_POS){
+        m_flipper.rawFlipUp(-speed.getAsDouble()/3);
+      } else if (!flipUp && m_flipper.getEncoder().getPosition() <= FlipperConstants.FLIPPER_DOWN_POS) {
+        m_flipper.rawFlipDown(speed.getAsDouble()/3);
       }
   }
 

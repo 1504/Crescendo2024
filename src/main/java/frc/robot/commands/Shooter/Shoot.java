@@ -21,7 +21,6 @@ public class Shoot extends Command {
 
   @Override
   public void initialize() {
-    System.err.println("shooting");
   }
 
   @Override

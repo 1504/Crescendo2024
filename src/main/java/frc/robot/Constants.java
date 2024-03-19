@@ -119,8 +119,8 @@ public final class Constants {
   public static class FlipperConstants {
     public static final int FLIPPER_PORT = 22;
     public static final double MAX_FLIP_SPEED = 0.8;
-    public static final double FLIPPER_DOWN_POS = -36;
-    public static final double FLIPPER_UP_POS =-2; 
+    public static final double FLIPPER_DOWN_POS = 29;
+    public static final double FLIPPER_UP_POS =1; 
   }
 
   public static class AutoConstants {

@@ -42,7 +42,7 @@ public class AutoShooter extends Command {
 
   @Override
   public boolean isFinished() {
-    return _timer.get() > 2;
+    return _timer.get() > 2.5;
   }
 }
 

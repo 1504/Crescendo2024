@@ -24,10 +24,10 @@ public class FlipperUp extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_flipper.rawFlipUp(1);
-    if (m_flipper.getEncoder().getPosition() >= FlipperConstants.FLIPPER_UP_POS-12)
+    m_flipper.rawFlipUp(0.6);
+    if (m_flipper.getEncoder().getPosition() <= FlipperConstants.FLIPPER_UP_POS + 12)
     {
-      m_flipper.rawFlipUp(0.3);
+      m_flipper.rawFlipUp(0.4);
     }
   }
 
@@ -40,7 +40,7 @@ public class FlipperUp extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if(m_flipper.getEncoder().getPosition() >= FlipperConstants.FLIPPER_UP_POS)
+    if(m_flipper.getEncoder().getPosition() <= FlipperConstants.FLIPPER_UP_POS)
       return true;
     return false;
   }
